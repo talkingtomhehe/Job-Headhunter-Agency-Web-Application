@@ -1,0 +1,4 @@
+scheme-color: #0631BC
+footer-color: #E1F3FB
+bg-color:#F2FBFF
+icon: https://fontawesome.com/
