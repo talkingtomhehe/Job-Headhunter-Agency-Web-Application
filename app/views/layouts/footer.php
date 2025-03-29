@@ -1,5 +1,5 @@
     <footer>
-        <p>&copy; 2025 Huntly. All Rights Reserved.</p>
+        <p>&copy; <?php echo date("Y"); ?> Huntly. All Rights Reserved.</p>
     </footer>
     </body>
 

@@ -1,0 +1,37 @@
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Nội dung modal */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* ===  REGISTER MODAL === */
+.required {
+    color: red;
+}
+
+#registerModal {
+    height: 640px;
+}
+
+/* ===  LOGIN MODAL === */
+#loginModal {
+    height: 500px;
+}
+
