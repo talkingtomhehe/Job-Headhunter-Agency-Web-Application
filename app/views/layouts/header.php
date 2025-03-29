@@ -26,6 +26,6 @@
             <button id="openLoginModal" class="login">Login</button>
             <button id="openRegisterModal" class="register">Register</button>
         </div>
+        <?php include(COMPONENT_PATH . '/login-modal.php'); ?>
+        <?php include(COMPONENT_PATH . '/register-modal.php'); ?>
     </header>
-    <?php include(COMPONENT_PATH . '/login-modal.php'); ?>
-    <?php include(COMPONENT_PATH . '/register-modal.php'); ?>
