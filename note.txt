@@ -1,10 +1,14 @@
 scheme-color: #0631BC
 footer-color: #E1F3FB
-bg-color:#F2FBFF
+bg-color: #F2FBFF
 icon: https://fontawesome.com/
+# xem chi tiết hơn ở figma cho từng đối tượng
 
 GITHUB
 git clone *link
+
+tạo branch riêng để push code, KHÔNG push vào main
+git checkout -b ...(tên branch)
 
 trước mỗi lần code, tránh conflict:
 git pull origin main
@@ -13,7 +17,7 @@ mỗi ngày code xong thì push lên git
 git status
 git add .
 git commit -m '*note'
-git push origin main
+git push origin ...(tên branch)
 
 
 APP
