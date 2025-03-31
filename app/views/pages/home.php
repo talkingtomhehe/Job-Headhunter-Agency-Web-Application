@@ -25,7 +25,7 @@
                             </div>
                             
                             <div class="input-group">
-                                <i class="fa-solid fa-building"></i>
+                                <i class="fa-solid fa-house"></i>
                                 <select name="work_model">
                                     <option value="">Work model</option>
                                     <option value="remote">Remote</option>

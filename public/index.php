@@ -2,7 +2,7 @@
 require_once '../app/config/config.php';
 
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
-$validPages = ['home', 'about', 'contact', 'login', 'register'];
+$validPages = ['home', 'about', 'contact', 'login', 'auth'];
 
 if (!in_array($page, $validPages)) {
     $page = 'home';

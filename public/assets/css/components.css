@@ -1,80 +1,43 @@
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-/* Nội dung modal */
-.modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    text-align: center;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-/* ===  REGISTER MODAL === */
-.required {
-    color: red;
-}
-
-#registerModal {
-    height: 640px;
-}
-
-/* ===  LOGIN MODAL === */
-#loginModal {
-    height: 500px;
-}
-
-/* Hero Banner with SVG Background - Fix navbar overlap */
+/* Hero Banner with properly sized image that fills entire space */
 .hero-banner {
     position: relative;
     width: 100%;
-    height: 70vh; /* Same height as before */
+    height: 100vh; /* Changed from 70vh to 100vh to fill entire viewport */
     overflow: hidden;
     margin-bottom: 0;
-    padding-top: 70px; /* Add padding equal to navbar height */
 }
 
-/* Adjust image container to fill the available space */
+/* Image container takes full size */
 .image-container {
     position: absolute;
-    top: 0; /* Start from the very top */
+    background-color: white;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 0; /* Ensure it stays behind content */
 }
 
-/* Ensure image covers entire container including the padded area */
+/* Ensure image fully covers all available space */
 .hero-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center center; 
-    padding-top: 10px;
+    object-position: center 0; /* Align to top center */
     transform: scale(1.05); /* Slight scale to prevent any edge gaps */
 }
 
+/* Adjust overlay to match new full-size image */
 .image-overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(242, 251, 255, 0.3); /* Same overlay as before */
     z-index: 1;
 }
 
-/* Hero Section repositioning */
+/* Adjust hero section position with the navbar */
 .hero-section {
     position: absolute;
     top: 0;
@@ -84,7 +47,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2rem 1rem;
+    padding: 5rem 1rem 2rem; /* Added top padding to account for navbar */
     z-index: 2;
 }
 
@@ -98,7 +61,7 @@
     color: white;
     font-size: 1.8rem;
     font-weight: 700;
-    margin-bottom: 2.5rem;
+    margin-bottom: 5rem;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
@@ -573,92 +536,79 @@
     }
 }
 
-.modal-title {
-    text-align: center;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem; /* Increased from default */
-    color: #0631BC;
-}
-
-/* Better modal positioning */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center; /* Center vertically */
-    z-index: 1000;
-    padding: 0; /* Remove padding */
-    overflow: hidden; /* Hide overflow */
-}
-
-/* Modal content with fixed scrollbar */
-.register-modal-content {
-    background: white;
-    padding: 2.5rem 2rem 2rem;
-    border-radius: 25px;
-    width: 450px;
-    max-height: 80vh;
-    max-width: 90%;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-    position: relative;
-    margin: 0;
-    overflow-y: auto; /* Enable vertical scrolling */
-    overflow-x: hidden; /* Hide horizontal scrollbar */
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-    scrollbar-width: thin; /* Firefox */
-}
-
-/* Completely hide default scrollbar in WebKit browsers */
-.register-modal-content::-webkit-scrollbar {
-    width: 10px;
-    display: none;
-    background: transparent; /* Optional: make scrollbar background transparent */
-}
-
-.register-modal-content::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.register-modal-content::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-}
-
-.close-button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: #777;
-    z-index: 10;
-    width: 30px;
-    height: 30px;
+/* Auth Page Styles */
+.auth-page-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
+    min-height: calc(100vh - 70px); /* Subtract header height */
+    padding-top: 90px; /* Account for navbar */
+    background-color: white; /* Changed from #F2FBFF to white */
+    overflow-y: auto; /* Enable vertical scrolling */
+    flex-wrap: wrap; /* Allow wrapping on small screens */
 }
 
-.modal-content form input {
+/* Left Panel - Login Form */
+.auth-left-panel {
+    flex: 1;
+    padding: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-heading {
+    font-size: 2.5rem;
+    color: #0631BC;
+    margin-bottom: 2rem;
+    font-weight: 700;
+}
+
+.auth-box {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    padding: 2rem;
+}
+
+/* Role selector tabs */
+.role-selector {
+    display: flex;
+    margin-bottom: 1rem;
+}
+
+.role-tab {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #777;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
     transition: all 0.3s;
 }
 
-.close-button:hover {
-    background-color: rgba(0,0,0,0.05);
-    color: #333;
+.role-tab.active {
+    color: #0631BC;
+    border-bottom-color: #0631BC;
+}
+
+.auth-divider {
+    border: none;
+    height: 1px;
+    background-color: #e1e1e1;
+    margin: 1.5rem 0;
+}
+
+/* Form styling */
+.auth-form {
+    width: 100%;
 }
 
 .form-group {
     margin-bottom: 1.2rem;
-    text-align: left; /* Left align form groups */
 }
 
 .form-group label {
@@ -666,8 +616,7 @@
     margin-bottom: 0.5rem;
     font-weight: 500;
     font-size: 0.95rem;
-    color: #333; /* Darker text for labels */
-    text-align: left;
+    color: #333;
 }
 
 .form-group input {
@@ -676,19 +625,155 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 1rem;
-    background-color: #f0f7ff; /* Light blue background */
+    background-color: #f9f9f9;
 }
 
-.form-group input::placeholder {
-    color: #999;
+.forgot-password {
+    display: block;
+    margin: 0.5rem 0 1.5rem;
+    text-align: right;
+    color: #0631BC;
+    font-size: 0.9rem;
+    text-decoration: none;
 }
 
-.form-group input:focus {
-    outline: none;
-    border-color: #0631BC;
-    box-shadow: 0 0 0 2px rgba(6, 49, 188, 0.1);
+.forgot-password:hover {
+    text-decoration: underline;
 }
 
+.auth-submit-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background-color: #0631BC;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin: 1rem 0;
+}
+
+.auth-submit-btn:hover {
+    background-color: #052592;
+}
+
+.account-toggle {
+    text-align: center;
+    margin: 1rem 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.auth-link {
+    color: #0631BC;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* Social login section */
+.social-login-section {
+    text-align: center;
+}
+
+.social-login-label {
+    color: #777;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.social-login-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    gap: 0.5rem;
+}
+
+.social-btn:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.google-btn i {
+    color: #4285F4;
+}
+
+.facebook-btn i {
+    color: #3b5998;
+}
+
+/* Right Panel - Content changes based on role */
+.auth-right-panel {
+    flex: 1;
+    background-color: white; /* Changed from #EEFAFF to white */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+}
+
+.right-panel-content {
+    display: none;
+    max-width: 500px;
+    width: 100%;
+    overflow-y: visible; /* Changed from auto to visible to hide scrollbar */
+    padding: 1rem;
+    max-height: none; /* Remove max-height constraint */
+}
+
+.right-panel-content.active {
+    display: block;
+}
+
+.auth-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: none; /* Remove max-height constraint */
+}
+
+.register-heading {
+    font-size: 1.8rem;
+    color: #0631BC;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.terms-agreement {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.terms-agreement a {
+    color: #0631BC;
+    text-decoration: none;
+}
+
+.terms-agreement a:hover {
+    text-decoration: underline;
+}
+
+/* Password field icon */
 .password-container {
     position: relative;
 }
@@ -702,181 +787,32 @@
     color: #777;
 }
 
-.password-toggle.fa-eye-slash {
-    color: #0631BC;
-}
-
-.terms-agreement {
-    font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 1.5rem;
-    text-align: center;
-}
-
-.terms-agreement a {
-    color: #0631BC;
-    text-decoration: none;
-}
-
-.register-submit-btn {
-    width: 100%;
-    padding: 0.9rem;
-    background-color: #0631BC;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    margin-bottom: 1.2rem;
-}
-
-.register-submit-btn:hover {
-    background-color: #052592;
-}
-
-.modal-switch {
-    text-align: center;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.login-link {
-    color: #0631BC;
-    font-weight: 700;
-    text-decoration: none;
-}
-
+/* Required field indicator */
 .required {
     color: #ff3333;
-    margin-left: 2px;
 }
 
-/* Login Modal Specific Styles - Fixed Layout */
-/* Login Modal Specific Styles - Fixed Layout */
-.remember-row {
-    display: flex;
-    justify-content: space-between; /* Space between checkbox and forgot password */
-    align-items: center;
-    margin: 0.5rem 0 1.5rem; /* Add more space below */
-    width: 100%;
-}
-
-.checkbox-container {
-    display: flex;
-    align-items: center;
-}
-
-.checkbox-label {
-    font-size: 0.9rem;
-    margin-left: 0.5rem;
-    margin-bottom: 0;
-    color: #555;
-    display: inline;
-}
-
-/* Move forgotten password to be on same line */
-.forgot-password {
-    font-size: 0.9rem;
-    color: #0631BC;
-    text-decoration: none;
-    margin-bottom: 0; /* Remove bottom margin */
-    display: inline-block; /* Changed from block */
-    text-align: right;
-}
-
-.forgot-password:hover {
-    text-decoration: underline;
-}
-
-/* Social Login Buttons */
-.social-login {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.social-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.8rem;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    background-color: white;
-    font-size: 0.95rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s;
-    gap: 0.5rem;
-}
-
-.social-btn:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.google-btn {
-    color: #444;
-}
-
-.google-btn i {
-    color: #4285F4;
-    font-size: 1.1rem;
-}
-
-.facebook-btn {
-    color: #444;
-}
-
-.facebook-btn i {
-    color: #4285F4;
-    font-size: 1.1rem;
-}
-
-/* Add divider between account switch and social login */
-.modal-switch {
-    text-align: center;
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 0.5rem;
-    position: relative;
-}
-
-.modal-switch:after {
-    content: none; /* Remove divider for all modals */
-}
-
-#loginModal .modal-switch {
-    margin-bottom: 1rem; /* Keep more space in login modal */
-}
-
-/* Add divider specifically for login modal */
-#loginModal .modal-switch:after {
-    content: ""; /* Add divider for login modal only */
-    display: block;
-    height: 1px;
-    background-color: #e5e5e5;
-    margin-top: 1.5rem;
-}
-
-/* Social Login Buttons - Different spacing for login vs register */
-#loginModal .social-login {
-    margin-top: 1.5rem; /* Keep spacing for login modal */
-}
-
-#registerModal .social-login {
-    margin-top: 0.5rem; /* Reduced spacing for register modal */
-}
-
-/* Fix checkbox alignment and size */
-input[type="checkbox"] {
-    width: auto;
-    margin-right: 0.3rem;
-    cursor: pointer;
-}
-
-#loginModal, #registerModal {
-    height: 100%;
+/* Responsive design */
+@media (max-width: 992px) {
+    .auth-page-container {
+        flex-direction: column;
+    }
+    
+    .auth-left-panel,
+    .auth-right-panel {
+        padding: 2rem 1rem;
+    }
+    
+    .auth-heading {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .auth-box {
+        max-width: 100%;
+    }
+    
+    .auth-right-panel {
+        padding-top: 0;
+    }
 }
