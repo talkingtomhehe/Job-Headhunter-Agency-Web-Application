@@ -4,10 +4,10 @@
         
         <div class="auth-box">
             <!-- Role selector tabs -->
-<div class="role-selector">
-    <button class="role-tab active" data-role="admin">Admin</button>
-    <button class="role-tab" data-role="employer">Employer</button>
-</div>
+            <div class="role-selector">
+                <button class="role-tab active" data-role="admin">Admin</button>
+                <button class="role-tab" data-role="employer">Employer</button>
+            </div>
             
             <hr class="auth-divider">
             
