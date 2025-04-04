@@ -1,21 +1,21 @@
 <?php
-require_once '../app/config/config.php';
+// Include configuration file
+require_once __DIR__ . '/../app/config/config.php';
 
+// Get the requested page from URL
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
-$validPages = ['home', 'about', 'contact', 'login', 'auth'];
 
-if (!in_array($page, $validPages)) {
+// Validate page name
+$valid_pages = ['home', 'jobs', 'companies', 'company-detail', 'job-detail'];
+if (!in_array($page, $valid_pages)) {
     $page = 'home';
 }
 
-$pagePath = PAGE_PATH . "/{$page}.php";
-
-if (!file_exists($pagePath)) {
-    header("HTTP/1.0 404 Not Found");
-    $page = '404';
-    $pagePath = PAGE_PATH . "/404.php";
+// Include the requested page
+$page_path = PAGES_PATH . '/' . $page . '.php';
+if (file_exists($page_path)) {
+    include $page_path;
+} else {
+    // Handle 404 error
+    include PAGES_PATH . '/404.php';
 }
-
-include_once LAYOUT_PATH . '/header.php';
-include_once $pagePath;
-include_once LAYOUT_PATH . '/footer.php';

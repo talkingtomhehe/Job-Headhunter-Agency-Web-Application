@@ -1,274 +1,468 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-body, html {
-    width: 100%;
-    height: 100%;
-    font-family: open-sans, sans-serif;
-    font-size: 16px;
+body,
+html {
+	width: 100%;
+	height: 100%;
+	font-family: open-sans, sans-serif;
+	font-size: 16px;
 }
 
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: #F2FBFF;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	background-color: #f2fbff;
 }
 
 .container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
 
 /* === HEADER === */
 header {
-    background-color: transparent; /* Start completely transparent */
-    color: #0631BC;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-    transition: all 0.3s ease; /* Smooth transition for all changes */
+	background-color: transparent; /* Start completely transparent */
+	color: #0631bc;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 100;
+	transition: all 0.3s ease; /* Smooth transition for all changes */
 }
 
 /* Semi-transparent overlay for header that appears on scroll */
 header.scrolled::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(95, 80, 80, 0.311); /* Changed from 0.6 to 0.8 for darker overlay */
-    backdrop-filter: blur(8px); /* Increased blur effect */
-    -webkit-backdrop-filter: blur(8px);
-    z-index: -1;
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(
+		95,
+		80,
+		80,
+		0.311
+	); /* Changed from 0.6 to 0.8 for darker overlay */
+	backdrop-filter: blur(8px); /* Increased blur effect */
+	-webkit-backdrop-filter: blur(8px);
+	z-index: -1;
 }
 
 /* Small adjustment to header height for better visibility */
 header .container {
-    height: 70px;
-    position: relative;
+	height: 70px;
+	position: relative;
 }
 
 /* === LOGO === */
 .logo {
-    height: 80px;
-    display: flex;
-    align-items: center;
+	height: 80px;
+	display: flex;
+	align-items: center;
 }
 
 .logo img {
-    max-height: 100%;
-    width: auto;
-    position: relative; /* Ensure it's above the transparent background */
-    z-index: 5;
+	max-height: 100%;
+	width: auto;
+	position: relative; /* Ensure it's above the transparent background */
+	z-index: 5;
 }
 
 /* === MAIN NAVIGATION === */
 .main-nav {
-    flex: 1;
-    display: flex;
-    justify-content: center;
+	flex: 1;
+	display: flex;
+	justify-content: center;
 }
 
 .mobile-menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: #0631BC;
-    font-size: 1.5rem;
-    cursor: pointer;
+	display: none;
+	background: none;
+	border: none;
+	color: #0631bc;
+	font-size: 1.5rem;
+	cursor: pointer;
 }
 
 .nav-links {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    gap: 2rem;
+	display: flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	gap: 2rem;
 }
 
 .nav-links a {
-    color: #0631BC;
-    text-decoration: none;
-    padding: 0.5rem 0;
-    font-weight: bold;
-    transition: color 0.3s;
-    display: flex;
-    align-items: center;
-    gap: 5px;
+	color: #0631bc;
+	text-decoration: none;
+	padding: 0.5rem 0;
+	font-weight: bold;
+	transition: color 0.3s;
+	display: flex;
+	align-items: center;
+	gap: 5px;
 }
 
 .nav-links a:hover {
-    color: #3570fa;
+	color: #3570fa;
 }
 
 .nav-links a i {
-    font-size: 0.85rem;
+	font-size: 0.85rem;
 }
 
 /* Dropdown menu */
 .dropdown {
-    position: relative;
+	position: relative;
 }
 
 .dropdown-toggle {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: white;
-    min-width: 200px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-    padding: 0.5rem 0;
-    z-index: 10;
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	background: white;
+	min-width: 200px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+	padding: 0.5rem 0;
+	z-index: 10;
 }
 
 .dropdown-menu li {
-    list-style: none;
+	list-style: none;
 }
 
 .dropdown-menu a {
-    color: #757575;
-    font-weight: normal;
-    padding: 0.5rem 1rem;
-    display: block;
-    white-space: nowrap;
+	color: #757575;
+	font-weight: normal;
+	padding: 0.5rem 1rem;
+	display: block;
+	white-space: nowrap;
 }
 
 .dropdown:hover .dropdown-menu {
-    display: block;
+	display: block;
 }
 
 /* === AUTH BUTTONS === */
 .auth {
-    display: flex;
-    gap: 1rem;
+	display: flex;
+	gap: 1rem;
 }
 
 .login-btn {
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s;
-    background-color: #0631BC;
-    border: 1px solid #0631BC;
-    color: white;
-    text-decoration: none; /* Add this to remove underline */
-    display: inline-block; /* For consistent padding */
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	cursor: pointer;
+	font-weight: 500;
+	transition: all 0.3s;
+	background-color: #0631bc;
+	border: 1px solid #0631bc;
+	color: white;
+	text-decoration: none; /* Add this to remove underline */
+	display: inline-block; /* For consistent padding */
 }
 
 .login-btn:hover {
-    background-color: #052592; /* Darker blue on hover */
+	background-color: #052592; /* Darker blue on hover */
 }
 
 /* === MAIN === */
 main {
-    flex: 1;
+	flex: 1;
 }
 
 /* Background Video */
 #background-video {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: -2;
-    object-fit: cover;
-    transition: opacity 0.8s ease-in-out;
-    
-    /* Fix for top part hidden by navbar */
-    top: 0;
-    transform: scale(1.05); /* Slightly enlarge to cover any gaps */
-    transform-origin: center center;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	min-width: 100%;
+	min-height: 100%;
+	width: auto;
+	height: auto;
+	z-index: -2;
+	object-fit: cover;
+	transition: opacity 0.8s ease-in-out;
+
+	/* Fix for top part hidden by navbar */
+	top: 0;
+	transform: scale(1.05); /* Slightly enlarge to cover any gaps */
+	transform-origin: center center;
 }
 
 /* Add overlay for better text visibility */
 .video-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(242, 251, 255, 0.3); /* Light blue tint */
-    z-index: -1; /* Between video and content */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(242, 251, 255, 0.3); /* Light blue tint */
+	z-index: -1; /* Between video and content */
 }
 
 /* === FOOTER === */
 footer {
-    background-color: #0631BC;
-    color: #FFFFFF;
-    font-size: 14px;
-    padding: 1rem 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	background-color: #0631bc;
+	color: #ffffff;
+	font-size: 14px;
+	padding: 1rem 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 /* === RESPONSIVE DESIGN === */
 @media (max-width: 768px) {
-    .container {
-        padding: 0 10px;
-    }
-    
-    .mobile-menu-toggle {
-        display: block;
-        margin-left: auto;
-    }
-    
-    .main-nav {
-        justify-content: flex-end;
-    }
-    
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 70px;
-        left: 0;
-        right: 0;
-        background: white;
-        flex-direction: column;
-        padding: 1rem;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        gap: 1rem;
-    }
-    
-    .nav-links.active {
-        display: flex;
-    }
-    
-    .dropdown-menu {
-        position: static;
-        box-shadow: none;
-        padding-left: 1rem;
-    }
-    
-    .auth {
-        display: none;
-    }
-    
-    .nav-links .auth-mobile {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
+	.container {
+		padding: 0 10px;
+	}
+
+	.mobile-menu-toggle {
+		display: block;
+		margin-left: auto;
+	}
+
+	.main-nav {
+		justify-content: flex-end;
+	}
+
+	.nav-links {
+		display: none;
+		position: absolute;
+		top: 70px;
+		left: 0;
+		right: 0;
+		background: white;
+		flex-direction: column;
+		padding: 1rem;
+		box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		gap: 1rem;
+	}
+
+	.nav-links.active {
+		display: flex;
+	}
+
+	.dropdown-menu {
+		position: static;
+		box-shadow: none;
+		padding-left: 1rem;
+	}
+
+	.auth {
+		display: none;
+	}
+
+	.nav-links .auth-mobile {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+}
+
+/* Header & Navigation */
+.navbar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem 2rem;
+	background: #fff;
+	border-bottom: 1px solid #eee;
+}
+
+.navbar-brand {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+}
+
+.logo {
+	height: 40px;
+	width: auto;
+}
+
+.location {
+	color: #666;
+	font-size: 0.9rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.location i {
+	color: #999;
+}
+
+.navbar-menu {
+	display: flex;
+	gap: 2rem;
+}
+
+.nav-link {
+	color: #666;
+	text-decoration: none;
+	font-size: 1rem;
+	padding: 0.5rem 0;
+	position: relative;
+}
+
+.nav-link.active {
+	color: #0052cc;
+}
+
+.nav-link.active::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background: #0052cc;
+}
+
+/* Main Content */
+.main-content {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 2rem;
+	padding-top: 100px; /* Thêm padding-top để tránh bị navbar che */
+}
+
+/* Company Detail Page */
+.company-detail-container {
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+}
+
+.company-header {
+	background: white;
+	padding: 2rem;
+	position: relative;
+}
+
+.company-info {
+	display: flex;
+	align-items: flex-start;
+	gap: 2rem;
+	margin-bottom: 2rem;
+	position: relative;
+	padding: 2rem;
+	border: 2px solid #ff0000;
+	border-radius: 8px;
+	background: white;
+}
+
+.company-logo {
+	width: 120px;
+	height: 120px;
+	background: white;
+	border: 1px solid #e0e0e0;
+	border-radius: 8px;
+	padding: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.company-logo img {
+	max-width: 100%;
+	max-height: 100%;
+	object-fit: contain;
+}
+
+.company-details {
+	flex: 1;
+	padding-right: 120px; /* Để chừa chỗ cho nút share */
+}
+
+.company-name {
+	font-size: 1.5rem;
+	font-weight: 600;
+	margin-bottom: 0.5rem;
+	color: #333;
+}
+
+.company-location {
+	color: #666;
+	font-size: 0.9rem;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.share-button {
+	position: absolute;
+	right: 2rem;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 0.75rem 1.5rem;
+	background: #0052cc;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	cursor: pointer;
+	font-size: 0.875rem;
+	transition: background-color 0.2s;
+}
+
+.share-button:hover {
+	background: #0747a6;
+}
+
+.share-button i {
+	font-size: 0.875rem;
+}
+
+.company-tabs {
+	display: flex;
+	gap: 2rem;
+	border-bottom: 1px solid #eee;
+	padding: 1rem 2rem;
+	margin-top: 1rem;
+}
+
+.tab {
+	color: #666;
+	text-decoration: none;
+	padding: 1rem 0;
+	position: relative;
+}
+
+.tab.active {
+	color: #0052cc;
+}
+
+.tab.active::after {
+	content: "";
+	position: absolute;
+	bottom: -1px;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background: #0052cc;
 }

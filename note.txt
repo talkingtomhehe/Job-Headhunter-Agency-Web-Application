@@ -21,7 +21,7 @@ git push origin ...(tên branch)
 
 
 APP
-config/config.php  
+config/config.php
     # đường dẫn nhanh tới các file
     # sử dụng thay cho đường dẫn tương đối
     # vd: <?php include(COMPONENT_PATH . '/login-modal.php); ?>
@@ -47,7 +47,7 @@ config/db.sql # code tạo bảng trong db
 PUBLIC
 assets/css/
     components.css  # style cho các components
-    layouts.css # style cho layouts
+    layouts.css # style cho layoutsanh
     main.css # style của pages
 
 assets/images/  # chứa logo và home-images

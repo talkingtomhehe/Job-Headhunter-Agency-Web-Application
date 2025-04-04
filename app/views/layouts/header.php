@@ -4,45 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($pageTitle) ? ($pageTitle . " - Huntly") : "Huntly"; ?></title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/huntly/public/assets/css/layouts.css">
-    <link rel="stylesheet" href="/huntly/public/assets/css/components.css">
-    <script src="/huntly/public/assets/js/login-page.js" defer></script>
-    <script src="/huntly/public/assets/js/dropdown.js" defer></script>
-    <script src="/huntly/public/assets/js/navbar.js" defer></script>
-    <script src="/huntly/public/assets/js/password-toggle.js" defer></script>
+    <title><?php echo isset($pageTitle) ? $pageTitle : 'Huntly'; ?></title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="<?php echo ASSETS_URL; ?>/css/main.css">
+    <link rel="stylesheet" href="<?php echo ASSETS_URL; ?>/css/components.css">
+    <link rel="stylesheet" href="<?php echo ASSETS_URL; ?>/css/layouts.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
     <header>
-        <div class="container">
-            <a href="/huntly/public/index.php" class="logo">
-                <img src="/huntly/public/assets/images/logo.png" alt="Huntly">
-            </a>
-            
-            <nav class="main-nav">
-                <button class="mobile-menu-toggle">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                
-                <ul class="nav-links">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle">All jobs <i class="fa-solid fa-filter"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="/huntly/public/index.php?category=it">IT & Software</a></li>
-                            <li><a href="/huntly/public/index.php?category=finance">Finance</a></li>
-                            <li><a href="/huntly/public/index.php?category=marketing">Marketing</a></li>
-                            <li><a href="/huntly/public/index.php?category=hr">Human Resources</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="/huntly/public/notifications.php">Notification <i class="fa-solid fa-bell"></i></a></li>
-                    <li><a href="/huntly/public/about.php">About Us</a></li>
-                </ul>
-            </nav>
-            
-            <div class="auth">
-                <a href="/huntly/public/index.php?page=auth" class="login-btn">Login</a>
-            </div>
-        </div>
+        <div class="header-placeholder"></div>
     </header>
