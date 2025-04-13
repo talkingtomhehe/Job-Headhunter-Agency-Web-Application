@@ -1,0 +1,36 @@
+/* Mobile and responsive styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .hero-title {
+        font-size: 1.8rem;
+    }
+    
+    .search-inputs {
+        flex-direction: column;
+    }
+    
+    .job-header {
+        grid-template-columns: 1fr;
+    }
+    
+    .companies-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    
+    .companies-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-button {
+        width: 100%;
+    }
+}

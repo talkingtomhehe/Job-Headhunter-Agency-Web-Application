@@ -2,7 +2,7 @@
     <!-- Hero Section with SVG background -->
     <section class="hero-banner">
         <div class="image-container">
-            <img src="/huntly/public/assets/images/home_image.svg" alt="Hero Background" class="hero-image">
+        <img src="/huntlyversion2/public/assets/images/home_image.svg" alt="Hero Background" class="hero-image">
             <div class="image-overlay"></div>
         </div>
     
@@ -12,7 +12,7 @@
                 <h1 class="hero-title">Bridging the gap between Talent and Opportunity!</h1>
                 
                 <div class="search-form-container">
-                    <form class="search-form" action="/huntly/public/search.php" method="GET">
+                    <form class="search-form" action="/huntlyversion2/public/search.php" method="GET">
                         <div class="search-inputs">
                             <div class="input-group">
                                 <i class="fa-solid fa-briefcase"></i>
@@ -64,7 +64,7 @@
                 <div class="job-card">
                     <div class="job-header">
                         <div class="company-logo">
-                            <img src="/huntly/public/assets/images/logo.png" alt="Company Logo" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
+                            <img src="/huntlyversion2/public/assets/images/logo.png" alt="Company Logo" onerror="this.src='/huntlyversion2/public/assets/images/default-logo.png'">
                         </div>
                         <div class="job-info">
                             <h3 class="job-title">Senior Software Engineer</h3>
@@ -86,7 +86,7 @@
                 <div class="job-card">
                     <div class="job-header">
                         <div class="company-logo">
-                            <img src="/huntly/public/assets/images/logo.png" alt="Company Logo" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
+                            <img src="/huntlyversion2/public/assets/images/logo.png" alt="Company Logo" onerror="this.src='/huntlyversion2/public/assets/images/default-logo.png'">
                         </div>
                         <div class="job-info">
                             <h3 class="job-title">Data Scientist</h3>
@@ -108,7 +108,7 @@
                 <div class="job-card">
                     <div class="job-header">
                         <div class="company-logo">
-                            <img src="/huntly/public/assets/images/logo.png" alt="Company Logo" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
+                            <img src="/huntlyversion2/public/assets/images/logo.png" alt="Company Logo" onerror="this.src='/huntlyversion2/public/assets/images/default-logo.png'">
                         </div>
                         <div class="job-info">
                             <h3 class="job-title">Marketing Manager</h3>
@@ -138,7 +138,7 @@
                 <!-- Company Item -->
                 <div class="company-card">
                     <div class="company-logo-large">
-                        <img src="/huntly/public/assets/images/logo.png" alt="Microsoft" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
+                        <img src="/huntlyversion2/public/assets/images/logo.png" alt="Microsoft" onerror="this.src='/huntlyversion2/public/assets/images/default-logo.png'">
                     </div>
                     <h3 class="company-title">Microsoft</h3>
                     <p class="company-location"><i class="fa-solid fa-location-dot"></i> Seattle, WA</p>
@@ -148,7 +148,7 @@
                 <!-- Company Item -->
                 <div class="company-card">
                     <div class="company-logo-large">
-                        <img src="/huntly/public/assets/images/logo.png" alt="Google" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
+                        <img src="/huntlyversion2/public/assets/images/logo.png" alt="Google" onerror="this.src='/huntlyversion2/public/assets/images/default-logo.png'">
                     </div>
                     <h3 class="company-title">Google</h3>
                     <p class="company-location"><i class="fa-solid fa-location-dot"></i> Mountain View, CA</p>
@@ -158,7 +158,7 @@
                 <!-- Company Item -->
                 <div class="company-card">
                     <div class="company-logo-large">
-                        <img src="/huntly/public/assets/images/logo.png" alt="Amazon" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
+                        <img src="/huntlyversion2/public/assets/images/logo.png" alt="Amazon" onerror="this.src='/huntlyversion2/public/assets/images/default-logo.png'">
                     </div>
                     <h3 class="company-title">Amazon</h3>
                     <p class="company-location"><i class="fa-solid fa-location-dot"></i> Seattle, WA</p>
@@ -168,7 +168,7 @@
                 <!-- Company Item -->
                 <div class="company-card">
                     <div class="company-logo-large">
-                        <img src="/huntly/public/assets/images/logo.png" alt="Apple" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
+                        <img src="/huntlyversion2/public/assets/images/logo.png" alt="Apple" onerror="this.src='/huntlyversion2/public/assets/images/default-logo.png'">
                     </div>
                     <h3 class="company-title">Apple</h3>
                     <p class="company-location"><i class="fa-solid fa-location-dot"></i> Cupertino, CA</p>
@@ -178,7 +178,7 @@
                 <!-- Company Item -->
                 <div class="company-card">
                     <div class="company-logo-large">
-                        <img src="/huntly/public/assets/images/logo.png" alt="Netflix" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
+                        <img src="/huntlyversion2/public/assets/images/logo.png" alt="Netflix" onerror="this.src='/huntlyversion2/public/assets/images/default-logo.png'">
                     </div>
                     <h3 class="company-title">Netflix</h3>
                     <p class="company-location"><i class="fa-solid fa-location-dot"></i> Los Gatos, CA</p>

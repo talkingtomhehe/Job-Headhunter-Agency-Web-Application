@@ -1,0 +1,487 @@
+/* Employer Job View Styles */
+
+/* Page Header Styles */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.back-link a {
+    display: inline-flex;
+    align-items: center;
+    color: var(--primary-color);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+}
+
+.back-link a:hover {
+    color: #0d6efd;
+    background-color: rgba(var(--primary-rgb), 0.08);
+    transform: translateX(-3px);
+}
+
+.back-link i {
+    margin-right: 0.5rem;
+    transition: transform 0.3s ease;
+    color: var(--primary-color);
+}
+
+.back-link a:hover i {
+    transform: translateX(-2px);
+    color: #0d6efd;
+}
+
+/* Job Title Header */
+.job-title-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.job-title-header h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
+.job-title-header:hover h2 {
+    color: var(--primary-color);
+}
+
+/* Card animations and styles */
+.dashboard-card {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.card-body {
+    padding: 1.5rem;
+    background-color: #fff;
+}
+
+/* Job Card Actions */
+.card-actions a {
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 4px;
+}
+
+.card-actions a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Job Metadata */
+.job-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    padding: 0.5rem 0.8rem;
+    border-radius: 4px;
+}
+
+.meta-item:hover {
+    background-color: rgba(var(--primary-rgb), 0.05);
+    transform: translateY(-2px);
+}
+
+.meta-item i {
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+    width: 16px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.meta-item:hover i {
+    transform: scale(1.2);
+}
+
+/* Job Content Sections */
+.job-section {
+    margin-bottom: 2.5rem;
+    transition: all 0.3s ease;
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.job-section:hover {
+    background-color: rgba(var(--primary-rgb), 0.02);
+}
+
+.job-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.job-section h3:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.job-section:hover h3:after {
+    width: 100px;
+}
+
+.job-description, .job-requirements {
+    line-height: 1.7;
+    color: var(--text-secondary);
+    white-space: pre-line;
+}
+
+/* Applications List */
+.applications-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.applications-table th {
+    text-align: left;
+    padding: 1.2rem 1rem;
+    font-weight: 600;
+    background-color: var(--bg-light);
+    border-bottom: 2px solid var(--border-color);
+    transition: background-color 0.3s ease;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.applications-table th:first-child {
+    border-top-left-radius: 6px;
+}
+
+.applications-table th:last-child {
+    border-top-right-radius: 6px;
+}
+
+.applications-table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.applications-table tbody tr:hover {
+    background-color: rgba(var(--primary-rgb), 0.04);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    z-index: 5;
+    position: relative;
+}
+
+.applications-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+/* Applicant Cell with improved avatar */
+.applicant-cell {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.applicant-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 2px solid transparent;
+}
+
+.applicant-cell:hover .applicant-avatar {
+    transform: scale(1.1);
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
+}
+
+.applicant-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.applicant-info strong {
+    display: block;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+    transition: color 0.3s ease;
+}
+
+.applicant-info span {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.applicant-cell:hover .applicant-info strong {
+    color: var(--primary-color);
+}
+
+/* Status Badge with improved styling */
+.status-badge {
+    display: inline-block;
+    padding: 0.4rem 0.85rem;
+    border-radius: 50px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    transition: all 0.3s ease;
+}
+
+.status-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.status-active {
+    background-color: #e5f7ed;
+    color: #198754;
+}
+
+.status-pending {
+    background-color: #fff8dd;
+    color: #ffc107;
+}
+
+.status-closed {
+    background-color: #f1f3f5;
+    color: #6c757d;
+}
+
+.status-reviewing {
+    background-color: #e9ecef;
+    color: #6c757d;
+}
+
+.status-shortlisted {
+    background-color: #e0f3ff;
+    color: #0d6efd;
+}
+
+.status-rejected {
+    background-color: #f8d7da;
+    color: #dc3545;
+}
+
+.status-hired {
+    background-color: #d1e7dd;
+    color: #198754;
+}
+
+/* Empty State with animation */
+.empty-state {
+    text-align: center;
+    padding: 4rem 1rem;
+    transition: all 0.5s ease;
+}
+
+.empty-state:hover {
+    transform: translateY(-5px);
+}
+
+.empty-icon {
+    margin-bottom: 1.5rem;
+    transition: transform 0.5s ease;
+}
+
+.empty-icon i {
+    font-size: 3.5rem;
+    color: var(--text-light);
+    transition: all 0.5s ease;
+}
+
+.empty-state:hover .empty-icon i {
+    color: var(--primary-color);
+    transform: scale(1.2);
+}
+
+.empty-state p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.empty-state:hover p {
+    color: var(--text-primary);
+}
+
+/* Action buttons with improved hover */
+.actions-cell {
+    text-align: right;
+}
+
+.actions-cell .btn-icon {
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.actions-cell .btn-icon:hover {
+    color: var(--primary-color);
+    background-color: rgba(var(--primary-rgb), 0.1);
+    transform: scale(1.2);
+}
+
+/* Status buttons styling */
+.status-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.radio-button {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+}
+
+.radio-button input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.radio-button label {
+    display: block;
+    padding: 1rem;
+    text-align: center;
+    background-color: var(--bg-light);
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.radio-button input[type="radio"]:checked + label {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* File input styling */
+.file-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-top: 0.5rem;
+}
+
+.current-file {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--bg-light);
+    border-radius: 4px;
+}
+
+.current-file a {
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+/* PDF container in view job */
+.pdf-container {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.pdf-container a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.pdf-container a:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .job-meta {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .applications-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .card-actions {
+        margin-top: 1rem;
+    }
+    
+    .job-title-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

@@ -1,21 +1,73 @@
 <?php
-require_once '../app/config/config.php';
+// Define the application root path
+define('ROOT_PATH', dirname(__DIR__));
 
-$page = isset($_GET['page']) ? $_GET['page'] : 'home';
-$validPages = ['home', 'about', 'contact', 'login', 'auth'];
+// Load configuration first
+require_once ROOT_PATH . '/app/config/config.php';
 
-if (!in_array($page, $validPages)) {
-    $page = 'home';
+// Autoload core classes
+spl_autoload_register(function($className) {
+    // Convert namespace to file path
+    $className = str_replace('\\', '/', $className);
+    $path = ROOT_PATH . '/app/' . $className . '.php';
+    
+    if (file_exists($path)) {
+        require_once $path;
+    } else {
+        error_log("Could not autoload class: $className ($path)");
+    }
+});
+
+// Start session
+if (class_exists('\\helpers\\Session')) {
+    \helpers\Session::init();
+} else {
+    if (session_status() == PHP_SESSION_NONE) {
+        session_start();
+    }
 }
 
-$pagePath = PAGE_PATH . "/{$page}.php";
+// Simple routing system
+$url = isset($_GET['url']) ? rtrim($_GET['url'], '/') : '';
+$urlParts = explode('/', $url);
 
-if (!file_exists($pagePath)) {
-    header("HTTP/1.0 404 Not Found");
-    $page = '404';
-    $pagePath = PAGE_PATH . "/404.php";
+// Default controller and action
+$controllerName = !empty($urlParts[0]) ? ucfirst($urlParts[0]) : 'Home';
+$actionName = !empty($urlParts[1]) ? $urlParts[1] : 'index';
+
+// Handle parameters
+$params = array_slice($urlParts, 2);
+
+// Controller file path
+$controllerFile = ROOT_PATH . '/app/controllers/' . $controllerName . 'Controller.php';
+
+try {
+    if (file_exists($controllerFile)) {
+        require_once $controllerFile;
+        
+        // Create controller instance
+        $controllerClass = 'controllers\\' . $controllerName . 'Controller';
+        
+        if (class_exists($controllerClass)) {
+            $controller = new $controllerClass();
+            
+            // Check if action exists
+            if (method_exists($controller, $actionName)) {
+                call_user_func_array([$controller, $actionName], $params);
+            } else {
+                // Action not found
+                $controller = new \controllers\HomeController();
+                $controller->view('pages/404', ['pageTitle' => 'Page Not Found']);
+            }
+        } else {
+            throw new Exception("Controller $controllerClass not found");
+        }
+    } else {
+        // Controller not found
+        require_once ROOT_PATH . '/app/controllers/HomeController.php';
+        $controller = new \controllers\HomeController();
+        $controller->view('pages/404', ['pageTitle' => 'Page Not Found']);
+    }
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
 }
-
-include_once LAYOUT_PATH . '/header.php';
-include_once $pagePath;
-include_once LAYOUT_PATH . '/footer.php';
