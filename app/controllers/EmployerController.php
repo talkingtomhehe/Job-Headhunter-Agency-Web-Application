@@ -740,4 +740,35 @@ class EmployerController extends Controller {
             $this->redirect('employer/profile/edit');
         }
     }
+
+    public function rejectApplication($id) {
+        $application = $this->applicationModel->getApplicationById($id);
+        
+        // Verify this application belongs to one of the employer's job postings
+        if (!$application || !$this->isEmployerJobApplication($application['job_id'])) {
+            $_SESSION['error'] = 'Application not found or access denied';
+            $this->redirect('employer/applications');
+            return;
+        }
+        
+        // Only allow rejecting applications that have been approved or are in intermediate stages
+        if (in_array($application['status'], ['approved', 'reviewing', 'shortlisted'])) {
+            if ($this->applicationModel->updateStatus($id, 'rejected')) {
+                $_SESSION['success'] = 'Application rejected successfully';
+            } else {
+                $_SESSION['error'] = 'Failed to reject application';
+            }
+        } else {
+            $_SESSION['error'] = 'Cannot reject application in its current state';
+        }
+        
+        $this->redirect('employer/applications');
+    }
+    
+    // Helper method to verify employer owns the job
+    private function isEmployerJobApplication($jobId) {
+        $employerId = $_SESSION['user_id'];
+        $job = $this->jobModel->getJobById($jobId);
+        return $job && $job['employer_id'] == $employerId;
+    }
 }

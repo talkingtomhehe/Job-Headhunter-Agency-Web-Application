@@ -273,4 +273,78 @@ class Application extends Model {
         
         return $this->db->resultSet();
     }
+
+    // Count all applications
+    public function countAllApplications() {
+        $query = "SELECT COUNT(*) as count FROM job_applications";
+        $this->db->query($query);
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
+
+    // Get all applications (for admin)
+    public function getAllApplications() {
+        $query = "SELECT a.*, j.title as job_title, u.full_name, c.company_name
+                FROM job_applications a
+                JOIN job_posts j ON a.job_id = j.job_id
+                JOIN users u ON a.seeker_id = u.user_id
+                JOIN companies c ON j.company_id = c.company_id
+                ORDER BY a.created_at DESC";
+        $this->db->query($query);
+        return $this->db->resultSet();
+    }
+
+    public function getRecentApplications($limit = 5) {
+        $query = "SELECT a.*, j.title as job_title, u.full_name 
+                  FROM job_applications a
+                  JOIN job_posts j ON a.job_id = j.job_id
+                  JOIN users u ON a.seeker_id = u.user_id
+                  ORDER BY a.created_at DESC
+                  LIMIT ?";
+                  
+        $this->db->query($query);
+        $this->db->bind(1, $limit);
+        
+        return $this->db->resultSet();
+    }
+
+    public function getTotalApplicationCount() {
+        $this->db->query("SELECT COUNT(*) as count FROM job_applications");
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
+
+    public function getApplicationsBySeekerId($seekerId) {
+        $this->db->query("
+            SELECT a.*, 
+                   j.title as job_title,
+                   j.location,
+                   c.company_name,
+                   c.logo_path
+            FROM job_applications a
+            JOIN job_posts j ON a.job_id = j.job_id
+            JOIN companies c ON j.company_id = c.company_id
+            WHERE a.seeker_id = ?
+            ORDER BY a.created_at DESC
+        ");
+        $this->db->bind(1, $seekerId);
+        
+        return $this->db->resultSet();
+    }
+
+    public function getApplicationsByStatus($status) {
+        $query = "SELECT a.*, j.title as job_title, j.created_at as job_created_at,
+                  u.full_name, u.email, u.phone, c.company_name
+                  FROM job_applications a
+                  JOIN job_posts j ON a.job_id = j.job_id
+                  JOIN users u ON a.seeker_id = u.user_id
+                  LEFT JOIN companies c ON j.company_id = c.company_id
+                  WHERE a.status = ?
+                  ORDER BY a.created_at DESC";
+        
+        $this->db->query($query);
+        $this->db->bind(1, $status);
+        
+        return $this->db->resultSet();
+    }
 }

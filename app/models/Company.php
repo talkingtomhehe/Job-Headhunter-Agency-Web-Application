@@ -98,4 +98,11 @@ class Company extends Model {
         
         return $this->db->single();
     }
+
+    // Get all companies
+    public function getAllCompanies() {
+        $query = "SELECT * FROM companies ORDER BY company_name ASC";
+        $this->db->query($query);
+        return $this->db->resultSet();
+    }
 }

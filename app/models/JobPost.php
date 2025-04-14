@@ -286,4 +286,136 @@ class JobPost extends Model {
         
         return false;
     }
+
+    // Count all jobs
+    public function countAllJobs() {
+        $query = "SELECT COUNT(*) as count FROM job_posts";
+        $this->db->query($query);
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
+
+    // Count pending jobs
+    public function countPendingJobs() {
+        $query = "SELECT COUNT(*) as count FROM job_posts WHERE status = 'pending'";
+        $this->db->query($query);
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
+
+    // Get jobs by status
+    public function getJobsByStatus($status) {
+        $query = "SELECT j.*, c.company_name, 
+                (SELECT COUNT(*) FROM job_applications a WHERE a.job_id = j.job_id) as application_count
+                FROM job_posts j 
+                JOIN companies c ON j.company_id = c.company_id 
+                WHERE j.status = ?
+                ORDER BY j.created_at DESC";
+        $this->db->query($query);
+        $this->db->bind(1, $status);
+        return $this->db->resultSet();
+    }
+
+    // Get all jobs (for admin)
+    public function getAllJobs() {
+        $query = "SELECT j.*, c.company_name, 
+                (SELECT COUNT(*) FROM job_applications a WHERE a.job_id = j.job_id) as application_count
+                FROM job_posts j 
+                JOIN companies c ON j.company_id = c.company_id 
+                ORDER BY j.created_at DESC";
+        $this->db->query($query);
+        return $this->db->resultSet();
+    }
+
+    // Update job (admin version with minimal fields)
+    public function updateJobAdmin($jobId, $data) {
+        $query = "UPDATE job_posts SET 
+                title = ?, 
+                description = ?, 
+                requirements = ?,
+                job_type = ?, 
+                location = ?, 
+                status = ?,
+                updated_at = NOW()
+                WHERE job_id = ?";
+                
+        $this->db->query($query);
+        $this->db->bind(1, $data['title']);
+        $this->db->bind(2, $data['description']);
+        $this->db->bind(3, $data['requirements']);
+        $this->db->bind(4, $data['job_type']);
+        $this->db->bind(5, $data['location']);
+        $this->db->bind(6, $data['status']);
+        $this->db->bind(7, $jobId);
+        
+        return $this->db->execute();
+    }
+
+    // Get count of jobs by status
+    public function getJobCountByStatus($status) {
+        $query = "SELECT COUNT(*) as count FROM job_posts WHERE status = ?";
+        
+        $this->db->query($query);
+        $this->db->bind(1, $status);
+        
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
+
+    // Get recent jobs with company and application count
+    public function getRecentJobs($limit = 5) {
+        $query = "SELECT j.*, c.company_name, 
+                (SELECT COUNT(*) FROM job_applications a WHERE a.job_id = j.job_id) as application_count
+                FROM job_posts j
+                JOIN companies c ON j.company_id = c.company_id
+                ORDER BY j.created_at DESC
+                LIMIT ?";
+        
+        $this->db->query($query);
+        $this->db->bind(1, $limit);
+        
+        return $this->db->resultSet();
+    }
+
+    public function getTotalJobCount() {
+        $this->db->query("SELECT COUNT(*) as count FROM job_posts");
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
+
+    public function updateJobStatus($id, $status) {
+        $this->db->query("UPDATE job_posts SET status = ?, updated_at = NOW() WHERE job_id = ?");
+        $this->db->bind(1, $status);
+        $this->db->bind(2, $id);
+        
+        return $this->db->execute();
+    }
+
+    public function getJobWithDetails($id) {
+        $this->db->query("
+            SELECT j.*, 
+                   c.company_name, c.company_size, c.industry, c.logo_path,
+                   (SELECT COUNT(*) FROM job_applications a WHERE a.job_id = j.job_id) as application_count
+            FROM job_posts j
+            JOIN companies c ON j.company_id = c.company_id
+            WHERE j.job_id = ?
+        ");
+        $this->db->bind(1, $id);
+        
+        $result = $this->db->single();
+        
+        if ($this->db->rowCount() > 0) {
+            return $result;
+        }
+        
+        return false;
+    }
+
+    public function getCompanyJobCount($companyId) {
+        $this->db->query("SELECT COUNT(*) as count FROM job_posts WHERE company_id = ?");
+        $this->db->bind(1, $companyId);
+        
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
 }
