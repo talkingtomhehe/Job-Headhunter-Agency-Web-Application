@@ -29,32 +29,33 @@ class Company extends Model {
     
     // Update company
     public function updateCompany($companyId, $data) {
-        $query = "UPDATE companies SET 
-                  company_name = ?, 
-                  website = ?, 
-                  industry = ?, 
-                  description = ?, 
-                  address = ?, 
-                  city = ?, 
-                  state = ?, 
-                  zip = ?, 
-                  country = ?, 
-                  updated_at = NOW() 
-                  WHERE company_id = ?";
-                  
-        $this->db->query($query);
-        $this->db->bind(1, $data['company_name']);
-        $this->db->bind(2, $data['website'] ?? null);
-        $this->db->bind(3, $data['industry'] ?? null);
-        $this->db->bind(4, $data['description'] ?? null);
-        $this->db->bind(5, $data['address'] ?? null);
-        $this->db->bind(6, $data['city'] ?? null);
-        $this->db->bind(7, $data['state'] ?? null);
-        $this->db->bind(8, $data['zip'] ?? null);
-        $this->db->bind(9, $data['country'] ?? null);
-        $this->db->bind(10, $companyId);
-        
-        return $this->db->execute();
+        $query = "UPDATE companies 
+                SET company_name = ?, 
+                    headquarters_address = ?, 
+                    description = ?, 
+                    website = ?, 
+                    industry = ?, 
+                    company_size = ?,
+                    logo_path = ?, 
+                    updated_at = CURRENT_TIMESTAMP 
+                WHERE company_id = ?";
+                
+        try {
+            $this->db->query($query);
+            $this->db->bind(1, $data['company_name']);
+            $this->db->bind(2, $data['headquarters_address']);
+            $this->db->bind(3, $data['description']);
+            $this->db->bind(4, $data['website']);
+            $this->db->bind(5, $data['industry']);
+            $this->db->bind(6, $data['company_size']);
+            $this->db->bind(7, $data['logo_path']);
+            $this->db->bind(8, $companyId);
+            
+            return $this->db->execute();
+        } catch (\Exception $e) {
+            error_log('Company update error: ' . $e->getMessage());
+            return false;
+        }
     }
     
     // Update company logo

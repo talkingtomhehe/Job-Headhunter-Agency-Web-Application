@@ -265,4 +265,25 @@ class JobPost extends Model {
         $this->db->query($query);
         return $this->db->resultSet();
     }
+
+    public function getJobCategories($jobId) {
+        $query = "SELECT c.* FROM job_post_categories jpc 
+                  JOIN job_categories c ON jpc.category_id = c.category_id 
+                  WHERE jpc.job_id = ?";
+        $this->db->query($query);
+        $this->db->bind(1, $jobId);
+        return $this->db->resultSet();
+    }
+
+    public function createCategory($categoryName) {
+        $query = "INSERT INTO job_categories (name) VALUES (?)";
+        $this->db->query($query);
+        $this->db->bind(1, $categoryName);
+        
+        if ($this->db->execute()) {
+            return $this->db->lastInsertId();
+        }
+        
+        return false;
+    }
 }

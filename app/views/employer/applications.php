@@ -1,12 +1,4 @@
 <div class="dashboard-section">
-    <div class="section-header">
-        <div class="section-actions">
-            <a href="<?= SITE_URL ?>/employer/jobs/create" class="btn-secondary">
-                <i class="fa-solid fa-plus"></i> Post New Job
-            </a>
-        </div>
-    </div>
-    
     <?php if (empty($applications)): ?>
         <div class="empty-state">
             <div class="empty-icon">
@@ -53,7 +45,11 @@
                         </thead>
                         <tbody>
                             <?php foreach ($applications as $application): ?>
-                                <tr data-status="<?= strtolower($application['status']) ?>">
+                                <?php 
+                                    // Determine which status field to use
+                                    $statusField = isset($application['application_status']) ? 'application_status' : 'status';
+                                ?>
+                                <tr data-status="<?= strtolower($application[$statusField]) ?>">
                                     <td>
                                         <div class="applicant-cell">
                                             <div class="applicant-avatar">
@@ -67,12 +63,12 @@
                                     <td><?= htmlspecialchars($application['job_title']) ?></td>
                                     <td><?= date('M d, Y', strtotime($application['created_at'])) ?></td>
                                     <td>
-                                        <span class="status-badge status-<?= strtolower($application['status']) ?>">
-                                            <?= ucfirst($application['status']) ?>
+                                        <span class="status-badge status-<?= strtolower($application[$statusField]) ?>">
+                                            <?= ucfirst($application[$statusField]) ?>
                                         </span>
                                     </td>
                                     <td class="actions-cell">
-                                        <a href="<?= SITE_URL ?>/employer/applications/<?= $application['application_id'] ?>" class="btn-icon" title="View Application">
+                                        <a href="<?= SITE_URL ?>/employer/applications/view/<?= $application['application_id'] ?>" class="btn-icon" title="View Application">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
                                     </td>

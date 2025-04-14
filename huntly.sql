@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 13, 2025 lúc 04:17 AM
+-- Thời gian đã tạo: Th4 14, 2025 lúc 12:39 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -32,25 +32,48 @@ CREATE TABLE `companies` (
   `employer_id` int(11) NOT NULL,
   `company_name` varchar(255) NOT NULL,
   `headquarters_address` text DEFAULT NULL,
-  `company_description` text DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `logo_path` varchar(255) DEFAULT NULL,
-  `website_url` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
-  `website` varchar(255) DEFAULT NULL
+  `website` varchar(255) DEFAULT NULL,
+  `company_size` varchar(50) DEFAULT NULL,
+  `industry` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `companies`
 --
 
-INSERT INTO `companies` (`company_id`, `employer_id`, `company_name`, `headquarters_address`, `company_description`, `logo_path`, `website_url`, `created_at`, `updated_at`, `website`) VALUES
-(1, 2, 'Tiki', 'Tòa nhà Viettel, 285 Cách Mạng Tháng 8, P.12, Q.10, HCMC', 'Tiki là một công ty thương mại điện tử hàng đầu Việt Nam', NULL, 'https://tiki.vn', '2025-04-11 17:25:25', NULL, NULL),
-(2, 3, 'MoMo', 'Tòa nhà VNPT, 57 Huỳnh Thúc Kháng, Đống Đa, Hà Nội', 'MoMo là ví điện tử hàng đầu Việt Nam', NULL, 'https://momo.vn', '2025-04-11 17:25:25', NULL, NULL),
-(3, 4, 'Sendo', 'Tòa nhà Sendo, 123 Nguyễn Thị Minh Khai, Q.1, HCMC', 'Sendo là sàn thương mại điện tử lớn tại Việt Nam', NULL, 'https://sendo.vn', '2025-04-11 17:25:25', NULL, NULL),
-(4, 5, 'VNG', 'Tòa nhà VNG Campus, Quận 7, HCMC', 'VNG là công ty công nghệ hàng đầu Việt Nam', NULL, 'https://vng.com.vn', '2025-04-11 17:25:25', NULL, NULL),
-(5, 6, 'FPT Software', 'FPT Complex, Đà Nẵng', 'FPT Software là công ty phần mềm hàng đầu Việt Nam', NULL, 'https://fptsoftware.com', '2025-04-11 17:25:25', NULL, NULL),
-(6, 7, 'Shopee', 'Tòa nhà Lim Tower, Quận 1, HCMC', 'Shopee là nền tảng thương mại điện tử hàng đầu Đông Nam Á', NULL, 'https://shopee.vn', '2025-04-11 17:25:25', NULL, NULL);
+INSERT INTO `companies` (`company_id`, `employer_id`, `company_name`, `headquarters_address`, `description`, `logo_path`, `created_at`, `updated_at`, `website`, `company_size`, `industry`) VALUES
+(1, 2, 'Tiki', 'Tòa nhà Viettel, 285 Cách Mạng Tháng 8, P.12, Q.10, HCMC', 'Tiki là một công ty thương mại điện tử hàng đầu Việt Nam', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL),
+(2, 3, 'MoMo', 'Tòa nhà VNPT, 57 Huỳnh Thúc Kháng, Đống Đa, Hà Nội', 'MoMo là ví điện tử hàng đầu Việt Nam', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL),
+(3, 4, 'Sendo', 'Tòa nhà Sendo, 123 Nguyễn Thị Minh Khai, Q.1, HCMC', 'Sendo là sàn thương mại điện tử lớn tại Việt Nam', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL),
+(4, 5, 'VNG', 'Tòa nhà VNG Campus, Quận 7, HCMC', 'VNG là công ty công nghệ hàng đầu Việt Nam', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL),
+(5, 6, 'FPT Software', 'FPT Complex, Đà Nẵng', 'FPT Software là công ty phần mềm hàng đầu Việt Nam', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL),
+(6, 7, 'Shopee', 'Tòa nhà Lim Tower, Quận 1, HCMC', 'Shopee là nền tảng thương mại điện tử hàng đầu Đông Nam Á', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `experience_levels`
+--
+
+CREATE TABLE `experience_levels` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `slug` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `experience_levels`
+--
+
+INSERT INTO `experience_levels` (`id`, `name`, `slug`) VALUES
+(1, 'Entry Level', 'entry'),
+(2, 'Mid Level', 'mid'),
+(3, 'Senior Level', 'senior'),
+(4, 'Executive', 'executive');
 
 -- --------------------------------------------------------
 
@@ -64,20 +87,25 @@ CREATE TABLE `job_applications` (
   `seeker_id` int(11) NOT NULL,
   `applicant_email` varchar(255) DEFAULT NULL,
   `applicant_phone` varchar(20) DEFAULT NULL,
-  `status` enum('pending','reviewed','accepted','rejected') DEFAULT 'pending',
+  `status` enum('pending','reviewing','shortlisted','hired','rejected') DEFAULT 'pending',
   `resume_path` varchar(255) DEFAULT NULL,
   `cover_letter` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `employer_notes` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `interview_date` datetime DEFAULT NULL,
+  `interview_location` varchar(255) DEFAULT NULL,
+  `source` varchar(50) DEFAULT 'direct' COMMENT 'How the candidate found the job'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `job_applications`
 --
 
-INSERT INTO `job_applications` (`application_id`, `job_id`, `seeker_id`, `applicant_email`, `applicant_phone`, `status`, `resume_path`, `cover_letter`, `created_at`) VALUES
-(2, 2, 8, 'applicant1@example.com', '0987123456', 'reviewed', 'uploads/resumes/applicant1_cv.pdf', 'Tôi có kinh nghiệm làm việc với Laravel và các framework PHP...', '2025-04-11 17:25:25'),
-(3, 3, 9, 'applicant2@example.com', '0987123457', 'accepted', 'uploads/resumes/applicant2_cv.pdf', 'Tôi đam mê phát triển ứng dụng di động và mong muốn được học hỏi tại MoMo...', '2025-04-11 17:25:25'),
-(4, 4, 9, 'applicant2@example.com', '0987123457', 'rejected', 'uploads/resumes/applicant2_cv.pdf', 'Tôi mong muốn được tham gia vào đội ngũ phát triển của MoMo...', '2025-04-11 17:25:25');
+INSERT INTO `job_applications` (`application_id`, `job_id`, `seeker_id`, `applicant_email`, `applicant_phone`, `status`, `resume_path`, `cover_letter`, `employer_notes`, `created_at`, `updated_at`, `interview_date`, `interview_location`, `source`) VALUES
+(2, 2, 8, 'applicant1@example.com', '0987123456', 'pending', 'uploads/resumes/applicant1_cv.pdf', 'Tôi có kinh nghiệm làm việc với Laravel và các framework PHP...', NULL, '2025-04-11 17:25:25', '2025-04-13 21:12:07', NULL, NULL, 'direct'),
+(3, 3, 9, 'applicant2@example.com', '0987123457', '', 'uploads/resumes/applicant2_cv.pdf', 'Tôi đam mê phát triển ứng dụng di động và mong muốn được học hỏi tại MoMo...', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, 'direct'),
+(4, 4, 9, 'applicant2@example.com', '0987123457', 'rejected', 'uploads/resumes/applicant2_cv.pdf', 'Tôi mong muốn được tham gia vào đội ngũ phát triển của MoMo...', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, 'direct');
 
 -- --------------------------------------------------------
 
@@ -118,12 +146,17 @@ CREATE TABLE `job_posts` (
   `title` varchar(255) NOT NULL,
   `description` text NOT NULL,
   `requirements` text DEFAULT NULL,
+  `benefits` text DEFAULT NULL,
   `job_type` enum('Full-time','Part-time','Contract','Internship') NOT NULL,
+  `work_model` enum('remote','hybrid','onsite') DEFAULT NULL,
+  `experience_level` enum('entry','mid','senior','executive') DEFAULT NULL,
   `location` varchar(255) NOT NULL,
   `salary_min` decimal(12,2) DEFAULT NULL,
   `salary_max` decimal(12,2) DEFAULT NULL,
+  `hide_salary` tinyint(1) DEFAULT 0,
   `pdf_path` varchar(255) DEFAULT NULL,
   `status` enum('pending','active','closed','draft') DEFAULT 'pending',
+  `application_deadline` date DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -132,14 +165,14 @@ CREATE TABLE `job_posts` (
 -- Đang đổ dữ liệu cho bảng `job_posts`
 --
 
-INSERT INTO `job_posts` (`job_id`, `company_id`, `employer_id`, `title`, `description`, `requirements`, `job_type`, `location`, `salary_min`, `salary_max`, `pdf_path`, `status`, `created_at`, `updated_at`) VALUES
-(2, 1, 2, 'Backend Developer', 'Phát triển API và xử lý logic backend', 'PHP, MySQL, Laravel', 'Full-time', 'Ho Chi Minh City', 1500.00, 2500.00, NULL, 'active', '2025-04-11 17:25:25', NULL),
-(3, 2, 3, 'Mobile Developer', 'Phát triển ứng dụng di động cho MoMo', 'Android, iOS, Flutter', 'Full-time', 'Ha Noi', 1800.00, 2800.00, NULL, 'active', '2025-04-11 17:25:25', NULL),
-(4, 2, 3, 'QA Engineer', 'Kiểm thử chất lượng ứng dụng', 'Manual Testing, Automation Testing, Selenium', 'Full-time', 'Ha Noi', 1200.00, 2000.00, NULL, 'active', '2025-04-11 17:25:25', NULL),
-(5, 3, 4, 'Data Analyst', 'Phân tích dữ liệu người dùng', 'SQL, Python, Data Visualization', 'Full-time', 'Ho Chi Minh City', 1600.00, 2600.00, NULL, 'active', '2025-04-11 17:25:25', NULL),
-(6, 4, 5, 'Game Developer', 'Phát triển game mobile cho VNG', 'Unity, C#, Gaming', 'Full-time', 'Ho Chi Minh City', 2000.00, 3500.00, NULL, 'active', '2025-04-11 17:25:25', NULL),
-(7, 5, 6, 'DevOps Engineer', 'Quản lý hệ thống CI/CD', 'Docker, Kubernetes, AWS', 'Full-time', 'Da Nang', 1800.00, 3000.00, NULL, 'active', '2025-04-11 17:25:25', NULL),
-(8, 6, 7, 'UI/UX Designer', 'Thiết kế giao diện cho Shopee', 'Figma, Adobe XD, UX Research', 'Full-time', 'Ho Chi Minh City', 1500.00, 2400.00, NULL, 'active', '2025-04-11 17:25:25', NULL);
+INSERT INTO `job_posts` (`job_id`, `company_id`, `employer_id`, `title`, `description`, `requirements`, `benefits`, `job_type`, `work_model`, `experience_level`, `location`, `salary_min`, `salary_max`, `hide_salary`, `pdf_path`, `status`, `application_deadline`, `created_at`, `updated_at`) VALUES
+(2, 1, 2, 'Backend Developer', 'Phát triển API và xử lý logic backend', 'PHP, MySQL, Laravel', 'skill', 'Full-time', 'hybrid', 'mid', 'Ho Chi Minh City', 1500.00, 2500.00, 0, 'uploads/job_pdfs/1744512810_chabong_shop.pdf', 'active', '2025-05-30', '2025-04-11 17:25:25', '2025-04-13 20:46:18'),
+(3, 2, 3, 'Mobile Developer', 'Phát triển ứng dụng di động cho MoMo', 'Android, iOS, Flutter', NULL, 'Full-time', NULL, NULL, 'Ha Noi', 1800.00, 2800.00, 0, NULL, 'active', NULL, '2025-04-11 17:25:25', NULL),
+(4, 2, 3, 'QA Engineer', 'Kiểm thử chất lượng ứng dụng', 'Manual Testing, Automation Testing, Selenium', NULL, 'Full-time', NULL, NULL, 'Ha Noi', 1200.00, 2000.00, 0, NULL, 'active', NULL, '2025-04-11 17:25:25', NULL),
+(5, 3, 4, 'Data Analyst', 'Phân tích dữ liệu người dùng', 'SQL, Python, Data Visualization', NULL, 'Full-time', NULL, NULL, 'Ho Chi Minh City', 1600.00, 2600.00, 0, NULL, 'active', NULL, '2025-04-11 17:25:25', NULL),
+(6, 4, 5, 'Game Developer', 'Phát triển game mobile cho VNG', 'Unity, C#, Gaming', NULL, 'Full-time', NULL, NULL, 'Ho Chi Minh City', 2000.00, 3500.00, 0, NULL, 'active', NULL, '2025-04-11 17:25:25', NULL),
+(7, 5, 6, 'DevOps Engineer', 'Quản lý hệ thống CI/CD', 'Docker, Kubernetes, AWS', NULL, 'Full-time', NULL, NULL, 'Da Nang', 1800.00, 3000.00, 0, NULL, 'active', NULL, '2025-04-11 17:25:25', NULL),
+(8, 6, 7, 'UI/UX Designer', 'Thiết kế giao diện cho Shopee', 'Figma, Adobe XD, UX Research', NULL, 'Full-time', NULL, NULL, 'Ho Chi Minh City', 1500.00, 2400.00, 0, NULL, 'active', NULL, '2025-04-11 17:25:25', NULL);
 
 -- --------------------------------------------------------
 
@@ -157,7 +190,7 @@ CREATE TABLE `job_post_categories` (
 --
 
 INSERT INTO `job_post_categories` (`job_id`, `category_id`) VALUES
-(2, 1),
+(2, 2),
 (3, 1),
 (4, 1),
 (5, 1),
@@ -254,6 +287,27 @@ INSERT INTO `users` (`user_id`, `email`, `password`, `full_name`, `role`, `phone
 (8, 'applicant1@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'John Applicant', 'job_seeker', '0987123456', 1, '2025-04-11 17:25:25', NULL),
 (9, 'applicant2@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'Jane Applicant', 'job_seeker', '0987123457', 1, '2025-04-11 17:25:25', NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `work_models`
+--
+
+CREATE TABLE `work_models` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `slug` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `work_models`
+--
+
+INSERT INTO `work_models` (`id`, `name`, `slug`) VALUES
+(1, 'Remote', 'remote'),
+(2, 'Hybrid', 'hybrid'),
+(3, 'On-site', 'onsite');
+
 --
 -- Chỉ mục cho các bảng đã đổ
 --
@@ -264,6 +318,13 @@ INSERT INTO `users` (`user_id`, `email`, `password`, `full_name`, `role`, `phone
 ALTER TABLE `companies`
   ADD PRIMARY KEY (`company_id`),
   ADD KEY `fk_companies_employer` (`employer_id`);
+
+--
+-- Chỉ mục cho bảng `experience_levels`
+--
+ALTER TABLE `experience_levels`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `slug` (`slug`);
 
 --
 -- Chỉ mục cho bảng `job_applications`
@@ -316,6 +377,13 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Chỉ mục cho bảng `work_models`
+--
+ALTER TABLE `work_models`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `slug` (`slug`);
+
+--
 -- AUTO_INCREMENT cho các bảng đã đổ
 --
 
@@ -324,6 +392,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `companies`
   MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT cho bảng `experience_levels`
+--
+ALTER TABLE `experience_levels`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `job_applications`
@@ -354,6 +428,12 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `users`
   MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT cho bảng `work_models`
+--
+ALTER TABLE `work_models`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

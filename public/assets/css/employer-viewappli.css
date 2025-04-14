@@ -1,0 +1,257 @@
+/* Application View Page Styling */
+.application-view-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Status Bar styling */
+.application-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 1.25rem 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: visible !important;
+}
+
+.application-status-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(to right, var(--primary-color, #0631BC), rgba(var(--primary-rgb, 6, 49, 188), 0.7));
+}
+
+/* Status info section */
+.app-status-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.app-status-label {
+    font-weight: 600;
+    color: var(--text-primary, #333);
+    font-size: 1.05rem;
+    margin-right: 0.5rem;
+}
+
+.app-status-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Status badge colors */
+.app-status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.app-status-reviewing {
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+.app-status-shortlisted {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.app-status-hired {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.app-status-rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Status actions section */
+.app-status-actions {
+    width: auto;
+    position: relative;
+}
+
+.app-status-form {
+    width: 100%;
+    margin: 0;
+}
+
+/* Status buttons styling */
+.app-status-buttons {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    width: auto;
+    white-space: nowrap;
+}
+
+.app-status-btn {
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    color: var(--text-primary, #333);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    flex: 0 0 auto;
+    min-width: auto;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.app-status-btn i {
+    font-size: 0.9rem;
+}
+
+.app-status-btn:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 2;
+}
+
+/* Selected status styling */
+.app-status-btn.active {
+    background-color: var(--primary-color, #0631BC);
+    color: white !important;
+    border-color: var(--primary-color, #0631BC);
+    position: relative;
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb, 6, 49, 188), 0.25);
+}
+
+.app-status-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--primary-color, #0631BC);
+}
+
+/* Danger button for rejected status */
+.app-status-btn-danger {
+    color: #dc3545;
+}
+
+.app-status-btn-danger:hover {
+    background-color: rgba(220, 53, 69, 0.1);
+}
+
+.app-status-btn-danger.active {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
+}
+
+.app-status-btn-danger.active::after {
+    background-color: #dc3545;
+}
+
+/* Application content layout */
+.application-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1.5rem;
+}
+
+.application-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.application-card h2 {
+    font-size: 1.25rem;
+    margin-top: 0;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color, #dee2e6);
+    color: var(--text-primary, #333);
+    font-weight: 600;
+}
+
+/* Applicant profile styling */
+.applicant-avatar.large {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-color, #0631BC);
+    color: white;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.applicant-profile {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.cover-letter {
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+.file-download {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.file-download i {
+    font-size: 2.5rem;
+    color: #e63946;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .application-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .application-status-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .app-status-buttons {
+        justify-content: flex-start;
+        width: 100%;
+    }
+    
+    .app-status-btn {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+    }
+}

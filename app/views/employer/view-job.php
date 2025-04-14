@@ -17,64 +17,96 @@
             </div>
             
             <div class="card-actions">
-                <a href="<?= SITE_URL ?>/employer/jobs/edit/<?= $job['job_id'] ?>" class="btn-secondary">
+                <a href="<?= SITE_URL ?>/employer/jobs/editJob/<?= $job['job_id'] ?>" class="btn-action btn-edit">
                     <i class="fa-solid fa-pencil"></i> Edit Job
                 </a>
                 <div class="dropdown">
-                    <button class="btn-primary dropdown-toggle">
+                    <button type="button" class="btn-action btn-status dropdown-toggle">
                         <i class="fa-solid fa-check-circle"></i> Update Status
+                        <i class="fa-solid fa-caret-down" style="margin-left: 5px; font-size: 0.8rem;"></i>
                     </button>
-                    <ul class="dropdown-menu">
-                        <li>
-                            <form action="<?= SITE_URL ?>/employer/jobs/updateStatus" method="POST">
-                                <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
-                                <input type="hidden" name="status" value="active">
-                                <button type="submit" class="dropdown-item <?= $job['status'] == 'active' ? 'active' : '' ?>">Active</button>
-                            </form>
-                        </li>
-                        <li>
-                            <form action="<?= SITE_URL ?>/employer/jobs/updateStatus" method="POST">
-                                <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
-                                <input type="hidden" name="status" value="pending">
-                                <button type="submit" class="dropdown-item <?= $job['status'] == 'pending' ? 'active' : '' ?>">Draft</button>
-                            </form>
-                        </li>
-                        <li>
-                            <form action="<?= SITE_URL ?>/employer/jobs/updateStatus" method="POST">
-                                <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
-                                <input type="hidden" name="status" value="closed">
-                                <button type="submit" class="dropdown-item <?= $job['status'] == 'closed' ? 'active' : '' ?>">Closed</button>
-                            </form>
-                        </li>
-                    </ul>
+                    <div class="dropdown-content">
+                        <form action="<?= SITE_URL ?>/employer/jobs/updateStatus" method="POST">
+                            <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
+                            <input type="hidden" name="status" value="active">
+                            <button type="submit" class="dropdown-item <?= $job['status'] == 'active' ? 'active' : '' ?>">Active</button>
+                        </form>
+                        <form action="<?= SITE_URL ?>/employer/jobs/updateStatus" method="POST">
+                            <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
+                            <input type="hidden" name="status" value="pending">
+                            <button type="submit" class="dropdown-item <?= $job['status'] == 'pending' ? 'active' : '' ?>">Draft</button>
+                        </form>
+                        <form action="<?= SITE_URL ?>/employer/jobs/updateStatus" method="POST">
+                            <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
+                            <input type="hidden" name="status" value="closed">
+                            <button type="submit" class="dropdown-item <?= $job['status'] == 'closed' ? 'active' : '' ?>">Closed</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <?php if (!empty($job['pdf_path'])): ?>
-        <div class="job-section">
-            <h3>Job Description Document</h3>
-            <div class="pdf-container">
-                <a href="<?= SITE_URL . PUBLIC_PATH . '/' . $job['pdf_path'] ?>" target="_blank" class="btn-secondary">
-                    <i class="fa-solid fa-file-pdf"></i> View PDF Description
-                </a>
-            </div>
-        </div>
-        <?php endif; ?>
         
         <div class="card-body">
-            <div class="job-meta">
-                <div class="meta-item">
-                    <i class="fa-solid fa-building"></i>
-                    <span><?= htmlspecialchars($job['company_name']) ?></span>
+            <!-- Job information in 2-column layout -->
+            <div class="job-info-grid">
+                <div class="job-info-column">
+                    <div class="job-meta">
+                        <div class="meta-item">
+                            <i class="fa-solid fa-building"></i>
+                            <span><?= htmlspecialchars($job['company_name']) ?></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span><?= htmlspecialchars($job['location']) ?></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fa-solid fa-clock"></i>
+                            <span>Posted: <?= date('M d, Y', strtotime($job['created_at'])) ?></span>
+                        </div>
+                        <?php if (!empty($job['application_deadline'])): ?>
+                        <div class="meta-item">
+                            <i class="fa-solid fa-calendar-days"></i>
+                            <span>Deadline: <?= date('M d, Y', strtotime($job['application_deadline'])) ?></span>
+                        </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <div class="meta-item">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span><?= htmlspecialchars($job['location']) ?></span>
-                </div>
-                <div class="meta-item">
-                    <i class="fa-solid fa-clock"></i>
-                    <span>Posted: <?= date('M d, Y', strtotime($job['created_at'])) ?></span>
+                
+                <div class="job-info-column">
+                    <div class="job-meta">
+                        <?php if (!empty($job['job_type'])): ?>
+                        <div class="meta-item">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <span><?= htmlspecialchars($job['job_type']) ?></span>
+                        </div>
+                        <?php endif; ?>
+                        <?php if (!empty($job['work_model'])): ?>
+                        <div class="meta-item">
+                            <i class="fa-solid fa-house-laptop"></i>
+                            <span><?= ucfirst(htmlspecialchars($job['work_model'])) ?></span>
+                        </div>
+                        <?php endif; ?>
+                        <?php if (!empty($job['experience_level'])): ?>
+                        <div class="meta-item">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span><?= ucfirst(htmlspecialchars($job['experience_level'])) ?> Level</span>
+                        </div>
+                        <?php endif; ?>
+                        <?php if (!empty($job['salary_min']) || !empty($job['salary_max'])): ?>
+                        <div class="meta-item">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                            <span>
+                                <?php if (!empty($job['salary_min']) && !empty($job['salary_max'])): ?>
+                                    $<?= number_format($job['salary_min']) ?> - $<?= number_format($job['salary_max']) ?>
+                                <?php elseif (!empty($job['salary_min'])): ?>
+                                    From $<?= number_format($job['salary_min']) ?>
+                                <?php elseif (!empty($job['salary_max'])): ?>
+                                    Up to $<?= number_format($job['salary_max']) ?>
+                                <?php endif; ?>
+                            </span>
+                        </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
             
@@ -92,18 +124,31 @@
                 </div>
             </div>
             
-            <?php if (!empty($job['salary_min']) || !empty($job['salary_max'])): ?>
+            <?php if (!empty($job['benefits'])): ?>
             <div class="job-section">
-                <h3>Compensation</h3>
-                <p>
-                    <?php if (!empty($job['salary_min']) && !empty($job['salary_max'])): ?>
-                        $<?= number_format($job['salary_min']) ?> - $<?= number_format($job['salary_max']) ?> per year
-                    <?php elseif (!empty($job['salary_min'])): ?>
-                        From $<?= number_format($job['salary_min']) ?> per year
-                    <?php elseif (!empty($job['salary_max'])): ?>
-                        Up to $<?= number_format($job['salary_max']) ?> per year
-                    <?php endif; ?>
-                </p>
+                <h3>Benefits</h3>
+                <div class="job-benefits">
+                    <?= nl2br(htmlspecialchars($job['benefits'])) ?>
+                </div>
+            </div>
+            <?php endif; ?>
+            
+            <?php if (!empty($job['hide_salary']) && $job['hide_salary']): ?>
+            <div class="salary-note">
+                <i class="fa-solid fa-eye-slash"></i>
+                <span>Salary information is hidden from job seekers</span>
+            </div>
+            <?php endif; ?>
+            
+            <!-- PDF button moved to the end -->
+            <?php if (!empty($job['pdf_path'])): ?>
+            <div class="job-section pdf-section">
+                <h3>Additional Documents</h3>
+                <div class="pdf-container">
+                    <a href="<?= SITE_URL . PUBLIC_PATH . '/' . $job['pdf_path'] ?>" target="_blank" class="btn-document">
+                        <i class="fa-solid fa-file-pdf"></i> View Complete Job Description (PDF)
+                    </a>
+                </div>
             </div>
             <?php endif; ?>
         </div>
@@ -153,7 +198,7 @@
                                         </span>
                                     </td>
                                     <td class="actions-cell">
-                                        <a href="<?= SITE_URL ?>/employer/applications/<?= $application['application_id'] ?>" class="btn-icon" title="View Application">
+                                        <a href="<?= SITE_URL ?>/employer/applications/view/<?= $application['application_id'] ?>" class="btn-icon" title="View Application">
                                             <i class="fa-solid fa-eye"></i>
                                         </a>
                                     </td>

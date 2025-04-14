@@ -20,15 +20,30 @@
             
             <div class="form-row">
                 <div class="form-group">
-                    <label for="category_id">Job Category <span class="required">*</span></label>
+                    <label for="category_selector">Job Category <span class="required">*</span></label>
+                    <select id="category_selector" onchange="toggleCategoryInput()">
+                        <option value="existing">Select from existing categories</option>
+                        <option value="new">Add a new category</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="existing_category_group">
                     <select id="category_id" name="category_id" required>
                         <option value="">Select a category</option>
                         <?php foreach ($categories as $category): ?>
-                            <option value="<?= $category['category_id'] ?>" <?= isset($job['category_id']) && $job['category_id'] == $category['category_id'] ? 'selected' : '' ?>><?= htmlspecialchars($category['name']) ?></option>
+                            <option value="<?= $category['category_id'] ?>" <?= (!empty($jobCategories) && isset($jobCategories[0]['category_id']) && $jobCategories[0]['category_id'] == $category['category_id']) ? 'selected' : '' ?>><?= htmlspecialchars($category['name']) ?></option>
                         <?php endforeach; ?>
+                        
+                        <?php if ($hasCustomCategory): ?>
+                            <option value="<?= $customCategory['category_id'] ?>" selected><?= htmlspecialchars($customCategory['name']) ?></option>
+                        <?php endif; ?>
                     </select>
                 </div>
-                
+
+                <div class="form-group" id="new_category_group" style="display:none;">
+                    <input type="text" id="new_category" name="new_category" placeholder="Enter new category name">
+                </div>
+
                 <div class="form-group">
                     <label for="employment_type">Employment Type <span class="required">*</span></label>
                     <select id="employment_type" name="employment_type" required>
@@ -138,18 +153,44 @@
 
         <div class="form-section">
             <h3>Job Status</h3>
-            <div class="form-group status-buttons">
-                <div class="radio-button">
-                    <input type="radio" id="status_active" name="status" value="active" <?= $job['status'] == 'active' ? 'checked' : '' ?>>
-                    <label for="status_active">Active</label>
+            <div class="job-status-selector">
+                <div class="status-option">
+                    <input type="radio" id="status_active" name="status" value="active" <?= $job['status'] == 'active' ? 'checked' : '' ?> class="status-radio">
+                    <label for="status_active" class="status-label status-active">
+                        <div class="status-icon">
+                            <i class="fa-solid fa-check-circle"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-title">Active</span>
+                            <span class="status-description">Publish immediately and start receiving applications</span>
+                        </div>
+                    </label>
                 </div>
-                <div class="radio-button">
-                    <input type="radio" id="status_pending" name="status" value="pending" <?= $job['status'] == 'pending' ? 'checked' : '' ?>>
-                    <label for="status_pending">Draft</label>
+                
+                <div class="status-option">
+                    <input type="radio" id="status_draft" name="status" value="pending" <?= $job['status'] == 'pending' ? 'checked' : '' ?> class="status-radio">
+                    <label for="status_draft" class="status-label status-draft">
+                        <div class="status-icon">
+                            <i class="fa-solid fa-file-lines"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-title">Draft</span>
+                            <span class="status-description">Save as draft to review or edit later</span>
+                        </div>
+                    </label>
                 </div>
-                <div class="radio-button">
-                    <input type="radio" id="status_closed" name="status" value="closed" <?= $job['status'] == 'closed' ? 'checked' : '' ?>>
-                    <label for="status_closed">Closed</label>
+                
+                <div class="status-option">
+                    <input type="radio" id="status_closed" name="status" value="closed" <?= $job['status'] == 'closed' ? 'checked' : '' ?> class="status-radio">
+                    <label for="status_closed" class="status-label status-closed">
+                        <div class="status-icon">
+                            <i class="fa-solid fa-ban"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-title">Closed</span>
+                            <span class="status-description">No longer accepting applications</span>
+                        </div>
+                    </label>
                 </div>
             </div>
         </div>
@@ -160,3 +201,25 @@
         </div>
     </form>
 </div>
+
+<script>
+function toggleCategoryInput() {
+    const selector = document.getElementById('category_selector');
+    const existingGroup = document.getElementById('existing_category_group');
+    const newGroup = document.getElementById('new_category_group');
+    const categorySelect = document.getElementById('category_id');
+    const newCategoryInput = document.getElementById('new_category');
+    
+    if (selector.value === 'new') {
+        existingGroup.style.display = 'none';
+        newGroup.style.display = 'block';
+        categorySelect.removeAttribute('required');
+        newCategoryInput.setAttribute('required', '');
+    } else {
+        existingGroup.style.display = 'block';
+        newGroup.style.display = 'none';
+        categorySelect.setAttribute('required', '');
+        newCategoryInput.removeAttribute('required');
+    }
+}
+</script>

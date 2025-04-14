@@ -7,12 +7,13 @@ class Application extends Model {
     
     // Get application by ID
     public function getApplicationById($id) {
-        $query = "SELECT a.*, j.title as job_title, u.full_name, u.email, u.phone
+        $query = "SELECT a.*, j.title as job_title, j.created_at as job_created_at,
+                  u.full_name, u.email, u.phone
                   FROM job_applications a
                   JOIN job_posts j ON a.job_id = j.job_id
                   JOIN users u ON a.seeker_id = u.user_id
                   WHERE a.application_id = ?";
-                  
+        
         $this->db->query($query);
         $this->db->bind(1, $id);
         
@@ -21,7 +22,7 @@ class Application extends Model {
     
     // Get applications by job ID
     public function getApplicationsByJob($jobId) {
-        $query = "SELECT a.*, u.full_name, u.email
+        $query = "SELECT a.*, u.full_name, u.email, a.status as status
                   FROM job_applications a
                   JOIN users u ON a.seeker_id = u.user_id
                   WHERE a.job_id = ?
@@ -35,7 +36,7 @@ class Application extends Model {
     
     // Get applications by employer
     public function getApplicationsByEmployer($employerId) {
-        $query = "SELECT a.*, j.title as job_title, u.full_name
+        $query = "SELECT a.*, j.title as job_title, u.full_name, a.status as application_status
                   FROM job_applications a
                   JOIN job_posts j ON a.job_id = j.job_id
                   JOIN users u ON a.seeker_id = u.user_id
@@ -105,17 +106,21 @@ class Application extends Model {
     }
     
     // Update application status
-    public function updateStatus($id, $status) {
-        $query = "UPDATE job_applications
-                  SET status = ?, updated_at = NOW()
-                  WHERE application_id = ?";
-                  
+    public function updateStatus($applicationId, $status) {
+        $validStatuses = ['pending', 'reviewing', 'shortlisted', 'hired', 'rejected'];
+        if (!in_array($status, $validStatuses)) {
+            return false;
+        }
+        
+        $query = "UPDATE job_applications SET status = ?, updated_at = NOW() WHERE application_id = ?";
         $this->db->query($query);
         $this->db->bind(1, $status);
-        $this->db->bind(2, $id);
+        $this->db->bind(2, $applicationId);
         
         return $this->db->execute();
     }
+
+    
 
     public function getApplicationStatusCountsByEmployer($employerId) {
         $statuses = ['pending', 'reviewing', 'shortlisted', 'hired', 'rejected'];
@@ -161,5 +166,111 @@ class Application extends Model {
         
         $result = $this->db->single();
         return $result['count'] ?? 0;
+    }
+
+    public function updateNotes($applicationId, $notes) {
+        $query = "UPDATE job_applications
+                  SET employer_notes = ?, updated_at = NOW()
+                  WHERE application_id = ?";
+                  
+        $this->db->query($query);
+        $this->db->bind(1, $notes);
+        $this->db->bind(2, $applicationId);
+        
+        return $this->db->execute();
+    }
+    
+    public function scheduleInterview($applicationId, $date, $location) {
+        $query = "UPDATE job_applications
+                  SET interview_date = ?, interview_location = ?, status = 'shortlisted', updated_at = NOW()
+                  WHERE application_id = ?";
+                  
+        $this->db->query($query);
+        $this->db->bind(1, $date);
+        $this->db->bind(2, $location);
+        $this->db->bind(3, $applicationId);
+        
+        return $this->db->execute();
+    }
+    
+    public function getApplicationStats($employerId) {
+        $stats = [];
+        
+        $query = "SELECT a.status, COUNT(*) as count FROM job_applications a 
+                  JOIN job_posts j ON a.job_id = j.job_id 
+                  WHERE j.employer_id = ? 
+                  GROUP BY a.status"; 
+        
+        $this->db->query($query);
+        $this->db->bind(1, $employerId);
+        $statusStats = $this->db->resultSet();
+        
+        foreach ($statusStats as $stat) {
+            $stats['status'][$stat['status']] = $stat['count'];
+        }
+        
+        // Applications by job
+        $query = "SELECT j.title, COUNT(*) as count FROM job_applications a 
+                  JOIN job_posts j ON a.job_id = j.job_id 
+                  WHERE j.employer_id = ? 
+                  GROUP BY j.job_id";
+        
+        $this->db->query($query);
+        $this->db->bind(1, $employerId);
+        $jobStats = $this->db->resultSet();
+        
+        foreach ($jobStats as $stat) {
+            $stats['jobs'][$stat['title']] = $stat['count'];
+        }
+        
+        return $stats;
+    }
+    
+    // Get all applications with detailed information
+    public function getDetailedApplicationsByEmployer($employerId, $filters = []) {
+        $query = "SELECT a.*, j.title as job_title, j.location, j.job_type,
+                    u.full_name, u.email, u.phone, 
+                    c.company_name, c.logo_path, a.status as status
+                    FROM job_applications a
+                    JOIN job_posts j ON a.job_id = j.job_id
+                    JOIN users u ON a.seeker_id = u.user_id
+                    JOIN companies c ON j.company_id = c.company_id
+                    WHERE j.employer_id = ?";
+        
+        // Add filters if provided
+        if (!empty($filters['status'])) {
+            $query .= " AND a.status = ?";
+        }
+        
+        if (!empty($filters['job_id'])) {
+            $query .= " AND j.job_id = ?";
+        }
+        
+        // Add search term if provided
+        if (!empty($filters['search'])) {
+            $query .= " AND (u.full_name LIKE ? OR j.title LIKE ?)";
+        }
+        
+        $query .= " ORDER BY a.created_at DESC";
+        
+        $this->db->query($query);
+        $paramIndex = 1;
+        $this->db->bind($paramIndex++, $employerId);
+        
+        if (!empty($filters['status'])) {
+            $this->db->bind($paramIndex++, $filters['status']);
+        }
+        
+        if (!empty($filters['job_id'])) {
+            $this->db->bind($paramIndex++, $filters['job_id']);
+        }
+        
+        if (!empty($filters['search'])) {
+            $searchTerm = "%{$filters['search']}%";
+            $this->db->bind($paramIndex++, $searchTerm);
+            $this->db->bind($paramIndex++, $searchTerm);
+        }
+        
+        return $this->db->resultSet();
     }
 }
