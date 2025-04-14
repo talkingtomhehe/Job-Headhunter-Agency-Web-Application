@@ -2,10 +2,10 @@
     <div class="container">
         <div class="footer-top">
             <div class="footer-logo">
-                <img src="<?= SITE_URL . PUBLIC_PATH ?>/assets/images/logo.png" alt="Huntly">
+                <img src="<?= SITE_URL . PUBLIC_PATH ?>/assets/images/logo_white.png" alt="Huntly">
                 <p>Bridging the gap between Talent and Opportunity!</p>
             </div>
-            
+
             <div class="footer-links">
                 <div class="footer-col">
                     <h3>For Candidates</h3>
@@ -15,7 +15,7 @@
                         <li><a href="<?= SITE_URL ?>/seeker/profile">My Profile</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-col">
                     <h3>For Employers</h3>
                     <ul>
@@ -24,7 +24,7 @@
                         <li><a href="<?= SITE_URL ?>/employer/profile">Company Profile</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-col">
                     <h3>Company</h3>
                     <ul>
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="footer-bottom">
             <p>&copy; <?= date('Y') ?> Huntly. All rights reserved.</p>
             <div class="social-links">
@@ -47,12 +47,12 @@
         </div>
     </div>
 </footer>
-    
+
 <script>
     // Auto-hide alerts after 5 seconds
     document.addEventListener('DOMContentLoaded', function() {
         const alerts = document.querySelectorAll('.alert');
-        if(alerts.length > 0) {
+        if (alerts.length > 0) {
             alerts.forEach(alert => {
                 setTimeout(() => {
                     alert.style.opacity = '0';
@@ -64,5 +64,3 @@
         }
     });
 </script>
-</body>
-</html>

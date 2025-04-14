@@ -1,8 +1,9 @@
 <?php
+
 namespace config;
 
 // Define site URL
-define('SITE_URL', 'http://localhost/huntlyversion2');
+define('SITE_URL', 'http://localhost/huntly');
 
 // App Root
 define('APP_ROOT', dirname(dirname(__FILE__)));

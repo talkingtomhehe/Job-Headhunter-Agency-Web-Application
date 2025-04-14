@@ -712,12 +712,8 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.google-btn i {
-    color: #4285F4;
-}
-
 .facebook-btn i {
-    color: #3b5998;
+    color: #4285F4;
 }
 
 /* Right Panel - Content changes based on role */

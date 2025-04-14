@@ -1,5 +1,14 @@
 /* Mobile and responsive styles */
 @media (max-width: 768px) {
+    .footer-links {
+        justify-content: flex-start;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
     .container {
         padding: 0 10px;
     }
@@ -18,6 +27,48 @@
     
     .companies-container {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+        margin-left: auto;
+    }
+
+    .main-nav {
+        justify-content: flex-end;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        gap: 1rem;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        padding-left: 1rem;
+    }
+
+    .auth {
+        display: none;
+    }
+
+    .nav-links .auth-mobile {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
     }
 }
 
