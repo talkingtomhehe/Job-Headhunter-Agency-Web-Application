@@ -121,11 +121,11 @@
                                         <i class="fa-solid fa-user-check"></i>
                                     </div>
                                     <div class="activity-content">
-                                        <h4><?= $application->job_title ?></h4>
-                                        <p>Applied by: <?= $application->applicant_name ?></p>
+                                        <h4><?= htmlspecialchars($application['job_title']) ?></h4>
+                                        <p>Applied by: <?= htmlspecialchars($application['applicant_name']) ?></p>
                                         <div class="activity-meta">
-                                            <span class="status-badge status-<?= $application->status ?>"><?= $application->status ?></span>
-                                            <span class="activity-time"><?= \helpers\DateHelper::timeAgo($application->created_at) ?></span>
+                                            <span class="status-badge status-<?= strtolower($application['status']) ?>"><?= ucfirst($application['status']) ?></span>
+                                            <span class="activity-time"><?= \helpers\DateHelper::timeAgo($application['created_at']) ?></span>
                                         </div>
                                     </div>
                                 </div>
@@ -223,26 +223,29 @@ document.addEventListener('DOMContentLoaded', function() {
     new Chart(activityCtx, {
         type: 'bar',
         data: {
-            labels: ['Active', 'Draft', 'Expired', 'Filled'],
+            labels: ['Active', 'Pending', 'Rejected', 'Draft', 'Closed'],
             datasets: [{
                 label: 'Number of Jobs',
                 data: [
-                    <?php echo $activeJobs; ?>,
+                    <?php echo isset($jobStats['active']) ? $jobStats['active'] : 0; ?>,
+                    <?php echo isset($jobStats['pending']) ? $jobStats['pending'] : 0; ?>,
+                    <?php echo isset($jobStats['rejected']) ? $jobStats['rejected'] : 0; ?>,
                     <?php echo isset($jobStats['draft']) ? $jobStats['draft'] : 0; ?>,
-                    <?php echo isset($jobStats['expired']) ? $jobStats['expired'] : 0; ?>,
-                    <?php echo isset($jobStats['filled']) ? $jobStats['filled'] : 0; ?>
+                    <?php echo isset($jobStats['closed']) ? $jobStats['closed'] : 0; ?>
                 ],
                 backgroundColor: [
-                    'rgba(6, 49, 188, 0.7)',  // Active - Primary blue
-                    'rgba(108, 117, 125, 0.7)', // Draft - Gray
-                    'rgba(108, 117, 125, 0.5)', // Expired - Light gray
-                    'rgba(25, 135, 84, 0.7)'   // Filled - Green
+                    'rgba(25, 135, 84, 0.7)',    // Active - Green
+                    'rgba(255, 193, 7, 0.7)',    // Pending - Yellow
+                    'rgba(220, 53, 69, 0.7)',    // Rejected - Red
+                    'rgba(108, 117, 125, 0.7)',  // Draft - Gray
+                    'rgba(33, 37, 41, 0.7)'      // Closed - Dark gray
                 ],
                 borderColor: [
-                    'rgb(6, 49, 188)',
+                    'rgb(25, 135, 84)',
+                    'rgb(255, 193, 7)',
+                    'rgb(220, 53, 69)',
                     'rgb(108, 117, 125)',
-                    'rgb(108, 117, 125)',
-                    'rgb(25, 135, 84)'
+                    'rgb(33, 37, 41)'
                 ],
                 borderWidth: 1,
                 borderRadius: 5

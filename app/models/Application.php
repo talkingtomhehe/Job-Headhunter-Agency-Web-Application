@@ -25,7 +25,7 @@ class Application extends Model {
         $query = "SELECT a.*, u.full_name, u.email, a.status as status
                   FROM job_applications a
                   JOIN users u ON a.seeker_id = u.user_id
-                  WHERE a.job_id = ?
+                  WHERE a.job_id = ? AND a.admin_status = 'approved'
                   ORDER BY a.created_at DESC";
                   
         $this->db->query($query);
@@ -40,7 +40,7 @@ class Application extends Model {
                   FROM job_applications a
                   JOIN job_posts j ON a.job_id = j.job_id
                   JOIN users u ON a.seeker_id = u.user_id
-                  WHERE j.employer_id = ?
+                  WHERE j.employer_id = ? AND a.admin_status = 'approved'
                   ORDER BY a.created_at DESC";
                   
         $this->db->query($query);
@@ -69,7 +69,7 @@ class Application extends Model {
         $query = "SELECT COUNT(*) as count
                   FROM job_applications a
                   JOIN job_posts j ON a.job_id = j.job_id
-                  WHERE j.employer_id = ?";
+                  WHERE j.employer_id = ? AND a.admin_status = 'approved'";
                   
         $this->db->query($query);
         $this->db->bind(1, $employerId);
@@ -145,7 +145,7 @@ class Application extends Model {
                   FROM job_applications a 
                   JOIN job_posts j ON a.job_id = j.job_id
                   JOIN users u ON a.seeker_id = u.user_id
-                  WHERE j.employer_id = ?
+                  WHERE j.employer_id = ? AND a.admin_status = 'approved'
                   ORDER BY a.created_at DESC
                   LIMIT ?";
         
@@ -344,6 +344,31 @@ class Application extends Model {
         
         $this->db->query($query);
         $this->db->bind(1, $status);
+        
+        return $this->db->resultSet();
+    }
+
+    public function updateAdminStatus($applicationId, $status) {
+        $query = "UPDATE job_applications SET admin_status = ?, updated_at = NOW() WHERE application_id = ?";
+        $this->db->query($query);
+        $this->db->bind(1, $status);
+        $this->db->bind(2, $applicationId);
+        
+        return $this->db->execute();
+    }
+
+    public function getApplicationsByAdminStatus($adminStatus) {
+        $query = "SELECT a.*, j.title as job_title, j.created_at as job_created_at,
+                  u.full_name, u.email, u.phone, c.company_name
+                  FROM job_applications a
+                  JOIN job_posts j ON a.job_id = j.job_id
+                  JOIN users u ON a.seeker_id = u.user_id
+                  LEFT JOIN companies c ON j.company_id = c.company_id
+                  WHERE a.admin_status = ?
+                  ORDER BY a.created_at DESC";
+        
+        $this->db->query($query);
+        $this->db->bind(1, $adminStatus);
         
         return $this->db->resultSet();
     }

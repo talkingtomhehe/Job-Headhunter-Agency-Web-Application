@@ -362,7 +362,12 @@
 
 .status-rejected {
     background-color: #f8d7da;
-    color: #dc3545;
+    color: #721c24;
+}
+
+.status-badge.status-rejected {
+    background-color: #dc3545;
+    color: white;
 }
 
 .status-hired {
@@ -731,6 +736,11 @@
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+.rejected-banner {
+    padding-top: -10px;
+    padding-bottom: 10px;
 }
 
 @keyframes fadeIn {

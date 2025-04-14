@@ -25,8 +25,10 @@
                         <select id="statusFilter" class="filter-select">
                             <option value="all">All Status</option>
                             <option value="active">Active</option>
-                            <option value="expired">Expired</option>
+                            <option value="pending">Pending</option>
+                            <option value="rejected">Rejected</option>
                             <option value="draft">Draft</option>
+                            <option value="closed">Closed</option>
                         </select>
                     </div>
                     

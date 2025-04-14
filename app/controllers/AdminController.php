@@ -6,18 +6,21 @@ use models\User;
 use models\JobPost;
 use models\Application;
 use models\Company;
+use models\Notification;
 
 class AdminController extends Controller {
     private $userModel;
     private $jobModel;
     private $applicationModel;
     private $companyModel;
+    private $notificationModel;
     
     public function __construct() {
         $this->userModel = new User();
         $this->jobModel = new JobPost();
         $this->applicationModel = new Application();
         $this->companyModel = new Company();
+        $this->notificationModel = new Notification();
     }
     
     // Show login page
@@ -189,11 +192,20 @@ class AdminController extends Controller {
         }
         
         // Default: show job listing
-        $status = $_GET['status'] ?? 'all';
-        
-        if ($status === 'pending') {
+        $filter = $_GET['filter'] ?? 'all';
+    
+        if ($filter === 'pending_admin') {
+            $jobs = $this->jobModel->getJobsByAdminStatus('pending');
+            $pageTitle = 'Jobs Pending Admin Review';
+        } else if ($filter === 'approved') {
+            $jobs = $this->jobModel->getJobsByAdminStatus('approved');
+            $pageTitle = 'Admin Approved Jobs';
+        } else if ($filter === 'rejected') {
+            $jobs = $this->jobModel->getJobsByAdminStatus('rejected');
+            $pageTitle = 'Admin Rejected Jobs';
+        } else if ($filter === 'pending') {
             $jobs = $this->jobModel->getJobsByStatus('pending');
-            $pageTitle = 'Pending Job Approvals';
+            $pageTitle = 'Pending Jobs';
         } else {
             $jobs = $this->jobModel->getAllJobs();
             $pageTitle = 'All Jobs';
@@ -202,7 +214,7 @@ class AdminController extends Controller {
         $data = [
             'pageTitle' => $pageTitle,
             'jobs' => $jobs,
-            'activeFilter' => $status
+            'activeFilter' => $filter
         ];
         
         $this->view('admin/jobs', $data, 'admin');
@@ -241,31 +253,35 @@ class AdminController extends Controller {
         
         // Get categories and other data needed for the form
         $categories = $this->jobModel->getCategories();
-        $jobCategories = $this->jobModel->getJobCategories($id);
+        
+        $jobCategory = null;
+        if (!empty($job['category_id'])) {
+            $jobCategory = $this->jobModel->getCategoryById($job['category_id']);
+        }
         
         // Check if job has a category that's not in the master list
         $hasCustomCategory = false;
         $customCategory = null;
         
-        if (!empty($jobCategories)) {
+        if ($jobCategory) {
             $categoryExists = false;
             foreach ($categories as $category) {
-                if ($category['category_id'] == $jobCategories[0]['category_id']) {
+                if ($category['category_id'] == $jobCategory['category_id']) {
                     $categoryExists = true;
                     break;
                 }
             }
             
-            if (!$categoryExists && !empty($jobCategories[0]['name'])) {
+            if (!$categoryExists) {
                 $hasCustomCategory = true;
-                $customCategory = $jobCategories[0];
+                $customCategory = $jobCategory;
             }
         }
         
         $data = [
             'pageTitle' => 'Edit Job',
             'job' => $job,
-            'jobCategories' => $jobCategories,
+            'jobCategory' => $jobCategory,
             'categories' => $categories,
             'hasCustomCategory' => $hasCustomCategory,
             'customCategory' => $customCategory,
@@ -334,10 +350,10 @@ class AdminController extends Controller {
         ]);
         
         if ($updated) {
-            // Update job category if we have one
+            // Update job category if we have one - using the new category_id field
             if ($categoryId) {
-                $this->jobModel->deleteJobCategories($jobId);
-                $this->jobModel->addJobCategory($jobId, $categoryId);
+                // Direct update to the category_id field
+                $this->jobModel->updateJobCategory($jobId, $categoryId);
             }
             
             $_SESSION['success'] = 'Job updated successfully';
@@ -349,7 +365,7 @@ class AdminController extends Controller {
     }
     
     // Approve job
-    private function approveJob($id) {
+    public function approveJob($id) {
         $job = $this->jobModel->getJobById($id);
         
         if (!$job) {
@@ -358,7 +374,19 @@ class AdminController extends Controller {
             return;
         }
         
-        if ($this->jobModel->updateJobStatus($id, 'active')) {
+        // Set admin_status to approved AND change job status to active
+        if ($this->jobModel->updateAdminStatus($id, 'approved') && 
+            $this->jobModel->updateJobStatus($id, 'active')) {
+            
+            // Create notification for employer
+            $this->notificationModel->createNotification([
+                'user_id' => $job['employer_id'],
+                'title' => 'Job Post Approved',
+                'message' => 'Your job posting "' . $job['title'] . '" has been approved and is now visible to job seekers.',
+                'type' => 'approval',
+                'reference_id' => $id
+            ]);
+            
             $_SESSION['success'] = 'Job approved successfully';
         } else {
             $_SESSION['error'] = 'Failed to approve job';
@@ -368,7 +396,7 @@ class AdminController extends Controller {
     }
     
     // Reject job
-    private function rejectJob($id) {
+    public function rejectJob($id) {
         $job = $this->jobModel->getJobById($id);
         
         if (!$job) {
@@ -377,7 +405,19 @@ class AdminController extends Controller {
             return;
         }
         
-        if ($this->jobModel->updateJobStatus($id, 'rejected')) {
+        // Update admin_status to rejected AND change job status to rejected
+        if ($this->jobModel->updateAdminStatus($id, 'rejected') && 
+            $this->jobModel->updateJobStatus($id, 'rejected')) {
+            
+            // Create notification for employer
+            $this->notificationModel->createNotification([
+                'user_id' => $job['employer_id'],
+                'title' => 'Job Post Rejected',
+                'message' => 'Your job posting "' . $job['title'] . '" has been rejected. Please review and update it before resubmitting.',
+                'type' => 'approval',
+                'reference_id' => $id
+            ]);
+            
             $_SESSION['success'] = 'Job rejected';
         } else {
             $_SESSION['error'] = 'Failed to reject job';
@@ -531,14 +571,14 @@ class AdminController extends Controller {
         
         // Get filter parameter
         $filter = $_GET['filter'] ?? '';
-        
-        // Get applications based on filter
+    
+        // Get applications based on admin_status filter
         if ($filter === 'pending') {
-            $applications = $this->applicationModel->getApplicationsByStatus('pending');
+            $applications = $this->applicationModel->getApplicationsByAdminStatus('pending');
         } else if ($filter === 'approved') {
-            $applications = $this->applicationModel->getApplicationsByStatus('approved');
+            $applications = $this->applicationModel->getApplicationsByAdminStatus('approved');
         } else if ($filter === 'rejected') {
-            $applications = $this->applicationModel->getApplicationsByStatus('rejected');
+            $applications = $this->applicationModel->getApplicationsByAdminStatus('rejected');
         } else {
             $applications = $this->applicationModel->getAllApplications();
         }
@@ -551,7 +591,7 @@ class AdminController extends Controller {
         $this->view('admin/applications', $data, 'admin');
     }
     
-    private function approveApplication($id) {
+    public function approveApplication($id) {
         $application = $this->applicationModel->getApplicationById($id);
         
         if (!$application) {
@@ -560,7 +600,20 @@ class AdminController extends Controller {
             return;
         }
         
-        if ($this->applicationModel->updateStatus($id, 'approved')) {
+        // Update admin_status to approved
+        if ($this->applicationModel->updateAdminStatus($id, 'approved')) {
+            // Get job details
+            $job = $this->jobModel->getJobById($application['job_id']);
+            
+            // Create notification for employer
+            $this->notificationModel->createNotification([
+                'user_id' => $job['employer_id'],
+                'title' => 'New Application',
+                'message' => $application['full_name'] . ' has applied for your "' . $job['title'] . '" position',
+                'type' => 'application',
+                'reference_id' => $id
+            ]);
+            
             $_SESSION['success'] = 'Application approved successfully';
         } else {
             $_SESSION['error'] = 'Failed to approve application';
@@ -569,7 +622,7 @@ class AdminController extends Controller {
         $this->redirect('admin/applications');
     }
     
-    private function rejectApplication($id) {
+    public function rejectApplication($id) {
         $application = $this->applicationModel->getApplicationById($id);
         
         if (!$application) {
@@ -578,7 +631,17 @@ class AdminController extends Controller {
             return;
         }
         
-        if ($this->applicationModel->updateStatus($id, 'rejected')) {
+        // Update admin_status to rejected
+        if ($this->applicationModel->updateAdminStatus($id, 'rejected')) {
+            // Create notification for seeker
+            $this->notificationModel->createNotification([
+                'user_id' => $application['seeker_id'],
+                'title' => 'Application Not Forwarded',
+                'message' => 'Your application for the job "' . $application['job_title'] . '" was not forwarded to the employer.',
+                'type' => 'application',
+                'reference_id' => $id
+            ]);
+            
             $_SESSION['success'] = 'Application rejected';
         } else {
             $_SESSION['error'] = 'Failed to reject application';

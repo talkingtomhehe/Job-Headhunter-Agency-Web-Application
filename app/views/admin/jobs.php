@@ -30,6 +30,7 @@
                             <th>Applications</th>
                             <th>Posted</th>
                             <th>Status</th>
+                            <th>Admin Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -55,6 +56,11 @@
                                         <?= ucfirst($job['status']) ?>
                                     </span>
                                 </td>
+                                <td>
+                                    <span class="status-badge admin-status-<?= strtolower($job['admin_status']) ?>">
+                                        <?= ucfirst($job['admin_status']) ?>
+                                    </span>
+                                </td>
                                 <td class="actions-cell">
                                     <a href="<?= SITE_URL ?>/admin/jobs/view/<?= $job['job_id'] ?>" class="btn-icon" title="View Job">
                                         <i class="fa-solid fa-eye"></i>
@@ -62,15 +68,13 @@
                                     <a href="<?= SITE_URL ?>/admin/jobs/edit/<?= $job['job_id'] ?>" class="btn-icon" title="Edit Job">
                                         <i class="fa-solid fa-pencil"></i>
                                     </a>
-                                    <?php if ($job['status'] === 'pending'): ?>
-                                        <form action="<?= SITE_URL ?>/admin/jobs/approve" method="POST" style="display: inline;">
-                                            <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
+                                    <?php if ($job['admin_status'] === 'pending'): ?>
+                                        <form action="<?= SITE_URL ?>/admin/jobs/approve/<?= $job['job_id'] ?>" method="POST" style="display: inline;">
                                             <button type="submit" class="btn-icon btn-approve-icon" title="Approve Job">
                                                 <i class="fa-solid fa-check"></i>
                                             </button>
                                         </form>
-                                        <form action="<?= SITE_URL ?>/admin/jobs/reject" method="POST" style="display: inline;">
-                                            <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
+                                        <form action="<?= SITE_URL ?>/admin/jobs/reject/<?= $job['job_id'] ?>" method="POST" style="display: inline;">
                                             <button type="submit" class="btn-icon btn-reject-icon" title="Reject Job">
                                                 <i class="fa-solid fa-times"></i>
                                             </button>

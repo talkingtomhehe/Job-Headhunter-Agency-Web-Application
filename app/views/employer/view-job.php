@@ -6,6 +6,18 @@
             </a>
         </div>
     </div>
+
+    <?php if ($job['admin_status'] === 'pending'): ?>
+    <div class="notice-banner pending-banner">
+        <i class="fa-solid fa-clock"></i>
+        <span>This job is awaiting admin approval and is not yet visible to job seekers.</span>
+    </div>
+    <?php elseif ($job['admin_status'] === 'rejected'): ?>
+    <div class="notice-banner rejected-banner">
+        <i class="fa-solid fa-times-circle"></i>
+        <span>This job has been rejected by the admin. Please review and update it before resubmitting.</span>
+    </div>
+    <?php endif; ?>
     
     <div class="dashboard-card">
         <div class="card-header">
@@ -26,16 +38,28 @@
                         <i class="fa-solid fa-caret-down" style="margin-left: 5px; font-size: 0.8rem;"></i>
                     </button>
                     <div class="dropdown-content">
+                        <?php if ($job['admin_status'] === 'approved'): ?>
                         <form action="<?= SITE_URL ?>/employer/jobs/updateStatus" method="POST">
                             <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
                             <input type="hidden" name="status" value="active">
                             <button type="submit" class="dropdown-item <?= $job['status'] == 'active' ? 'active' : '' ?>">Active</button>
                         </form>
+                        <?php endif; ?>
+                        
                         <form action="<?= SITE_URL ?>/employer/jobs/updateStatus" method="POST">
                             <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
                             <input type="hidden" name="status" value="pending">
-                            <button type="submit" class="dropdown-item <?= $job['status'] == 'pending' ? 'active' : '' ?>">Draft</button>
+                            <button type="submit" class="dropdown-item <?= $job['status'] == 'pending' ? 'active' : '' ?>">
+                                <?= $job['admin_status'] === 'rejected' ? 'Resubmit for Approval' : 'Pending' ?>
+                            </button>
                         </form>
+                        
+                        <form action="<?= SITE_URL ?>/employer/jobs/updateStatus" method="POST">
+                            <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
+                            <input type="hidden" name="status" value="draft">
+                            <button type="submit" class="dropdown-item <?= $job['status'] == 'draft' ? 'active' : '' ?>">Draft</button>
+                        </form>
+                        
                         <form action="<?= SITE_URL ?>/employer/jobs/updateStatus" method="POST">
                             <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
                             <input type="hidden" name="status" value="closed">

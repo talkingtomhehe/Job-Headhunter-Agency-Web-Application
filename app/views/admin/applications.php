@@ -1,9 +1,9 @@
 <div class="filter-bar">
     <div class="filter-options">
         <a href="<?= SITE_URL ?>/admin/applications" class="filter-btn <?= empty($_GET['filter']) ? 'active' : '' ?>">All Applications</a>
-        <a href="<?= SITE_URL ?>/admin/applications?filter=pending" class="filter-btn <?= ($_GET['filter'] ?? '') === 'pending' ? 'active' : '' ?>">Pending</a>
-        <a href="<?= SITE_URL ?>/admin/applications?filter=approved" class="filter-btn <?= ($_GET['filter'] ?? '') === 'approved' ? 'active' : '' ?>">Approved</a>
-        <a href="<?= SITE_URL ?>/admin/applications?filter=rejected" class="filter-btn <?= ($_GET['filter'] ?? '') === 'rejected' ? 'active' : '' ?>">Rejected</a>
+        <a href="<?= SITE_URL ?>/admin/applications?filter=pending" class="filter-btn <?= ($_GET['filter'] ?? '') === 'pending' ? 'active' : '' ?>">Pending Admin Review</a>
+        <a href="<?= SITE_URL ?>/admin/applications?filter=approved" class="filter-btn <?= ($_GET['filter'] ?? '') === 'approved' ? 'active' : '' ?>">Admin Approved</a>
+        <a href="<?= SITE_URL ?>/admin/applications?filter=rejected" class="filter-btn <?= ($_GET['filter'] ?? '') === 'rejected' ? 'active' : '' ?>">Admin Rejected</a>
     </div>
 </div>
 
@@ -56,7 +56,7 @@
                                     <a href="<?= SITE_URL ?>/admin/applications/edit/<?= $application['application_id'] ?>" class="btn-icon" title="Edit Application">
                                         <i class="fa-solid fa-pencil"></i>
                                     </a>
-                                    <?php if ($application['status'] === 'pending'): ?>
+                                    <?php if ($application['admin_status'] === 'pending'): ?>
                                         <form action="<?= SITE_URL ?>/admin/applications/approve" method="POST" style="display: inline;">
                                             <input type="hidden" name="application_id" value="<?= $application['application_id'] ?>">
                                             <button type="submit" class="btn-icon btn-approve-icon" title="Approve Application">

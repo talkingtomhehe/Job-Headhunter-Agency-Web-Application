@@ -30,14 +30,20 @@ class EmployerController extends Controller {
     public function index() {
         $employerId = $_SESSION['user_id'];
         
+        // Get job status counts directly from our updated method
+        $jobStats = $this->jobModel->getJobStatusCountsByEmployer($employerId);
+        
+        // For active jobs, we should only count those that are both 'active' status and 'approved' by admin
+        $activeJobs = $this->jobModel->countActiveApprovedJobsByEmployer($employerId);
+        
         // Get stats for dashboard
         $data = [
-            'activeJobs' => $this->jobModel->countActiveJobsByEmployer($employerId),
+            'activeJobs' => $activeJobs,
             'totalJobs' => $this->jobModel->countAllJobsByEmployer($employerId),
             'totalApplications' => $this->applicationModel->countApplicationsByEmployer($employerId),
             'todayApplications' => $this->applicationModel->countTodayApplicationsByEmployer($employerId),
             'applicationStats' => $this->applicationModel->getApplicationStatusCountsByEmployer($employerId),
-            'jobStats' => $this->jobModel->getJobStatusCountsByEmployer($employerId),
+            'jobStats' => $jobStats,
             'recentApplications' => $this->applicationModel->getRecentApplicationsByEmployer($employerId, 5),
             'pageTitle' => 'Employer Dashboard'
         ];
@@ -182,7 +188,7 @@ class EmployerController extends Controller {
         $hideSalary = isset($_POST['hide_salary']) ? 1 : 0;
         $categoryId = $_POST['category_id'] ?? null;
         $newCategory = $_POST['new_category'] ?? null;
-        $status = $_POST['status'] ?? 'active';
+        $status = ($_POST['status'] ?? 'pending') === 'pending' ? 'pending' : 'draft';
         $deadline = !empty($_POST['application_deadline']) ? $_POST['application_deadline'] : null;
         
         // Handle new category creation
@@ -215,10 +221,11 @@ class EmployerController extends Controller {
             return;
         }
         
-        // Create job post
+        // Create job post with category_id
         $jobId = $this->jobModel->createJob([
             'company_id' => $companyId,
             'employer_id' => $employerId,
+            'category_id' => $categoryId,
             'title' => $title,
             'description' => $description,
             'requirements' => $requirements,
@@ -236,11 +243,6 @@ class EmployerController extends Controller {
         ]);
         
         if($jobId) {
-            // Add job categories if provided
-            if(!empty($categoryId)) {
-                $this->jobModel->addJobCategory($jobId, $categoryId);
-            }
-            
             $_SESSION['success'] = 'Job posted successfully';
             $this->redirect('employer/jobs');
         } else {
@@ -260,35 +262,40 @@ class EmployerController extends Controller {
             return;
         }
         
-        // Get categories and check if the job's category exists
+        // Get categories
         $categories = $this->jobModel->getCategories();
-        $jobCategories = $this->jobModel->getJobCategories($id);
         
-        // Check if job has a category that's not in the list
+        // Get job's current category
+        $jobCategory = null;
         $hasCustomCategory = false;
-        $customCategory = null;
         
-        if (!empty($jobCategories)) {
+        if (!empty($job['category_id'])) {
+            // Find the category in the list
             $categoryExists = false;
             foreach ($categories as $category) {
-                if ($category['category_id'] == $jobCategories[0]['category_id']) {
+                if ($category['category_id'] == $job['category_id']) {
+                    $jobCategory = $category;
                     $categoryExists = true;
                     break;
                 }
             }
             
-            if (!$categoryExists && !empty($jobCategories[0]['name'])) {
-                $hasCustomCategory = true;
-                $customCategory = $jobCategories[0];
+            // If category not in standard list, it's a custom one
+            if (!$categoryExists) {
+                // Get the custom category details
+                $customCategory = $this->jobModel->getCategoryById($job['category_id']);
+                if ($customCategory) {
+                    $hasCustomCategory = true;
+                    $jobCategory = $customCategory;
+                }
             }
         }
         
         $data = [
             'job' => $job,
-            'jobCategories' => $jobCategories,
+            'jobCategory' => $jobCategory,
             'categories' => $categories,
             'hasCustomCategory' => $hasCustomCategory,
-            'customCategory' => $customCategory,
             'pageTitle' => 'Edit Job',
             'workModels' => $this->jobModel->getWorkModels(),
             'experienceLevels' => $this->jobModel->getExperienceLevels()
@@ -326,7 +333,7 @@ class EmployerController extends Controller {
         $salaryMin = !empty($_POST['salary_min']) ? $_POST['salary_min'] : null;
         $salaryMax = !empty($_POST['salary_max']) ? $_POST['salary_max'] : null;
         $hideSalary = isset($_POST['hide_salary']) ? 1 : 0;
-        $categoryId = $_POST['category_id'] ?? '';
+        $categoryId = $_POST['category_id'] ?? null;
         $newCategory = $_POST['new_category'] ?? '';
         $status = $_POST['status'] ?? 'active';
         $deadline = !empty($_POST['application_deadline']) ? $_POST['application_deadline'] : null;
@@ -335,7 +342,7 @@ class EmployerController extends Controller {
         if (!empty($newCategory) && empty($categoryId)) {
             $categoryId = $this->jobModel->createCategory($newCategory);
         }
-
+    
         // Handle PDF upload if new one provided
         $pdfPath = $job['pdf_path']; // Keep existing by default
         if(isset($_FILES['job_pdf']) && $_FILES['job_pdf']['error'] == 0) {
@@ -354,13 +361,14 @@ class EmployerController extends Controller {
             }
         }
         
-        // Update job post with ALL form fields
+        // Update job post with ALL form fields including category_id
         $updated = $this->jobModel->updateJob($jobId, [
             'title' => $title,
             'description' => $description,
             'requirements' => $requirements,
             'benefits' => $benefits,
             'job_type' => $jobType,
+            'category_id' => $categoryId,  // Now included directly
             'work_model' => $workModel,
             'experience_level' => $experienceLevel,
             'location' => $location,
@@ -373,14 +381,6 @@ class EmployerController extends Controller {
         ]);
         
         if($updated) {
-            // Update job category
-            if (!empty($categoryId)) {
-                // First delete existing categories
-                $this->jobModel->deleteJobCategories($jobId);
-                // Then add the new one
-                $this->jobModel->addJobCategory($jobId, $categoryId);
-            }
-            
             $_SESSION['success'] = 'Job updated successfully';
         } else {
             $_SESSION['error'] = 'Failed to update job';
@@ -405,6 +405,16 @@ class EmployerController extends Controller {
             $_SESSION['error'] = 'Unauthorized access';
             $this->redirect('employer/jobs');
             return;
+        }
+        
+        if ($status === 'active' && $job['admin_status'] !== 'approved') {
+            $status = 'pending';
+        }
+        
+        // If changing to 'pending', also set admin_status back to 'pending'
+        if ($status === 'pending' && ($job['status'] === 'draft' || $job['status'] === 'rejected')) {
+            // Reset admin_status to pending when resubmitting a draft or rejected job
+            $this->jobModel->updateAdminStatus($jobId, 'pending');
         }
         
         if($this->jobModel->updateStatus($jobId, $status)) {

@@ -8,10 +8,10 @@ class JobPost extends Model {
     // Get all jobs
     public function getJobs($limit = null) {
         $query = "SELECT j.*, c.company_name, c.logo_path 
-                  FROM job_posts j 
-                  JOIN companies c ON j.company_id = c.company_id 
-                  WHERE j.status = 'active' 
-                  ORDER BY j.created_at DESC";
+                    FROM job_posts j 
+                    JOIN companies c ON j.company_id = c.company_id 
+                    WHERE j.admin_status = 'approved' AND j.status != 'draft' AND j.status != 'closed'
+                    ORDER BY j.created_at DESC";
                   
         if($limit) {
             $query .= " LIMIT ?";
@@ -42,7 +42,8 @@ class JobPost extends Model {
     // Get jobs by employer ID
     public function getJobsByEmployer($employerId) {
         $query = "SELECT j.*, c.company_name, 
-                  (SELECT COUNT(*) FROM job_applications a WHERE a.job_id = j.job_id) as application_count 
+                  (SELECT COUNT(*) FROM job_applications a 
+                   WHERE a.job_id = j.job_id AND a.admin_status = 'approved') as application_count 
                   FROM job_posts j 
                   JOIN companies c ON j.company_id = c.company_id 
                   WHERE j.employer_id = ? 
@@ -66,21 +67,29 @@ class JobPost extends Model {
     
     // Create job post
     public function createJob($data) {
-        $query = "INSERT INTO job_posts (company_id, employer_id, title, description, 
-                  requirements, job_type, location, salary_min, salary_max, status, created_at) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+        $query = "INSERT INTO job_posts (company_id, employer_id, category_id, title, description, 
+                  requirements, benefits, job_type, work_model, experience_level, location, 
+                  salary_min, salary_max, hide_salary, pdf_path, status, admin_status, application_deadline, created_at) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', ?, NOW())";
                   
         $this->db->query($query);
         $this->db->bind(1, $data['company_id']);
         $this->db->bind(2, $data['employer_id']);
-        $this->db->bind(3, $data['title']);
-        $this->db->bind(4, $data['description']);
-        $this->db->bind(5, $data['requirements']);
-        $this->db->bind(6, $data['job_type']);
-        $this->db->bind(7, $data['location']);
-        $this->db->bind(8, $data['salary_min']);
-        $this->db->bind(9, $data['salary_max']);
-        $this->db->bind(10, $data['status']);
+        $this->db->bind(3, $data['category_id'] ?? null);
+        $this->db->bind(4, $data['title']);
+        $this->db->bind(5, $data['description']);
+        $this->db->bind(6, $data['requirements']);
+        $this->db->bind(7, $data['benefits'] ?? null);
+        $this->db->bind(8, $data['job_type']);
+        $this->db->bind(9, $data['work_model'] ?? null);
+        $this->db->bind(10, $data['experience_level'] ?? null);
+        $this->db->bind(11, $data['location']);
+        $this->db->bind(12, $data['salary_min']);
+        $this->db->bind(13, $data['salary_max']);
+        $this->db->bind(14, $data['hide_salary'] ?? 0);
+        $this->db->bind(15, $data['pdf_path']);
+        $this->db->bind(16, $data['status']);
+        $this->db->bind(17, $data['application_deadline'] ?? null);
         
         if($this->db->execute()) {
             return $this->db->lastInsertId();
@@ -97,6 +106,7 @@ class JobPost extends Model {
                   requirements = ?,
                   benefits = ?,
                   job_type = ?, 
+                  category_id = ?,
                   work_model = ?,
                   experience_level = ?,
                   location = ?, 
@@ -115,24 +125,17 @@ class JobPost extends Model {
         $this->db->bind(3, $data['requirements']);
         $this->db->bind(4, $data['benefits'] ?? null);
         $this->db->bind(5, $data['job_type']);
-        $this->db->bind(6, $data['work_model'] ?? null);
-        $this->db->bind(7, $data['experience_level'] ?? null);
-        $this->db->bind(8, $data['location']);
-        $this->db->bind(9, $data['salary_min']);
-        $this->db->bind(10, $data['salary_max']);
-        $this->db->bind(11, $data['hide_salary'] ?? 0);
-        $this->db->bind(12, $data['pdf_path']);
-        $this->db->bind(13, $data['status']);
-        $this->db->bind(14, $data['application_deadline'] ?? null);
-        $this->db->bind(15, $jobId);
-        
-        return $this->db->execute();
-    }
-
-    public function deleteJobCategories($jobId) {
-        $query = "DELETE FROM job_post_categories WHERE job_id = ?";
-        $this->db->query($query);
-        $this->db->bind(1, $jobId);
+        $this->db->bind(6, $data['category_id'] ?? null);
+        $this->db->bind(7, $data['work_model'] ?? null);
+        $this->db->bind(8, $data['experience_level'] ?? null);
+        $this->db->bind(9, $data['location']);
+        $this->db->bind(10, $data['salary_min']);
+        $this->db->bind(11, $data['salary_max']);
+        $this->db->bind(12, $data['hide_salary'] ?? 0);
+        $this->db->bind(13, $data['pdf_path']);
+        $this->db->bind(14, $data['status']);
+        $this->db->bind(15, $data['application_deadline'] ?? null);
+        $this->db->bind(16, $jobId);
         
         return $this->db->execute();
     }
@@ -142,15 +145,6 @@ class JobPost extends Model {
         $query = "DELETE FROM job_posts WHERE job_id = ?";
         $this->db->query($query);
         $this->db->bind(1, $jobId);
-        
-        return $this->db->execute();
-    }
-
-    public function addJobCategory($jobId, $categoryId) {
-        $query = "INSERT INTO job_post_categories (job_id, category_id) VALUES (?, ?)";
-        $this->db->query($query);
-        $this->db->bind(1, $jobId);
-        $this->db->bind(2, $categoryId);
         
         return $this->db->execute();
     }
@@ -169,9 +163,9 @@ class JobPost extends Model {
     // Search jobs
     public function searchJobs($keyword, $location, $category, $workModel) {
         $query = "SELECT j.*, c.company_name, c.logo_path 
-                  FROM job_posts j 
-                  JOIN companies c ON j.company_id = c.company_id 
-                  WHERE j.status = 'active'";
+                    FROM job_posts j 
+                    JOIN companies c ON j.company_id = c.company_id 
+                    WHERE j.status = 'active' AND j.admin_status = 'approved'";
                   
         $params = [];
         
@@ -211,29 +205,29 @@ class JobPost extends Model {
     }
 
     public function getJobStatusCountsByEmployer($employerId) {
+        $statuses = ['active', 'pending', 'rejected', 'draft', 'closed'];
         $result = [];
         
-        // Get draft jobs (assuming 'pending' status is equivalent to 'draft')
-        $query = "SELECT COUNT(*) as count FROM job_posts 
-                  WHERE employer_id = ? AND status = 'pending'";
-        $this->db->query($query);
-        $this->db->bind(1, $employerId);
-        $draftResult = $this->db->single();
-        $result['draft'] = $draftResult['count'] ?? 0;
-        
-        // Get expired/closed jobs
-        $query = "SELECT COUNT(*) as count FROM job_posts 
-                  WHERE employer_id = ? AND status = 'closed'";
-        $this->db->query($query);
-        $this->db->bind(1, $employerId);
-        $expiredResult = $this->db->single();
-        $result['expired'] = $expiredResult['count'] ?? 0;
-        
-        // Get filled jobs (for now, we'll use the same count as expired)
-        // Since there's no 'filled' status in the schema
-        $result['filled'] = $expiredResult['count'] ?? 0;
+        foreach ($statuses as $status) {
+            $query = "SELECT COUNT(*) as count FROM job_posts 
+                      WHERE employer_id = ? AND status = ?";
+            $this->db->query($query);
+            $this->db->bind(1, $employerId);
+            $this->db->bind(2, $status);
+            $statusResult = $this->db->single();
+            $result[$status] = $statusResult['count'] ?? 0;
+        }
         
         return $result;
+    }
+
+    public function countActiveApprovedJobsByEmployer($employerId) {
+        $query = "SELECT COUNT(*) as count FROM job_posts 
+                  WHERE employer_id = ? AND status = 'active' AND admin_status = 'approved'";
+        $this->db->query($query);
+        $this->db->bind(1, $employerId);
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
     }
     
     public function countActiveJobsByEmployer($employerId) {
@@ -247,31 +241,28 @@ class JobPost extends Model {
 
     // Get all work models
     public function getWorkModels() {
-        $query = "SELECT * FROM work_models ORDER BY name";
-        $this->db->query($query);
-        return $this->db->resultSet();
+        // Define work model options as an array instead of querying a database table
+        return [
+            ['id' => 'remote', 'name' => 'Remote'],
+            ['id' => 'onsite', 'name' => 'On-site'],
+            ['id' => 'hybrid', 'name' => 'Hybrid']
+        ];
     }
-
-    // Get all experience levels
+    
     public function getExperienceLevels() {
-        $query = "SELECT * FROM experience_levels ORDER BY id";
-        $this->db->query($query);
-        return $this->db->resultSet();
+        // Define experience level options as an array instead of querying a database table
+        return [
+            ['id' => 'entry', 'name' => 'Entry Level'],
+            ['id' => 'mid', 'name' => 'Mid Level'], 
+            ['id' => 'senior', 'name' => 'Senior Level'],
+            ['id' => 'executive', 'name' => 'Executive']
+        ];
     }
 
     // Get all categories
     public function getCategories() {
         $query = "SELECT * FROM job_categories ORDER BY name";
         $this->db->query($query);
-        return $this->db->resultSet();
-    }
-
-    public function getJobCategories($jobId) {
-        $query = "SELECT c.* FROM job_post_categories jpc 
-                  JOIN job_categories c ON jpc.category_id = c.category_id 
-                  WHERE jpc.job_id = ?";
-        $this->db->query($query);
-        $this->db->bind(1, $jobId);
         return $this->db->resultSet();
     }
 
@@ -417,5 +408,65 @@ class JobPost extends Model {
         
         $result = $this->db->single();
         return $result['count'] ?? 0;
+    }
+
+    public function getCategoryById($categoryId) {
+        $query = "SELECT * FROM job_categories WHERE category_id = ?";
+        $this->db->query($query);
+        $this->db->bind(1, $categoryId);
+        return $this->db->single();
+    }
+
+    // Helper method to get work model display name
+    public function getWorkModelName($modelId) {
+        $models = [
+            'remote' => 'Remote',
+            'onsite' => 'On-site',
+            'hybrid' => 'Hybrid'
+        ];
+        
+        return $models[$modelId] ?? 'Unknown';
+    }
+
+    // Helper method to get experience level display name
+    public function getExperienceLevelName($levelId) {
+        $levels = [
+            'entry' => 'Entry Level',
+            'mid' => 'Mid Level',
+            'senior' => 'Senior Level',
+            'executive' => 'Executive'
+        ];
+        
+        return $levels[$levelId] ?? 'Unknown';
+    }
+
+    public function updateAdminStatus($jobId, $status) {
+        $query = "UPDATE job_posts SET admin_status = ?, updated_at = NOW() WHERE job_id = ?";
+        $this->db->query($query);
+        $this->db->bind(1, $status);
+        $this->db->bind(2, $jobId);
+        
+        return $this->db->execute();
+    }
+
+    public function getJobsByAdminStatus($adminStatus) {
+        $query = "SELECT j.*, c.company_name, 
+                (SELECT COUNT(*) FROM job_applications a WHERE a.job_id = j.job_id) as application_count
+                FROM job_posts j 
+                JOIN companies c ON j.company_id = c.company_id 
+                WHERE j.admin_status = ?
+                ORDER BY j.created_at DESC";
+        $this->db->query($query);
+        $this->db->bind(1, $adminStatus);
+        return $this->db->resultSet();
+    }
+
+    public function updateJobCategory($jobId, $categoryId) {
+        $query = "UPDATE job_posts SET category_id = ? WHERE job_id = ?";
+        $this->db->query($query);
+        $this->db->bind(1, $categoryId);
+        $this->db->bind(2, $jobId);
+        
+        return $this->db->execute();
     }
 }

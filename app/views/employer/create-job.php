@@ -45,20 +45,20 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="work_model">Work Model <span class="required">*</span></label>
-                    <select id="work_model" name="work_model" required>
-                        <option value="">Select work model</option>
+                    <select name="work_model" id="work_model">
+                        <option value="">Select Work Model</option>
                         <?php foreach ($workModels as $model): ?>
-                            <option value="<?= $model['slug'] ?>"><?= htmlspecialchars($model['name']) ?></option>
+                            <option value="<?= $model['id'] ?>" <?= (!empty($job['work_model']) && $job['work_model'] == $model['id']) ? 'selected' : '' ?>><?= htmlspecialchars($model['name']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="experience_level">Experience Level <span class="required">*</span></label>
-                    <select id="experience_level" name="experience_level" required>
-                        <option value="">Select experience level</option>
+                    <select name="experience_level" id="experience_level">
+                        <option value="">Select Experience Level</option>
                         <?php foreach ($experienceLevels as $level): ?>
-                            <option value="<?= $level['slug'] ?>"><?= htmlspecialchars($level['name']) ?></option>
+                            <option value="<?= $level['id'] ?>" <?= (!empty($job['experience_level']) && $job['experience_level'] == $level['id']) ? 'selected' : '' ?>><?= htmlspecialchars($level['name']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -136,26 +136,26 @@
             <h3>Job Status</h3>
             <div class="job-status-selector">
                 <div class="status-option">
-                    <input type="radio" id="status_active" name="status" value="active" checked class="status-radio">
-                    <label for="status_active" class="status-label status-active">
+                    <input type="radio" id="status_submit" name="status" value="pending" checked class="status-radio">
+                    <label for="status_submit" class="status-label status-pending">
                         <div class="status-icon">
-                            <i class="fa-solid fa-check-circle"></i>
+                            <i class="fa-solid fa-paper-plane"></i>
                         </div>
                         <div class="status-info">
-                            <span class="status-title">Active</span>
-                            <span class="status-description">Publish immediately and start receiving applications</span>
+                            <span class="status-title">Submit for Review</span>
+                            <span class="status-description">Send to admin for approval</span>
                         </div>
                     </label>
                 </div>
                 
                 <div class="status-option">
-                    <input type="radio" id="status_draft" name="status" value="pending" class="status-radio">
+                    <input type="radio" id="status_draft" name="status" value="draft" class="status-radio">
                     <label for="status_draft" class="status-label status-draft">
                         <div class="status-icon">
                             <i class="fa-solid fa-file-lines"></i>
                         </div>
                         <div class="status-info">
-                            <span class="status-title">Draft</span>
+                            <span class="status-title">Save as Draft</span>
                             <span class="status-description">Save as draft to review or edit later</span>
                         </div>
                     </label>

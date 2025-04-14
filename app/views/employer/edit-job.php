@@ -31,11 +31,11 @@
                     <select id="category_id" name="category_id" required>
                         <option value="">Select a category</option>
                         <?php foreach ($categories as $category): ?>
-                            <option value="<?= $category['category_id'] ?>" <?= (!empty($jobCategories) && isset($jobCategories[0]['category_id']) && $jobCategories[0]['category_id'] == $category['category_id']) ? 'selected' : '' ?>><?= htmlspecialchars($category['name']) ?></option>
+                            <option value="<?= $category['category_id'] ?>" <?= (!empty($job['category_id']) && $job['category_id'] == $category['category_id']) ? 'selected' : '' ?>><?= htmlspecialchars($category['name']) ?></option>
                         <?php endforeach; ?>
                         
                         <?php if ($hasCustomCategory): ?>
-                            <option value="<?= $customCategory['category_id'] ?>" selected><?= htmlspecialchars($customCategory['name']) ?></option>
+                            <option value="<?= $jobCategory['category_id'] ?>" selected><?= htmlspecialchars($jobCategory['name']) ?></option>
                         <?php endif; ?>
                     </select>
                 </div>
@@ -59,20 +59,20 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="work_model">Work Model <span class="required">*</span></label>
-                    <select id="work_model" name="work_model" required>
-                        <option value="">Select work model</option>
+                    <select name="work_model" id="work_model">
+                        <option value="">Select Work Model</option>
                         <?php foreach ($workModels as $model): ?>
-                            <option value="<?= $model['slug'] ?>" <?= isset($job['work_model']) && $job['work_model'] == $model['slug'] ? 'selected' : '' ?>><?= htmlspecialchars($model['name']) ?></option>
+                            <option value="<?= $model['id'] ?>" <?= (!empty($job['work_model']) && $job['work_model'] == $model['id']) ? 'selected' : '' ?>><?= htmlspecialchars($model['name']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="experience_level">Experience Level <span class="required">*</span></label>
-                    <select id="experience_level" name="experience_level" required>
-                        <option value="">Select experience level</option>
+                    <select name="experience_level" id="experience_level">
+                        <option value="">Select Experience Level</option>
                         <?php foreach ($experienceLevels as $level): ?>
-                            <option value="<?= $level['slug'] ?>" <?= isset($job['experience_level']) && $job['experience_level'] == $level['slug'] ? 'selected' : '' ?>><?= htmlspecialchars($level['name']) ?></option>
+                            <option value="<?= $level['id'] ?>" <?= (!empty($job['experience_level']) && $job['experience_level'] == $level['id']) ? 'selected' : '' ?>><?= htmlspecialchars($level['name']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -154,6 +154,7 @@
         <div class="form-section">
             <h3>Job Status</h3>
             <div class="job-status-selector">
+                <?php if ($job['admin_status'] === 'approved' && $job['status'] === 'active'): ?>
                 <div class="status-option">
                     <input type="radio" id="status_active" name="status" value="active" <?= $job['status'] == 'active' ? 'checked' : '' ?> class="status-radio">
                     <label for="status_active" class="status-label status-active">
@@ -162,13 +163,46 @@
                         </div>
                         <div class="status-info">
                             <span class="status-title">Active</span>
-                            <span class="status-description">Publish immediately and start receiving applications</span>
+                            <span class="status-description">Job is published and visible to applicants</span>
                         </div>
                     </label>
                 </div>
+                <?php endif; ?>
+                
+                <?php if ($job['admin_status'] !== 'approved' || $job['status'] !== 'active'): ?>
+                <div class="status-option">
+                    <input type="radio" id="status_submit" name="status" value="pending" <?= $job['status'] == 'pending' ? 'checked' : '' ?> class="status-radio">
+                    <label for="status_submit" class="status-label status-pending">
+                        <div class="status-icon">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-title">
+                                <?= $job['admin_status'] === 'rejected' ? 'Resubmit for Approval' : 'Submit for Review' ?>
+                            </span>
+                            <span class="status-description">Send to admin for approval</span>
+                        </div>
+                    </label>
+                </div>
+                <?php endif; ?>
+                
+                <?php if ($job['admin_status'] === 'rejected'): ?>
+                <div class="status-option">
+                    <input type="radio" id="status_rejected" name="status" value="rejected" <?= $job['status'] == 'rejected' ? 'checked' : '' ?> class="status-radio" disabled>
+                    <label for="status_rejected" class="status-label status-rejected">
+                        <div class="status-icon">
+                            <i class="fa-solid fa-times-circle"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-title">Rejected by Admin</span>
+                            <span class="status-description">Edit this job and resubmit for approval</span>
+                        </div>
+                    </label>
+                </div>
+                <?php endif; ?>
                 
                 <div class="status-option">
-                    <input type="radio" id="status_draft" name="status" value="pending" <?= $job['status'] == 'pending' ? 'checked' : '' ?> class="status-radio">
+                    <input type="radio" id="status_draft" name="status" value="draft" <?= $job['status'] == 'draft' ? 'checked' : '' ?> class="status-radio">
                     <label for="status_draft" class="status-label status-draft">
                         <div class="status-icon">
                             <i class="fa-solid fa-file-lines"></i>
