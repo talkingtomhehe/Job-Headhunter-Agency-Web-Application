@@ -4,7 +4,7 @@
         <div class="container">
             <!-- Back to jobs link -->
             <div class="back-link">
-                <a href="<?= SITE_URL ?>/jobs" class="btn-back">
+                <a href="<?= SITE_URL ?>/job" class="btn-back">
                     <i class="fa-solid fa-arrow-left"></i> Back to Jobs
                 </a>
             </div>
@@ -22,10 +22,13 @@
                             <p class="company-name"><?= htmlspecialchars($job['company_name']) ?></p>
                         </div>
                         <div class="apply-btn-container">
-                            <a href="<?= SITE_URL ?>/jobs/apply/<?= $job['job_id'] ?>" class="apply-button">Apply Now</a>
-                            <a href="<?= SITE_URL ?>/jobs/download/<?= $job['job_id'] ?>" class="download-pdf-button">
-                                <i class="fa-solid fa-download"></i> Download PDF
-                            </a>
+                            <a href="<?= SITE_URL ?>/job/apply/<?= $job['job_id'] ?>" class="apply-button">Apply Now</a>
+                            
+                            <?php if (!empty($job['pdf_path'])): ?>
+                                <a href="<?= SITE_URL ?>/job/download/<?= $job['job_id'] ?>" class="download-pdf-button">
+                                    <i class="fa-solid fa-download"></i> Download PDF
+                                </a>
+                            <?php endif; ?>
                         </div>
                     </div>
                     
@@ -36,7 +39,7 @@
                         </div>
                         <div class="meta-item">
                             <span class="meta-label"><i class="fa-solid fa-money-bill"></i> Salary</span>
-                            <span class="meta-value"><?= formatSalary($job['salary_min'], $job['salary_max']) ?></span>
+                            <span class="meta-value"><?= call_user_func($formatSalary, $job['salary_min'], $job['salary_max']) ?></span>
                         </div>
                         <div class="meta-item">
                             <span class="meta-label"><i class="fa-solid fa-briefcase"></i> Employment Type</span>
@@ -52,7 +55,7 @@
                         </div>
                         <div class="meta-item">
                             <span class="meta-label"><i class="fa-regular fa-calendar"></i> Posted</span>
-                            <span class="meta-value"><?= formatDate($job['created_at']) ?></span>
+                            <span class="meta-value"><?= call_user_func($formatDate, $job['created_at']) ?></span>
                         </div>
                     </div>
                     
@@ -78,14 +81,20 @@
                     </div>
                     
                     <div class="job-footer">
-                        <a href="<?= SITE_URL ?>/jobs/apply/<?= $job['job_id'] ?>" class="apply-button">Apply Now</a>
+                        <a href="<?= SITE_URL ?>/job/apply/<?= $job['job_id'] ?>" class="apply-button">Apply Now</a>
+                        
+                        <?php if (!empty($job['pdf_path'])): ?>
+                            <a href="<?= SITE_URL ?>/job/download/<?= $job['job_id'] ?>" class="download-pdf-button">
+                                <i class="fa-solid fa-download"></i> Download PDF
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php else: ?>
                 <div class="error-message">
                     <h2>Job Not Found</h2>
                     <p>The job listing you're looking for doesn't exist or has been removed.</p>
-                    <a href="<?= SITE_URL ?>/jobs" class="btn-primary">Browse All Jobs</a>
+                    <a href="<?= SITE_URL ?>/job" class="btn-primary">Browse All Jobs</a>
                 </div>
             <?php endif; ?>
         </div>
@@ -99,7 +108,7 @@
             
             <div class="jobs-container">
                 <?php foreach ($relatedJobs as $relatedJob): ?>
-                    <div class="job-card" onclick="window.location.href='<?= SITE_URL ?>/jobs/view/<?= $relatedJob['job_id'] ?>'">
+                    <div class="job-card" onclick="window.location.href='<?= SITE_URL ?>/job/viewJob/<?= $relatedJob['job_id'] ?>'">
                         <div class="job-header">
                             <div class="company-logo">
                                 <img src="<?= SITE_URL . PUBLIC_PATH ?>/<?= !empty($relatedJob['logo_path']) ? $relatedJob['logo_path'] : 'assets/images/default-logo.png' ?>" 
@@ -116,7 +125,7 @@
                             </div>
                             <div class="job-meta">
                                 <p class="job-location"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($relatedJob['location']) ?></p>
-                                <p class="job-salary"><i class="fa-solid fa-money-bill"></i> <?= formatSalary($relatedJob['salary_min'], $relatedJob['salary_max']) ?></p>
+                                <p class="job-salary"><i class="fa-solid fa-money-bill"></i> <?= call_user_func($formatSalary, $relatedJob['salary_min'], $relatedJob['salary_max']) ?></p>
                             </div>
                         </div>
                     </div>

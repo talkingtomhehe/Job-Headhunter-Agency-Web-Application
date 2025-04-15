@@ -1,0 +1,54 @@
+/* Joblisting fixes for layout issues */
+
+/* Fix for container issues */
+.job-search-section .container,
+.jobs-listing .container,
+.page-header .container {
+    display: block;
+    max-width: 1200px;
+}
+
+/* Fix for search form */
+.job-search-section .search-form {
+    display: block;
+}
+
+/* Fix for input group positioning */
+.job-search-section .search-form .input-group {
+    flex: none;
+    padding: 0;
+    border-right: none;
+    position: relative;
+}
+
+/* Fix for job cards */
+.job-card .job-header {
+    display: grid;
+    height: auto;
+    grid-template-columns: 80px 1fr auto;
+}
+
+/* Fix main content padding */
+main {
+    padding-top: 70px;
+}
+
+/* Fix for container spacing in sections */
+.page-header, 
+.job-search-section, 
+.jobs-listing {
+    margin-bottom: 40px;
+}
+
+/* Force job listing containers to be block level */
+.jobs-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* Override header background */
+.page-header {
+    position: relative;
+    z-index: 5;
+}

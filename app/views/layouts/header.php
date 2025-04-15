@@ -11,7 +11,7 @@ if ($currentPage == 'huntly' || $currentPage == 'public' || $currentPage == '') 
     $currentPage = 'home';
 }
 
-if (strpos($uri, '/jobs') !== false) {
+if (strpos($uri, '/job') !== false) {
     $currentPage = 'jobs';
 }
 ?>
@@ -26,13 +26,20 @@ if (strpos($uri, '/jobs') !== false) {
             <!-- Navigation content -->
             <ul class="nav-links">
                 <li><a href="<?= SITE_URL ?>" class="<?= ($currentPage == 'home' || empty($currentPage)) ? 'active' : '' ?>">Home</a></li>
-                <li class=" dropdown <?= ($currentPage == 'jobs') ? 'active' : '' ?>">
-                    <a href=" #" class="dropdown-toggle">All jobs <i class="fa-solid fa-caret-down"></i></a>
+                <li class="dropdown <?= ($currentPage == 'jobs') ? 'active' : '' ?>">
+                    <a href="<?= SITE_URL ?>/job" class="dropdown-toggle">All jobs <i class="fa-solid fa-caret-down"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="<?= SITE_URL ?>/jobs?category=it">IT & Software</a></li>
-                        <li><a href="<?= SITE_URL ?>/jobs?category=finance">Finance</a></li>
-                        <li><a href="<?= SITE_URL ?>/jobs?category=marketing">Marketing</a></li>
-                        <li><a href="<?= SITE_URL ?>/jobs?category=hr">Human Resources</a></li>
+                        <?php if (!empty($categories)): ?>
+                            <?php foreach ($categories as $category): ?>
+                                <li>
+                                    <a href="<?= SITE_URL ?>/job?category=<?= $category['category_id'] ?>">
+                                        <?= htmlspecialchars($category['name']) ?>
+                                    </a>
+                                </li>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <li><a href="<?= SITE_URL ?>/job">All Categories</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
                 <?php if (\helpers\Session::isLoggedIn()): ?>

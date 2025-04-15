@@ -5,9 +5,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const locationSearchInput = document.getElementById('location-search');
     const locationHintBox = document.getElementById('location-hint');
     
-    const baseUrl = '/huntly';
+    const keywordInput = document.getElementById('keyword-input');
+    const locationInput = document.getElementById('location-input');
     
-    console.log('baseUrl:', baseUrl); // Debugging line
+    const baseUrl = '/huntly';
 
     function debounce(func, delay) {
         let timeoutId;
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
     }
 
-    // Job & company search
+    // Job & company search auto-complete
     if(jobSearchInput && jobHintBox) {
         function performSearch(keyword) {
             if(keyword.length > 1) {
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
 
                             html += `<div class="search-item ${item.type}">
-                                <a href="${baseUrl}/${item.type}s/${item.id}">${highlightedName}</a>
+                                <a href="${baseUrl}/${item.type === 'job' ? 'job/viewJob' : item.type + 's'}/${item.id}">${highlightedName}</a>
                             </div>`;
                         });
                         jobHintBox.innerHTML = html;
@@ -103,9 +104,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 jobHintBox.style.display = 'none';
             }
         });
+        
+        // Handle search item click
+        jobHintBox.addEventListener('click', function(e) {
+            const searchItem = e.target.closest('.search-item');
+            if (searchItem) {
+                const link = searchItem.querySelector('a');
+                if (link) {
+                    window.location.href = link.href;
+                }
+            }
+        });
     }
 
-    // Location search
+    // Location search autocomplete
     if(locationSearchInput && locationHintBox) {
         function performLocationSearch(keyword) {
             if(keyword.length > 1) {
@@ -155,8 +167,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 highlightedName = `${before}<strong>${match}</strong>${after}`;
                             }
 
-                            html += `<div class="search-item ${item.type}">
-                                <a href="${baseUrl}/locations/${item.id}">${highlightedName}</a>
+                            html += `<div class="search-item location">
+                                <a href="javascript:void(0)" data-location="${itemName}">${highlightedName}</a>
                             </div>`;
                         });
                         locationHintBox.innerHTML = html;
@@ -187,6 +199,49 @@ document.addEventListener('DOMContentLoaded', function() {
             if(e.target !== locationSearchInput && e.target !== locationHintBox) {
                 locationHintBox.style.display = 'none';
             }
+        });
+        
+        // Handle location item selection
+        locationHintBox.addEventListener('click', function(e) {
+            const searchItem = e.target.closest('.search-item');
+            if (searchItem) {
+                const link = searchItem.querySelector('a');
+                if (link && link.dataset.location) {
+                    locationSearchInput.value = link.dataset.location;
+                    locationHintBox.style.display = 'none';
+                    
+                    // If we're on the job listings page and there's a location input field, update it
+                    if (locationInput) {
+                        locationInput.value = link.dataset.location;
+                        // Trigger the search if we're on the job page
+                        if (document.getElementById('job-search-form')) {
+                            document.getElementById('job-search-form').dispatchEvent(new Event('submit'));
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Connect home page search to job listing page
+    const searchForm = document.querySelector('.search-form');
+    if (searchForm && searchForm.getAttribute('action').includes('search.php')) {
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const keyword = this.querySelector('input[name="keyword"]').value;
+            const location = this.querySelector('input[name="location"]').value;
+            const workModel = this.querySelector('select[name="work_model"]').value;
+            const category = this.querySelector('select[name="category"]').value;
+            
+            // Redirect to job listing page with search parameters
+            const searchParams = new URLSearchParams();
+            if (keyword) searchParams.append('keyword', keyword);
+            if (location) searchParams.append('location', location);
+            if (workModel) searchParams.append('work_model', workModel);
+            if (category) searchParams.append('category', category);
+            
+            window.location.href = `${baseUrl}/job?${searchParams.toString()}`;
         });
     }
 });

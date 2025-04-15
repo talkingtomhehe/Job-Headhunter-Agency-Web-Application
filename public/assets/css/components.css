@@ -400,6 +400,43 @@
     font-size: 0.8rem;
 }
 
+.view-all-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.view-all-link {
+    display: inline-block;
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.view-all-link:hover {
+    background-color: var(--primary-color);
+    color: #0631BC;
+}
+
+.view-all-link i {
+    margin-left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.view-all-link:hover i {
+    transform: translateX(3px);
+}
+
+.no-jobs-message, .no-companies-message {
+    text-align: center;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    color: #6c757d;
+}
 
 /* Responsive styles for the jobs section */
 @media (max-width: 768px) {

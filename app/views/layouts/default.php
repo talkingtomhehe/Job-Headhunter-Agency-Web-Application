@@ -13,9 +13,16 @@
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/auth-page.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/responsive.css">
 
+    <!-- Load additional CSS files -->
+    <?php if(isset($additionalCss) && is_array($additionalCss)): ?>
+        <?php foreach($additionalCss as $cssFile): ?>
+            <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/<?= $cssFile ?>">
+        <?php endforeach; ?>
+    <?php endif; ?>
+
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/dropdown.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/header.js" defer></script>
-
+    <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/pagination.js"></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/search.js" defer></script>
 
     <?php if ($view === 'pages/auth'): ?>

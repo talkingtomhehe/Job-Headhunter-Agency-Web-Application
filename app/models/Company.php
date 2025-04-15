@@ -140,4 +140,18 @@ class Company extends Model {
             return false;
         }
     }
+
+    public function getTopCompanies($limit = 5) {
+        $query = "SELECT c.*, 
+                  (SELECT COUNT(*) FROM job_posts j WHERE j.company_id = c.company_id AND j.status = 'active' AND j.admin_status = 'approved') as job_count
+                  FROM companies c
+                  WHERE (SELECT COUNT(*) FROM job_posts j WHERE j.company_id = c.company_id AND j.status = 'active' AND j.admin_status = 'approved') > 0
+                  ORDER BY job_count DESC
+                  LIMIT ?";
+        
+        $this->db->query($query);
+        $this->db->bind(1, $limit);
+        
+        return $this->db->resultSet();
+    }
 }

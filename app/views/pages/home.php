@@ -30,19 +30,23 @@
                                 <i class="fa-solid fa-house"></i>
                                 <select name="work_model">
                                     <option value="" hidden>Work model</option>
-                                    <option value="remote">Remote</option>
-                                    <option value="hybrid">Hybrid</option>
-                                    <option value="onsite">On-site</option>
+                                    <?php if (!empty($workModels)): ?>
+                                        <?php foreach ($workModels as $model): ?>
+                                            <option value="<?= $model['id'] ?>"><?= htmlspecialchars($model['name']) ?></option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </select>
                             </div>
 
                             <div class="input-group">
                                 <i class="fa-solid fa-list-ul"></i>
-                                <select name="categories">
+                                <select name="category">
                                     <option value="" hidden>Categories</option>
-                                    <option value="remote">...</option>
-                                    <option value="hybrid">...</option>
-                                    <option value="onsite">...</option>
+                                    <?php if (!empty($categories)): ?>
+                                        <?php foreach ($categories as $category): ?>
+                                            <option value="<?= $category['category_id'] ?>"><?= htmlspecialchars($category['name']) ?></option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
                                 </select>
                             </div>
                         </div>
@@ -62,130 +66,72 @@
             <h2 class="section-title">RECENT JOBS<span class="title-underline"></span></h2>
 
             <div class="jobs-container">
-                <!-- Job Item -->
-                <div class="job-card">
-                    <div class="job-header">
-                        <div class="company-logo">
-                            <img src="/huntly/public/assets/images/logo.png" alt="Company Logo" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
-                        </div>
-                        <div class="job-info">
-                            <h3 class="job-title">Senior Software Engineer</h3>
-                            <p class="company-name">Tech Solutions Inc.</p>
-                            <div class="job-tags">
-                                <span class="job-tag">Hybrid</span>
-                                <span class="job-tag">Full-stack</span>
-                                <span class="job-tag">Senior</span>
+                <?php if (!empty($recentJobs)): ?>
+                    <?php foreach ($recentJobs as $job): ?>
+                        <div class="job-card" onclick="window.location.href='<?= SITE_URL ?>/job/viewJob/<?= $job['job_id'] ?>'">
+                            <div class="job-header">
+                                <div class="company-logo">
+                                    <img src="<?= SITE_URL . PUBLIC_PATH ?>/<?= !empty($job['logo_path']) ? $job['logo_path'] : 'assets/images/default-logo.png' ?>" 
+                                        alt="<?= htmlspecialchars($job['company_name']) ?>"
+                                        onerror="this.src='<?= SITE_URL . PUBLIC_PATH ?>/assets/images/default-logo.png'">
+                                </div>
+                                <div class="job-info">
+                                    <h3 class="job-title"><?= htmlspecialchars($job['title']) ?></h3>
+                                    <p class="company-name"><?= htmlspecialchars($job['company_name']) ?></p>
+                                    <div class="job-tags">
+                                        <span class="job-tag"><?= htmlspecialchars($job['work_model'] ?? '') ?></span>
+                                        <span class="job-tag"><?= htmlspecialchars($job['category_name'] ?? '') ?></span>
+                                        <span class="job-tag"><?= htmlspecialchars($job['experience_level'] ?? '') ?></span>
+                                    </div>
+                                </div>
+                                <div class="job-meta">
+                                    <p class="job-location"><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($job['location']) ?></p>
+                                    <p class="job-salary"><i class="fa-solid fa-money-bill"></i> <?= call_user_func($formatSalary, $job['salary_min'], $job['salary_max']) ?></p>
+                                    <p class="job-posted-date"><i class="fa-regular fa-calendar"></i> Posted <?= call_user_func($timeAgo, $job['created_at']) ?></p>
+                                </div>
                             </div>
                         </div>
-                        <div class="job-meta">
-                            <p class="job-location"><i class="fa-solid fa-location-dot"></i> New York, NY</p>
-                            <p class="job-salary"><i class="fa-solid fa-money-bill"></i> $120K - $150K</p>
-                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="no-jobs-message">
+                        <p>No job listings available at the moment. Please check back soon!</p>
                     </div>
-                </div>
-
-                <!-- Job Item -->
-                <div class="job-card">
-                    <div class="job-header">
-                        <div class="company-logo">
-                            <img src="/huntly/public/assets/images/logo.png" alt="Company Logo" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
-                        </div>
-                        <div class="job-info">
-                            <h3 class="job-title">Data Scientist</h3>
-                            <p class="company-name">Analytics Experts</p>
-                            <div class="job-tags">
-                                <span class="job-tag">Remote</span>
-                                <span class="job-tag">Data Science</span>
-                                <span class="job-tag">ML</span>
-                            </div>
-                        </div>
-                        <div class="job-meta">
-                            <p class="job-location"><i class="fa-solid fa-location-dot"></i> Remote</p>
-                            <p class="job-salary"><i class="fa-solid fa-money-bill"></i> $90K - $120K</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Job Item -->
-                <div class="job-card">
-                    <div class="job-header">
-                        <div class="company-logo">
-                            <img src="/huntly/public/assets/images/logo.png" alt="Company Logo" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
-                        </div>
-                        <div class="job-info">
-                            <h3 class="job-title">Marketing Manager</h3>
-                            <p class="company-name">Brand Masters</p>
-                            <div class="job-tags">
-                                <span class="job-tag">On-site</span>
-                                <span class="job-tag">Marketing</span>
-                                <span class="job-tag">Leadership</span>
-                            </div>
-                        </div>
-                        <div class="job-meta">
-                            <p class="job-location"><i class="fa-solid fa-location-dot"></i> San Francisco, CA</p>
-                            <p class="job-salary"><i class="fa-solid fa-money-bill"></i> $85K - $110K</p>
-                        </div>
-                    </div>
-                </div>
-
+                <?php endif; ?>
+            </div>
+            
+            <div class="view-all-container">
+                <a href="<?= SITE_URL ?>/job" class="view-all-link">View All Jobs <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
+
     <!-- Top Companies Section -->
     <section class="top-companies">
         <div class="container">
             <h2 class="section-title">TOP COMPANIES REGISTERED<span class="title-underline"></span></h2>
 
             <div class="companies-container">
-                <!-- Company Item -->
-                <div class="company-card">
-                    <div class="company-logo-large">
-                        <img src="/huntly/public/assets/images/logo.png" alt="Microsoft" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
+                <?php if (!empty($topCompanies)): ?>
+                    <?php foreach ($topCompanies as $company): ?>
+                        <div class="company-card">
+                            <div class="company-logo-large">
+                                <img src="<?= SITE_URL . PUBLIC_PATH ?>/<?= !empty($company['logo_path']) ? $company['logo_path'] : 'assets/images/default-logo.png' ?>" 
+                                    alt="<?= htmlspecialchars($company['company_name']) ?>"
+                                    onerror="this.src='<?= SITE_URL . PUBLIC_PATH ?>/assets/images/default-logo.png'">
+                            </div>
+                            <h3 class="company-title"><?= htmlspecialchars($company['company_name']) ?></h3>
+                            <p class="company-location">
+                                <i class="fa-solid fa-location-dot"></i> 
+                                <?= !empty($company['headquarters_address']) ? htmlspecialchars($company['headquarters_address']) : 'Location not specified' ?>
+                            </p>
+                            <p class="company-jobs">Open jobs - <span><?= $company['job_count'] ?></span></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <div class="no-companies-message">
+                        <p>No companies available at the moment. Please check back soon!</p>
                     </div>
-                    <h3 class="company-title">Microsoft</h3>
-                    <p class="company-location"><i class="fa-solid fa-location-dot"></i> Seattle, WA</p>
-                    <p class="company-jobs">Open jobs - <span>24</span></p>
-                </div>
-
-                <!-- Company Item -->
-                <div class="company-card">
-                    <div class="company-logo-large">
-                        <img src="/huntly/public/assets/images/logo.png" alt="Google" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
-                    </div>
-                    <h3 class="company-title">Google</h3>
-                    <p class="company-location"><i class="fa-solid fa-location-dot"></i> Mountain View, CA</p>
-                    <p class="company-jobs">Open jobs - <span>18</span></p>
-                </div>
-
-                <!-- Company Item -->
-                <div class="company-card">
-                    <div class="company-logo-large">
-                        <img src="/huntly/public/assets/images/logo.png" alt="Amazon" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
-                    </div>
-                    <h3 class="company-title">Amazon</h3>
-                    <p class="company-location"><i class="fa-solid fa-location-dot"></i> Seattle, WA</p>
-                    <p class="company-jobs">Open jobs - <span>32</span></p>
-                </div>
-
-                <!-- Company Item -->
-                <div class="company-card">
-                    <div class="company-logo-large">
-                        <img src="/huntly/public/assets/images/logo.png" alt="Apple" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
-                    </div>
-                    <h3 class="company-title">Apple</h3>
-                    <p class="company-location"><i class="fa-solid fa-location-dot"></i> Cupertino, CA</p>
-                    <p class="company-jobs">Open jobs - <span>15</span></p>
-                </div>
-
-                <!-- Company Item -->
-                <div class="company-card">
-                    <div class="company-logo-large">
-                        <img src="/huntly/public/assets/images/logo.png" alt="Netflix" onerror="this.src='/huntly/public/assets/images/default-logo.png'">
-                    </div>
-                    <h3 class="company-title">Netflix</h3>
-                    <p class="company-location"><i class="fa-solid fa-location-dot"></i> Los Gatos, CA</p>
-                    <p class="company-jobs">Open jobs - <span>12</span></p>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </section>

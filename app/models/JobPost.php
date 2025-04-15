@@ -482,4 +482,153 @@ class JobPost extends Model {
         
         return $this->db->resultSet();
     }
+
+    public function getApprovedJobs($keyword = '', $location = '', $category = '', $workModel = '', $experienceLevel = '', $jobType = '', $sortBy = 'newest', $limit = 10, $offset = 0) {
+        $query = "SELECT j.*, c.company_name, c.logo_path, cat.name as category_name
+                  FROM job_posts j
+                  JOIN companies c ON j.company_id = c.company_id
+                  LEFT JOIN job_categories cat ON j.category_id = cat.category_id
+                  WHERE j.status = 'active' AND j.admin_status = 'approved'";
+        
+        $params = [];
+        
+        if(!empty($keyword)) {
+            $query .= " AND (j.title LIKE ? OR c.company_name LIKE ? OR j.description LIKE ?)";
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+        }
+        
+        if(!empty($location)) {
+            $query .= " AND j.location LIKE ?";
+            $params[] = "%$location%";
+        }
+        
+        if(!empty($category)) {
+            $query .= " AND j.category_id = ?";
+            $params[] = $category;
+        }
+        
+        if(!empty($workModel)) {
+            $query .= " AND j.work_model = ?";
+            $params[] = $workModel;
+        }
+        
+        // Add experience level filter
+        if(!empty($experienceLevel)) {
+            $query .= " AND j.experience_level = ?";
+            $params[] = $experienceLevel;
+        }
+        
+        // Add job type filter
+        if(!empty($jobType)) {
+            $query .= " AND j.job_type = ?";
+            $params[] = $jobType;
+        }
+        
+        // Apply sorting
+        switch ($sortBy) {
+            case 'oldest':
+                $query .= " ORDER BY j.created_at ASC";
+                break;
+            case 'salary_high':
+                $query .= " ORDER BY j.salary_max DESC, j.salary_min DESC";
+                break;
+            case 'salary_low':
+                $query .= " ORDER BY j.salary_min ASC, j.salary_max ASC";
+                break;
+            case 'newest':
+            default:
+                $query .= " ORDER BY j.created_at DESC";
+                break;
+        }
+        
+        // Add pagination
+        $query .= " LIMIT ? OFFSET ?";
+        $params[] = $limit;
+        $params[] = $offset;
+        
+        $this->db->query($query);
+        
+        // Bind all parameters
+        foreach($params as $i => $param) {
+            $this->db->bind($i + 1, $param);
+        }
+        
+        return $this->db->resultSet();
+    }
+    
+    public function countApprovedJobs($keyword = '', $location = '', $category = '', $workModel = '', $experienceLevel = '', $jobType = '') {
+        $query = "SELECT COUNT(*) as count 
+                  FROM job_posts j
+                  JOIN companies c ON j.company_id = c.company_id
+                  WHERE j.status = 'active' AND j.admin_status = 'approved'";
+        
+        $params = [];
+        
+        if(!empty($keyword)) {
+            $query .= " AND (j.title LIKE ? OR c.company_name LIKE ? OR j.description LIKE ?)";
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+            $params[] = "%$keyword%";
+        }
+        
+        if(!empty($location)) {
+            $query .= " AND j.location LIKE ?";
+            $params[] = "%$location%";
+        }
+        
+        if(!empty($category)) {
+            $query .= " AND j.category_id = ?";
+            $params[] = $category;
+        }
+        
+        if(!empty($workModel)) {
+            $query .= " AND j.work_model = ?";
+            $params[] = $workModel;
+        }
+        
+        // Add experience level filter
+        if(!empty($experienceLevel)) {
+            $query .= " AND j.experience_level = ?";
+            $params[] = $experienceLevel;
+        }
+        
+        // Add job type filter
+        if(!empty($jobType)) {
+            $query .= " AND j.job_type = ?";
+            $params[] = $jobType;
+        }
+        
+        $this->db->query($query);
+        
+        // Bind all parameters
+        foreach($params as $i => $param) {
+            $this->db->bind($i + 1, $param);
+        }
+        
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
+    
+    /**
+     * Get related jobs based on category
+     */
+    public function getRelatedJobs($jobId, $categoryId, $limit = 3) {
+        $query = "SELECT j.*, c.company_name, c.logo_path, cat.name as category_name
+                  FROM job_posts j 
+                  JOIN companies c ON j.company_id = c.company_id
+                  LEFT JOIN job_categories cat ON j.category_id = cat.category_id
+                  WHERE j.job_id != ? AND j.category_id = ? 
+                  AND j.status = 'active' AND j.admin_status = 'approved'
+                  ORDER BY j.created_at DESC
+                  LIMIT ?";
+              
+        $this->db->query($query);
+        $this->db->bind(1, $jobId);
+        $this->db->bind(2, $categoryId);
+        $this->db->bind(3, $limit);
+        
+        return $this->db->resultSet();
+    }
 }
