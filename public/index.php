@@ -3,6 +3,7 @@
 define('ROOT_PATH', dirname(__DIR__));
 
 // Load configuration first
+require_once ROOT_PATH . '/vendor/autoload.php';
 require_once ROOT_PATH . '/app/config/config.php';
 
 // Autoload core classes

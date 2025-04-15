@@ -5,16 +5,19 @@ use core\Controller;
 use models\User;
 use models\Company;
 use models\JobSeeker;
+use helpers\GoogleOAuth;
 
 class AuthController extends Controller {
     private $userModel;
     private $companyModel;
     private $seekerModel;
+    private $googleOAuth;
     
     public function __construct() {
         $this->userModel = new User();
         $this->companyModel = new Company();
         $this->seekerModel = new JobSeeker();
+        $this->googleOAuth = new GoogleOAuth();
     }
     
     // Auth page - show login form
@@ -199,5 +202,196 @@ class AuthController extends Controller {
     public function resetPassword() {
         // Future implementation for password reset functionality
         $this->redirect('auth');
+    }
+
+    public function googlelogin() {
+        // Log that we're entering the method
+        error_log("Entering AuthController::googlelogin()");
+        
+        $role = $_GET['role'] ?? 'job_seeker';
+        
+        // Validate role - allow 'employer' here which will be translated to 'company_admin' later
+        if (!in_array($role, ['job_seeker', 'employer'])) {
+            $role = 'job_seeker';
+        }
+        
+        // Log the role
+        error_log("Role for Google login: " . $role);
+        
+        try {
+            // Get the Google auth URL
+            $authUrl = $this->googleOAuth->getAuthUrl($role);
+            
+            if (!$authUrl) {
+                throw new \Exception("Failed to generate Google auth URL");
+            }
+            
+            // Log that we're about to redirect
+            error_log("Redirecting to Google auth URL: " . $authUrl);
+            
+            // Clear any previous output that might prevent redirect
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
+            
+            // Redirect to Google
+            header('Location: ' . $authUrl);
+            exit;
+        } catch (\Exception $e) {
+            // Log error
+            error_log('Google Login Error: ' . $e->getMessage());
+            
+            // Show error to user
+            $_SESSION['error'] = 'Error connecting to Google. Please try again.';
+            $this->redirect('auth');
+        }
+    }
+    
+    public function googlecallback() {
+        // Check if there was an error
+        if (isset($_GET['error'])) {
+            $_SESSION['error'] = 'Google authentication error: ' . $_GET['error'];
+            $this->redirect('auth');
+            return;
+        }
+        
+        // Check if code is provided
+        if (!isset($_GET['code'])) {
+            $_SESSION['error'] = 'Authorization code not provided';
+            $this->redirect('auth');
+            return;
+        }
+        
+        // Verify state to prevent CSRF
+        list($validState, $role) = $this->googleOAuth->validateState($_GET['state'] ?? '');
+        
+        if (!$validState) {
+            $_SESSION['error'] = 'Invalid authentication state';
+            $this->redirect('auth');
+            return;
+        }
+        
+        // Clean up session state
+        unset($_SESSION['google_oauth_state']);
+        
+        // Get user info from Google
+        $userInfo = $this->googleOAuth->getUserInfo($_GET['code']);
+        
+        if (!$userInfo || !isset($userInfo['email'])) {
+            $_SESSION['error'] = 'Failed to get user information from Google';
+            $this->redirect('auth');
+            return;
+        }
+        
+        // Log the user info and role for debugging
+        error_log("Google user info received: " . print_r($userInfo, true));
+        error_log("Role for registration/login: " . $role);
+        
+        // Check if user exists by email and role (role is already properly converted)
+        $user = $this->userModel->findUserByEmailAndRole($userInfo['email'], $role);
+        
+        if ($user) {
+            // User exists, log them in
+            $this->loginExistingUser($user);
+        } else {
+            // User doesn't exist, register a new account
+            $this->registerGoogleUser($userInfo, $role);
+        }
+    }
+    
+    private function loginExistingUser($user) {
+        // Set session variables
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['email'] = $user['email'];
+        $_SESSION['full_name'] = $user['full_name'];
+        $_SESSION['role'] = $user['role'];
+        $_SESSION['logged_in'] = true;
+        
+        // Retrieve company data if user is an employer
+        if ($user['role'] === 'company_admin') {
+            $company = $this->companyModel->getCompanyByEmployerId($user['user_id']);
+            if ($company) {
+                $_SESSION['company_id'] = $company['company_id'];
+            }
+            $this->redirect('employer');
+        } else {
+            $this->redirect('dashboard');
+        }
+    }
+    
+    private function registerGoogleUser($userInfo, $role) {
+        // Save basic user data
+        $email = $userInfo['email'];
+        $fullName = $userInfo['name'] ?? ($userInfo['given_name'] . ' ' . $userInfo['family_name']);
+        
+        // Generate a random password
+        $password = bin2hex(random_bytes(8));
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        
+        // Save avatar from Google if available
+        $avatarPath = 'assets/images/defaultavatar.jpg';
+        if (!empty($userInfo['picture'])) {
+            $avatarPath = $this->saveGoogleAvatar($userInfo['picture'], $email);
+        }
+        
+        // Register the user (the role parameter is now correctly converted)
+        if ($this->userModel->register($email, $hashedPassword, $fullName, $role, null)) {
+            $userId = $this->userModel->getLastInsertId();
+            
+            // Update the user's avatar
+            if ($avatarPath != 'assets/images/defaultavatar.jpg') {
+                $this->userModel->updateAvatar($userId, $avatarPath);
+            }
+            
+            // If role is company_admin, create a company record
+            if ($role === 'company_admin') {
+                // Company name default to user name + Company
+                $companyName = $fullName . "'s Company";
+                $this->companyModel->createCompany($userId, $companyName);
+                
+                // Get the company ID
+                $company = $this->companyModel->getCompanyByEmployerId($userId);
+                if ($company) {
+                    $_SESSION['company_id'] = $company['company_id'];
+                }
+            }
+            
+            // Set session variables
+            $_SESSION['user_id'] = $userId;
+            $_SESSION['email'] = $email;
+            $_SESSION['full_name'] = $fullName;
+            $_SESSION['role'] = $role;
+            $_SESSION['logged_in'] = true;
+            
+            if ($role === 'company_admin') {
+                $this->redirect('employer');
+            } else {
+                $this->redirect('dashboard');
+            }
+        } else {
+            $_SESSION['error'] = 'Failed to register with Google. Please try again.';
+            $this->redirect('auth');
+        }
+    }
+    
+    private function saveGoogleAvatar($imageUrl, $email) {
+        $uploadDir = ROOT_PATH . '/public/uploads/avatars/';
+        
+        // Create directory if it doesn't exist
+        if (!file_exists($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+        
+        // Generate unique filename
+        $filename = 'google_' . md5($email) . '_' . time() . '.jpg';
+        $filePath = $uploadDir . $filename;
+        
+        // Download and save image
+        $imageData = file_get_contents($imageUrl);
+        if ($imageData && file_put_contents($filePath, $imageData)) {
+            return 'uploads/avatars/' . $filename;
+        }
+        
+        return 'assets/images/defaultavatar.jpg';
     }
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 15, 2025 lúc 06:22 PM
+-- Thời gian đã tạo: Th4 15, 2025 lúc 06:59 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -47,7 +47,7 @@ CREATE TABLE `companies` (
 
 INSERT INTO `companies` (`company_id`, `employer_id`, `company_name`, `headquarters_address`, `description`, `logo_path`, `created_at`, `updated_at`, `website`, `company_size`, `industry`) VALUES
 (1, 2, 'Tiki', 'Tòa nhà Viettel, 285 Cách Mạng Tháng 8, P.12, Q.10, HCMC', 'Tiki là một công ty thương mại điện tử hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
-(2, 3, 'MoMo', 'Tòa nhà VNPT, 57 Huỳnh Thúc Kháng, Đống Đa, Hà Nội', 'MoMo là ví điện tử hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
+(2, 3, 'MoMo', 'Tòa nhà VNPT, 57 Huỳnh Thúc Kháng, Đống Đa, Hà Nội', 'MoMo là ví điện tử hàng đầu Việt Nam', 'uploads/company_logos/company_2_1744736136.png', '2025-04-11 17:25:25', '2025-04-15 16:55:36', '', '1001+', ''),
 (3, 4, 'Sendo', 'Tòa nhà Sendo, 123 Nguyễn Thị Minh Khai, Q.1, HCMC', 'Sendo là sàn thương mại điện tử lớn tại Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
 (4, 5, 'VNG', 'Tòa nhà VNG Campus, Quận 7, HCMC', 'VNG là công ty công nghệ hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
 (5, 6, 'FPT Software', 'FPT Complex, Đà Nẵng', 'FPT Software là công ty phần mềm hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
@@ -83,7 +83,7 @@ CREATE TABLE `job_applications` (
 
 INSERT INTO `job_applications` (`application_id`, `job_id`, `seeker_id`, `applicant_email`, `applicant_phone`, `status`, `admin_status`, `resume_path`, `cover_letter`, `employer_notes`, `created_at`, `updated_at`, `interview_date`, `interview_location`, `source`) VALUES
 (2, 2, 8, 'applicant1@example.com', '0987123456', 'pending', 'approved', 'uploads/resumes/applicant1_cv.pdf', 'Tôi có kinh nghiệm làm việc với Laravel và các framework PHP...', NULL, '2025-04-11 17:25:25', '2025-04-15 11:54:56', NULL, NULL, 'direct'),
-(3, 3, 9, 'applicant2@example.com', '0987123457', '', 'approved', 'uploads/resumes/applicant2_cv.pdf', 'Tôi đam mê phát triển ứng dụng di động và mong muốn được học hỏi tại MoMo...', NULL, '2025-04-11 17:25:25', '2025-04-15 11:54:58', NULL, NULL, 'direct'),
+(3, 3, 9, 'applicant2@example.com', '0987123457', 'reviewing', 'approved', 'uploads/resumes/applicant2_cv.pdf', 'Tôi đam mê phát triển ứng dụng di động và mong muốn được học hỏi tại MoMo...', NULL, '2025-04-11 17:25:25', '2025-04-15 16:43:16', NULL, NULL, 'direct'),
 (4, 4, 9, 'applicant2@example.com', '0987123457', 'pending', 'approved', 'uploads/resumes/applicant2_cv.pdf', 'Tôi mong muốn được tham gia vào đội ngũ phát triển của MoMo...', NULL, '2025-04-11 17:25:25', '2025-04-15 11:55:00', NULL, NULL, 'direct');
 
 -- --------------------------------------------------------
@@ -253,6 +253,7 @@ CREATE TABLE `users` (
   `full_name` varchar(255) NOT NULL,
   `role` enum('admin','company_admin','job_seeker') NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
+  `avatar_path` varchar(255) DEFAULT NULL,
   `active` tinyint(1) NOT NULL DEFAULT 1,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
@@ -262,16 +263,16 @@ CREATE TABLE `users` (
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`user_id`, `email`, `password`, `full_name`, `role`, `phone`, `active`, `created_at`, `updated_at`) VALUES
-(1, 'admin@huntly.com', '$2y$10$Tn/0xi2s.OElsEgYTieQX.mcyzYyuBcGYHB8f3eQKkaBH8JRvhh8e', 'Admin User', 'admin', '1234567890', 1, '2025-04-11 17:25:25', NULL),
-(2, 'tiki@example.com', '$2y$10$Tn/0xi2s.OElsEgYTieQX.mcyzYyuBcGYHB8f3eQKkaBH8JRvhh8e', 'Tiki Employer', 'company_admin', '0987654321', 1, '2025-04-11 17:25:25', NULL),
-(3, 'momo@example.com', '$2y$10$Tn/0xi2s.OElsEgYTieQX.mcyzYyuBcGYHB8f3eQKkaBH8JRvhh8e', 'MoMo Employer', 'company_admin', '0987654322', 1, '2025-04-11 17:25:25', NULL),
-(4, 'sendo@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'Sendo Employer', 'company_admin', '0987654323', 1, '2025-04-11 17:25:25', NULL),
-(5, 'vng@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'VNG Employer', 'company_admin', '0987654324', 1, '2025-04-11 17:25:25', NULL),
-(6, 'fpt@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'FPT Employer', 'company_admin', '0987654325', 1, '2025-04-11 17:25:25', NULL),
-(7, 'shopee@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'Shopee Employer', 'company_admin', '0987654326', 1, '2025-04-11 17:25:25', NULL),
-(8, 'applicant1@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'John Applicant', 'job_seeker', '0987123456', 1, '2025-04-11 17:25:25', NULL),
-(9, 'applicant2@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'Jane Applicant', 'job_seeker', '0987123457', 1, '2025-04-11 17:25:25', NULL);
+INSERT INTO `users` (`user_id`, `email`, `password`, `full_name`, `role`, `phone`, `avatar_path`, `active`, `created_at`, `updated_at`) VALUES
+(1, 'admin@huntly.com', '$2y$10$Tn/0xi2s.OElsEgYTieQX.mcyzYyuBcGYHB8f3eQKkaBH8JRvhh8e', 'Admin User', 'admin', '1234567890', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
+(2, 'tiki@example.com', '$2y$10$Tn/0xi2s.OElsEgYTieQX.mcyzYyuBcGYHB8f3eQKkaBH8JRvhh8e', 'Tiki Employer', 'company_admin', '0987654321', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
+(3, 'momo@example.com', '$2y$10$Tn/0xi2s.OElsEgYTieQX.mcyzYyuBcGYHB8f3eQKkaBH8JRvhh8e', 'MoMo Employer', 'company_admin', '0987654322', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
+(4, 'sendo@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'Sendo Employer', 'company_admin', '0987654323', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
+(5, 'vng@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'VNG Employer', 'company_admin', '0987654324', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
+(6, 'fpt@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'FPT Employer', 'company_admin', '0987654325', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
+(7, 'shopee@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'Shopee Employer', 'company_admin', '0987654326', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
+(8, 'applicant1@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'John Applicant', 'job_seeker', '0987123456', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
+(9, 'applicant2@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'Jane Applicant', 'job_seeker', '0987123457', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45');
 
 --
 -- Chỉ mục cho các bảng đã đổ

@@ -4,17 +4,6 @@ namespace models;
 use core\Model;
 
 class User extends Model {
-    
-    // Find user by email and role
-    public function findUserByEmailAndRole($email, $role) {
-        $query = "SELECT * FROM users WHERE email = ? AND role = ?";
-        $this->db->query($query);
-        $this->db->bind(1, $email);
-        $this->db->bind(2, $role);
-        
-        return $this->db->single();
-    }
-    
     // Check if email exists
     public function emailExists($email) {
         $query = "SELECT * FROM users WHERE email = ?";
@@ -172,5 +161,20 @@ class User extends Model {
         $this->db->bind(2, $userId);
         
         return $this->db->execute();
+    }
+
+    // Find user by email and role
+    public function findUserByEmailAndRole($email, $role) {
+        // For employer role, we need to check for 'company_admin'
+        if ($role === 'employer') {
+            $role = 'company_admin';
+        }
+        
+        $query = "SELECT * FROM users WHERE email = ? AND role = ?";
+        $this->db->query($query);
+        $this->db->bind(1, $email);
+        $this->db->bind(2, $role);
+        
+        return $this->db->single();
     }
 }
