@@ -16,18 +16,20 @@
                         <div class="search-inputs">
                             <div class="input-group">
                                 <i class="fa-solid fa-briefcase"></i>
-                                <input type="text" name="keyword" placeholder="Job title or Company">
+                                <input type="text" id="job-search" name="keyword" placeholder="Job title or Company" autocomplete="off">
+                                <div id="job-hint" class="search-hints"></div>
                             </div>
 
                             <div class="input-group">
                                 <i class="fa-solid fa-location-dot"></i>
-                                <input type="text" name="location" placeholder="City, State">
+                                <input type="text" id="location-search" name="location" placeholder="City, State">
+                                <div id="location-hint" class="search-hints"></div>
                             </div>
 
                             <div class="input-group">
                                 <i class="fa-solid fa-house"></i>
                                 <select name="work_model">
-                                    <option value="">Work model</option>
+                                    <option value="" hidden>Work model</option>
                                     <option value="remote">Remote</option>
                                     <option value="hybrid">Hybrid</option>
                                     <option value="onsite">On-site</option>
@@ -37,7 +39,7 @@
                             <div class="input-group">
                                 <i class="fa-solid fa-list-ul"></i>
                                 <select name="categories">
-                                    <option value="">Categories</option>
+                                    <option value="" hidden>Categories</option>
                                     <option value="remote">...</option>
                                     <option value="hybrid">...</option>
                                     <option value="onsite">...</option>
