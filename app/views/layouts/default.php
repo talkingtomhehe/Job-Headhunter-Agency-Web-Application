@@ -14,7 +14,9 @@
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/responsive.css">
 
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/dropdown.js" defer></script>
-    <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/navbar.js" defer></script>
+    <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/header.js" defer></script>
+
+    <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/search.js" defer></script>
 
     <?php if ($view === 'pages/auth'): ?>
         <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/login-page.js" defer></script>
@@ -46,18 +48,6 @@
 
     <?php include ROOT_PATH . '/app/views/layouts/footer.php'; ?>
 
-    <script>
-        // Auto-hide alerts after 5 seconds
-        document.addEventListener('DOMContentLoaded', function() {
-            const alerts = document.querySelectorAll('.alert');
-
-            alerts.forEach(alert => {
-                setTimeout(() => {
-                    alert.style.display = 'none';
-                }, 5000);
-            });
-        });
-    </script>
 </body>
 
 </html>

@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to update header background based on scroll position
     function updateHeaderBackground() {
-        if (window.scrollY > 50) {
+        if (window.scrollY > 20) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');

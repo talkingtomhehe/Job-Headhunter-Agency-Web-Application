@@ -123,6 +123,9 @@
     color: #777;
     font-family: inherit;
 }
+.input-group input {
+    color: black;
+}
 
 /* Placeholder text consistency */
 .input-group input::placeholder {
@@ -181,36 +184,74 @@
     transform: translateY(0);
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2rem;
-    }
-    
-    .search-inputs {
-        flex-direction: column;
-        border-radius: 15px;
-    }
-    
-    .input-group {
-        border-right: none;
-        border-bottom: 1px solid #e1e1e1;
-    }
-    
-    .input-group:last-child {
-        border-bottom: none;
-    }
+/* LIVE SEARCH */
+.search-hints {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    /* Sửa màu nền từ đen thành trắng */
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    overflow-y: auto;
+    max-height: 250px;
 }
 
-@media (max-width: 480px) {
-    .hero-title {
-        font-size: 1.8rem;
-    }
-    
-    .search-button {
-        width: 100%;
-        padding: 0.8rem;
-    }
+.search-inputs {
+    position: relative;
+    z-index: 10;
+}
+
+.input-group {
+    position: relative;
+    z-index: 100;
+}
+
+.search-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+.search-item strong {
+    font-weight: bold;
+    color: #0631BC;
+}
+
+.search-item:hover {
+    background-color: #E1F3FB;
+}
+
+.search-item a {
+    display: block;
+    color: #333;
+    text-decoration: none;
+}
+
+.search-item.company {
+    background-color: #f0f8ff;
+}
+
+.search-item.company:before {
+    margin-right: 5px;
+}
+
+.search-item.job {
+    background-color: white;
+}
+
+.search-item.job:before {
+    margin-right: 5px;
+}
+
+.no-results {
+    padding: 10px 15px;
+    color: #666;
+    font-style: italic;
 }
 
 /* Recent Jobs Section - Improved Layout */
