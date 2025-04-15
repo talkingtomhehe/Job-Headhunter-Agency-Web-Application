@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 15, 2025 lúc 12:35 AM
+-- Thời gian đã tạo: Th4 15, 2025 lúc 02:46 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -82,9 +82,9 @@ CREATE TABLE `job_applications` (
 --
 
 INSERT INTO `job_applications` (`application_id`, `job_id`, `seeker_id`, `applicant_email`, `applicant_phone`, `status`, `admin_status`, `resume_path`, `cover_letter`, `employer_notes`, `created_at`, `updated_at`, `interview_date`, `interview_location`, `source`) VALUES
-(2, 2, 8, 'applicant1@example.com', '0987123456', 'pending', 'pending', 'uploads/resumes/applicant1_cv.pdf', 'Tôi có kinh nghiệm làm việc với Laravel và các framework PHP...', NULL, '2025-04-11 17:25:25', '2025-04-13 21:12:07', NULL, NULL, 'direct'),
-(3, 3, 9, 'applicant2@example.com', '0987123457', '', 'rejected', 'uploads/resumes/applicant2_cv.pdf', 'Tôi đam mê phát triển ứng dụng di động và mong muốn được học hỏi tại MoMo...', NULL, '2025-04-11 17:25:25', '2025-04-14 22:09:09', NULL, NULL, 'direct'),
-(4, 4, 9, 'applicant2@example.com', '0987123457', 'pending', 'approved', 'uploads/resumes/applicant2_cv.pdf', 'Tôi mong muốn được tham gia vào đội ngũ phát triển của MoMo...', NULL, '2025-04-11 17:25:25', '2025-04-14 22:09:34', NULL, NULL, 'direct');
+(2, 2, 8, 'applicant1@example.com', '0987123456', 'pending', 'approved', 'uploads/resumes/applicant1_cv.pdf', 'Tôi có kinh nghiệm làm việc với Laravel và các framework PHP...', NULL, '2025-04-11 17:25:25', '2025-04-15 11:54:56', NULL, NULL, 'direct'),
+(3, 3, 9, 'applicant2@example.com', '0987123457', '', 'approved', 'uploads/resumes/applicant2_cv.pdf', 'Tôi đam mê phát triển ứng dụng di động và mong muốn được học hỏi tại MoMo...', NULL, '2025-04-11 17:25:25', '2025-04-15 11:54:58', NULL, NULL, 'direct'),
+(4, 4, 9, 'applicant2@example.com', '0987123457', 'pending', 'approved', 'uploads/resumes/applicant2_cv.pdf', 'Tôi mong muốn được tham gia vào đội ngũ phát triển của MoMo...', NULL, '2025-04-11 17:25:25', '2025-04-15 11:55:00', NULL, NULL, 'direct');
 
 -- --------------------------------------------------------
 
@@ -156,8 +156,7 @@ INSERT INTO `job_posts` (`job_id`, `company_id`, `employer_id`, `category_id`, `
 (7, 5, 6, 1, 'DevOps Engineer', 'Quản lý hệ thống CI/CD', 'Docker, Kubernetes, AWS', NULL, 'Full-time', NULL, NULL, 'Da Nang', 1800.00, 3000.00, 0, NULL, 'active', 'pending', NULL, '2025-04-11 17:25:25', '2025-04-14 21:18:24'),
 (8, 6, 7, 1, 'UI/UX Designer', 'Thiết kế giao diện cho Shopee', 'Figma, Adobe XD, UX Research', NULL, 'Full-time', NULL, NULL, 'Ho Chi Minh City', 1500.00, 2400.00, 0, NULL, 'active', 'pending', NULL, '2025-04-11 17:25:25', '2025-04-14 21:18:24'),
 (10, 2, 3, 6, 'Designer', 'Draw', 'Draw beautifully', 'Money, skill', 'Full-time', 'remote', 'entry', 'Ho Chi Minh', 1000.00, 3000.00, 0, 'uploads/job_pdfs/1744666371_Assignment 3 - Job Portal.pdf', 'pending', 'rejected', '2025-05-30', '2025-04-14 21:32:51', '2025-04-14 22:31:42'),
-(11, 2, 3, 8, 'Farmer', 'Plant, water', 'Skill', 'Money', 'Full-time', 'onsite', 'mid', 'Tien Giang', 1000.00, 2000.00, 0, NULL, 'pending', 'rejected', '2025-10-10', '2025-04-14 21:35:13', '2025-04-14 22:28:44'),
-(12, 2, 3, 5, 'Artist', 'Draw', 'Draw nicely', 'Money, skill', 'Full-time', 'remote', 'mid', 'Ho Chi Minh', 2000.00, 3000.00, 0, NULL, 'active', 'approved', '2025-10-10', '2025-04-14 22:29:55', '2025-04-14 22:31:13');
+(11, 2, 3, 6, 'Farmer', 'Plant, water', 'Skill', 'Money', 'Full-time', 'onsite', 'mid', 'Tien Giang', 1000.00, 2000.00, 0, NULL, 'rejected', 'rejected', '2025-10-10', '2025-04-14 21:35:13', '2025-04-15 11:06:30');
 
 -- --------------------------------------------------------
 
@@ -216,7 +215,30 @@ INSERT INTO `notifications` (`notification_id`, `user_id`, `title`, `message`, `
 (8, 9, 'Application Not Forwarded', 'Your application for the job \"Mobile Developer\" was not forwarded to the employer.', 'application', 3, 0, '2025-04-14 22:09:09'),
 (9, 3, 'Job Post Rejected', 'Your job posting \"Farmer\" has been rejected. Please review and update it.', 'approval', 11, 0, '2025-04-14 22:10:11'),
 (10, 3, 'Job Post Approved', 'Your job posting \"Artist\" has been approved and is now visible to job seekers.', 'approval', 12, 0, '2025-04-14 22:31:13'),
-(11, 3, 'Job Post Rejected', 'Your job posting \"Designer\" has been rejected. Please review and update it.', 'approval', 10, 0, '2025-04-14 22:31:42');
+(11, 3, 'Job Post Rejected', 'Your job posting \"Designer\" has been rejected. Please review and update it.', 'approval', 10, 0, '2025-04-14 22:31:42'),
+(12, 3, 'Job Post Rejected', 'Your job posting \"Artist\" has been rejected. Please review and update it before resubmitting.', '', 12, 0, '2025-04-15 10:57:30'),
+(13, 3, 'Job Post Approved', 'Your job posting \"Artist\" has been approved and is now visible to job seekers.', 'approval', 12, 0, '2025-04-15 11:00:45'),
+(14, 3, 'Job Post Rejected', 'Your job posting \"Artist\" has been rejected. Please review and update it before resubmitting.', 'approval', 12, 0, '2025-04-15 11:01:19'),
+(15, 2, 'New Application', 'John Applicant has applied for your \"Backend Developer\" position', 'application', 2, 0, '2025-04-15 11:12:40'),
+(16, 8, 'Application Not Forwarded', 'Your application for the job \"Backend Developer\" was not forwarded to the employer.', 'application', 2, 0, '2025-04-15 11:14:50'),
+(17, 9, 'Application Not Forwarded', 'Your application for the job \"QA Engineer\" was not forwarded to the employer.', 'application', 4, 0, '2025-04-15 11:15:35'),
+(18, 3, 'New Application', 'Jane Applicant has applied for your \"QA Engineer\" position', 'application', 4, 0, '2025-04-15 11:15:42'),
+(19, 8, 'Application Approved', 'Your application for \"Backend Developer\" has been approved by admin.', '', 2, 0, '2025-04-15 11:26:45'),
+(20, 2, 'New Application Available', 'A new application from John Applicant for \"Backend Developer\" is available for review.', '', 2, 0, '2025-04-15 11:26:45'),
+(21, 9, 'Application Rejected', 'Your application for \"QA Engineer\" has been rejected by admin.', '', 4, 0, '2025-04-15 11:27:19'),
+(22, 9, 'Application Approved', 'Your application for \"QA Engineer\" has been approved by admin.', '', 4, 0, '2025-04-15 11:27:26'),
+(23, 3, 'New Application Available', 'A new application from Jane Applicant for \"QA Engineer\" is available for review.', '', 4, 0, '2025-04-15 11:27:26'),
+(24, 9, 'Application Rejected', 'Your application for \"QA Engineer\" has been rejected by admin.', '', 4, 0, '2025-04-15 11:27:50'),
+(25, 9, 'Application Approved', 'Your application for \"QA Engineer\" has been approved by admin.', '', 4, 0, '2025-04-15 11:27:53'),
+(26, 3, 'New Application Available', 'A new application from Jane Applicant for \"QA Engineer\" is available for review.', '', 4, 0, '2025-04-15 11:27:53'),
+(27, 8, 'Application Rejected', 'Your application for \"Backend Developer\" has been rejected by admin.', '', 2, 0, '2025-04-15 11:35:06'),
+(28, 9, 'Application Rejected', 'Your application for \"QA Engineer\" has been rejected by admin.', '', 4, 0, '2025-04-15 11:35:14'),
+(29, 8, 'Application Approved', 'Your application for \"Backend Developer\" has been approved by admin.', '', 2, 0, '2025-04-15 11:54:56'),
+(30, 2, 'New Application Available', 'A new application from John Applicant for \"Backend Developer\" is available for review.', '', 2, 0, '2025-04-15 11:54:56'),
+(31, 9, 'Application Approved', 'Your application for \"Mobile Developer\" has been approved by admin.', '', 3, 0, '2025-04-15 11:54:58'),
+(32, 3, 'New Application Available', 'A new application from Jane Applicant for \"Mobile Developer\" is available for review.', '', 3, 0, '2025-04-15 11:54:58'),
+(33, 9, 'Application Approved', 'Your application for \"QA Engineer\" has been approved by admin.', '', 4, 0, '2025-04-15 11:55:00'),
+(34, 3, 'New Application Available', 'A new application from Jane Applicant for \"QA Engineer\" is available for review.', '', 4, 0, '2025-04-15 11:55:00');
 
 -- --------------------------------------------------------
 
@@ -338,7 +360,7 @@ ALTER TABLE `job_posts`
 -- AUTO_INCREMENT cho bảng `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT cho bảng `users`

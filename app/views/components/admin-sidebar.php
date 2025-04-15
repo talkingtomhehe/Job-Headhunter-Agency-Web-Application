@@ -34,12 +34,6 @@
                     <span>Users</span>
                 </a>
             </li>
-            <li class="<?= $pageTitle === 'Add New Job' || $pageTitle === 'Create Job' ? 'active' : '' ?>">
-                <a href="<?= SITE_URL ?>/admin/jobs/create">
-                    <i class="fa-solid fa-plus-circle"></i>
-                    <span>Add Job</span>
-                </a>
-            </li>
         </ul>
     </nav>
     

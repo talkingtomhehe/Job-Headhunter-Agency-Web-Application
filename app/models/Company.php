@@ -105,4 +105,30 @@ class Company extends Model {
         $this->db->query($query);
         return $this->db->resultSet();
     }
+
+    public function getCompanyByUserId($userId) {
+        try {
+            $query = "SELECT * FROM companies WHERE employer_id = ?";
+            $this->db->query($query);
+            $this->db->bind(1, $userId);
+            
+            return $this->db->single();
+        } catch (\Exception $e) {
+            error_log('Error getting company by user ID: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getCompanyWithFullDetails($companyId) {
+        try {
+            $query = "SELECT * FROM companies WHERE company_id = ?";
+            $this->db->query($query);
+            $this->db->bind(1, $companyId);
+            
+            return $this->db->single();
+        } catch (\Exception $e) {
+            error_log('Error getting company details: ' . $e->getMessage());
+            return false;
+        }
+    }
 }

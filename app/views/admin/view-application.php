@@ -11,32 +11,26 @@
         <div class="card-header">
             <div class="job-title-header">
                 <h2>Application for: <?= htmlspecialchars($job['title']) ?></h2>
-                <span class="status-badge status-<?= strtolower($application['status']) ?>">
-                    <?= ucfirst($application['status']) ?>
+                <span class="status-badge admin-status-<?= strtolower($application['admin_status']) ?>">
+                    <?= ucfirst($application['admin_status']) ?>
                 </span>
             </div>
             
             <div class="card-actions">
-                <a href="<?= SITE_URL ?>/admin/applications/edit/<?= $application['application_id'] ?>" class="btn-action btn-edit">
-                    <i class="fa-solid fa-pencil"></i> Edit Application
-                </a>
-                
-                <?php if ($application['status'] === 'pending'): ?>
                 <div class="approval-actions">
                     <form action="<?= SITE_URL ?>/admin/applications/approve" method="POST" style="display: inline;">
                         <input type="hidden" name="application_id" value="<?= $application['application_id'] ?>">
-                        <button type="submit" class="btn-approve">
+                        <button type="submit" class="btn-approve" <?= $application['admin_status'] == 'approved' ? 'disabled' : '' ?>>
                             <i class="fa-solid fa-check"></i> Approve
                         </button>
                     </form>
                     <form action="<?= SITE_URL ?>/admin/applications/reject" method="POST" style="display: inline;">
                         <input type="hidden" name="application_id" value="<?= $application['application_id'] ?>">
-                        <button type="submit" class="btn-reject">
+                        <button type="submit" class="btn-reject" <?= $application['admin_status'] == 'rejected' ? 'disabled' : '' ?>>
                             <i class="fa-solid fa-times"></i> Reject
                         </button>
                     </form>
                 </div>
-                <?php endif; ?>
             </div>
         </div>
         

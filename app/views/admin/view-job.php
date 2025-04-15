@@ -11,8 +11,8 @@
         <div class="card-header">
             <div class="job-title-header">
                 <h2><?= htmlspecialchars($job['title']) ?></h2>
-                <span class="status-badge status-<?= strtolower($job['status']) ?>">
-                    <?= ucfirst($job['status']) ?>
+                <span class="status-badge admin-status-<?= strtolower($job['admin_status']) ?>">
+                    <?= ucfirst($job['admin_status']) ?>
                 </span>
             </div>
             
@@ -23,14 +23,12 @@
                 
                 <?php if ($job['status'] === 'pending'): ?>
                 <div class="approval-actions">
-                    <form action="<?= SITE_URL ?>/admin/jobs/approve" method="POST" style="display: inline;">
-                        <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
+                    <form action="<?= SITE_URL ?>/admin/jobs/approve/<?= $job['job_id'] ?>" method="POST" style="display: inline;">
                         <button type="submit" class="btn-approve">
                             <i class="fa-solid fa-check"></i> Approve
                         </button>
                     </form>
-                    <form action="<?= SITE_URL ?>/admin/jobs/reject" method="POST" style="display: inline;">
-                        <input type="hidden" name="job_id" value="<?= $job['job_id'] ?>">
+                    <form action="<?= SITE_URL ?>/admin/jobs/reject/<?= $job['job_id'] ?>" method="POST" style="display: inline;">
                         <button type="submit" class="btn-reject">
                             <i class="fa-solid fa-times"></i> Reject
                         </button>
@@ -48,13 +46,13 @@
                             <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $company['logo_path'] ?>" alt="<?= htmlspecialchars($company['company_name']) ?>" class="company-logo">
                         <?php else: ?>
                             <div class="company-logo-placeholder">
-                                <?= substr($company['company_name'], 0, 1) ?>
+                                <?= substr($company['company_name'] ?? 'C', 0, 1) ?>
                             </div>
                         <?php endif; ?>
                     </div>
                     <div class="company-details">
-                        <h3><?= htmlspecialchars($company['company_name']) ?></h3>
-                        <p class="employer-name">Posted by: <?= htmlspecialchars($employer['full_name']) ?></p>
+                        <h3><?= htmlspecialchars($company['company_name'] ?? 'Unknown Company') ?></h3>
+                        <p class="employer-name">Posted by: <?= isset($employer) && $employer ? htmlspecialchars($employer['full_name']) : 'Unknown' ?></p>
                     </div>
                 </div>
 
@@ -145,7 +143,7 @@
     
     <div class="dashboard-card applications-card">
         <div class="card-header">
-            <h2>Applications (<?= count($applications) ?>)</h2>
+            <h2>Applications (<?= isset($applications) ? count($applications) : 0 ?>)</h2>
         </div>
         
         <div class="card-body">

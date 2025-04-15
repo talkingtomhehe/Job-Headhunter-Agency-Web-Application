@@ -318,6 +318,49 @@
     color: #6c757d;
 }
 
+/* Admin Status Badge Colors */
+.status-badge.admin-status-pending {
+    background-color: #fff3cd;  /* Light yellow */
+    color: #856404;             /* Dark yellow */
+}
+
+.status-badge.admin-status-approved {
+    background-color: #d1e7dd;  /* Light green */
+    color: #0f5132;             /* Dark green */
+}
+
+.status-badge.admin-status-rejected {
+    background-color: #f8d7da;  /* Light red */
+    color: #842029;             /* Dark red */
+}
+
+/* Hover effects for the admin status badges */
+.status-badge.admin-status-pending:hover {
+    background-color: #ffe69c;
+    box-shadow: 0 2px 6px rgba(133, 100, 4, 0.2);
+    transform: translateY(-2px);
+}
+
+.status-badge.admin-status-approved:hover {
+    background-color: #b1d8c2;
+    box-shadow: 0 2px 6px rgba(15, 81, 50, 0.2);
+    transform: translateY(-2px);
+}
+
+.status-badge.admin-status-rejected:hover {
+    background-color: #f5c2c7;
+    box-shadow: 0 2px 6px rgba(132, 32, 41, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Make admin status badges slightly more prominent */
+.status-badge[class*="admin-status-"] {
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+}
+
 /* Responsive adjustments */
 @media (max-width: 992px) {
     .admin-dashboard .stats-container {

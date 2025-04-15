@@ -469,4 +469,17 @@ class JobPost extends Model {
         
         return $this->db->execute();
     }
+
+    public function getCompanyJobs($companyId) {
+        $query = "SELECT j.*, 
+                  COALESCE((SELECT COUNT(*) FROM job_applications WHERE job_id = j.job_id), 0) as application_count
+                  FROM job_posts j 
+                  WHERE j.company_id = ?
+                  ORDER BY j.created_at DESC";
+                  
+        $this->db->query($query);
+        $this->db->bind(1, $companyId);
+        
+        return $this->db->resultSet();
+    }
 }

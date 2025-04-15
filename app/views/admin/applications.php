@@ -1,13 +1,23 @@
-<div class="filter-bar">
-    <div class="filter-options">
-        <a href="<?= SITE_URL ?>/admin/applications" class="filter-btn <?= empty($_GET['filter']) ? 'active' : '' ?>">All Applications</a>
-        <a href="<?= SITE_URL ?>/admin/applications?filter=pending" class="filter-btn <?= ($_GET['filter'] ?? '') === 'pending' ? 'active' : '' ?>">Pending Admin Review</a>
-        <a href="<?= SITE_URL ?>/admin/applications?filter=approved" class="filter-btn <?= ($_GET['filter'] ?? '') === 'approved' ? 'active' : '' ?>">Admin Approved</a>
-        <a href="<?= SITE_URL ?>/admin/applications?filter=rejected" class="filter-btn <?= ($_GET['filter'] ?? '') === 'rejected' ? 'active' : '' ?>">Admin Rejected</a>
-    </div>
-</div>
-
 <div class="dashboard-card">
+    <div class="card-header">
+        <div class="card-filters">
+            <div class="filter-group">
+                <label for="statusFilter">Filter by Status:</label>
+                <select id="statusFilter" class="filter-select">
+                    <option value="all" <?= empty($_GET['filter']) ? 'selected' : '' ?>>All Applications</option>
+                    <option value="pending" <?= ($_GET['filter'] ?? '') === 'pending' ? 'selected' : '' ?>>Pending Review</option>
+                    <option value="approved" <?= ($_GET['filter'] ?? '') === 'approved' ? 'selected' : '' ?>>Approved</option>
+                    <option value="rejected" <?= ($_GET['filter'] ?? '') === 'rejected' ? 'selected' : '' ?>>Rejected</option>
+                </select>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="applicationSearch" placeholder="Search applications..." class="search-input">
+                <button class="search-button"><i class="fa-solid fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+    
     <div class="card-body">
         <?php if (empty($applications)): ?>
             <div class="empty-state">
@@ -18,43 +28,47 @@
             </div>
         <?php else: ?>
             <div class="responsive-table">
-                <table class="data-table">
+                <table class="data-table applications-table">
                     <thead>
                         <tr>
                             <th>Applicant</th>
                             <th>Job Title</th>
                             <th>Company</th>
                             <th>Applied</th>
-                            <th>Status</th>
+                            <th>Admin Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($applications as $application): ?>
-                            <tr>
+                            <tr data-status="<?= strtolower($application['admin_status']) ?>">
                                 <td>
-                                    <div class="job-title-cell">
-                                        <strong><?= htmlspecialchars($application['full_name']) ?></strong>
-                                        <span class="job-location">
-                                            <i class="fa-solid fa-envelope"></i> 
-                                            <?= htmlspecialchars($application['applicant_email'] ?? $application['email'] ?? 'No email available') ?>
-                                        </span>
+                                    <div class="applicant-cell">
+                                        <div class="applicant-avatar">
+                                            <?= substr($application['full_name'], 0, 1) ?>
+                                        </div>
+                                        <div class="applicant-info">
+                                            <strong><?= htmlspecialchars($application['full_name']) ?></strong>
+                                            <div class="contact-info">
+                                                <p><i class="fa-solid fa-envelope"></i> <?= htmlspecialchars($application['applicant_email'] ?? 'No email') ?></p>
+                                                <?php if (!empty($application['phone'])): ?>
+                                                <p><i class="fa-solid fa-phone"></i> <?= htmlspecialchars($application['phone']) ?></p>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                                 <td><?= htmlspecialchars($application['job_title']) ?></td>
                                 <td><?= htmlspecialchars($application['company_name'] ?? 'N/A') ?></td>
                                 <td><?= date('M d, Y', strtotime($application['created_at'])) ?></td>
                                 <td>
-                                    <span class="status-badge status-<?= strtolower($application['status']) ?>">
-                                        <?= ucfirst($application['status']) ?>
+                                    <span class="status-badge admin-status-<?= strtolower($application['admin_status']) ?>">
+                                        <?= ucfirst($application['admin_status']) ?>
                                     </span>
                                 </td>
                                 <td class="actions-cell">
                                     <a href="<?= SITE_URL ?>/admin/applications/view/<?= $application['application_id'] ?>" class="btn-icon" title="View Application">
                                         <i class="fa-solid fa-eye"></i>
-                                    </a>
-                                    <a href="<?= SITE_URL ?>/admin/applications/edit/<?= $application['application_id'] ?>" class="btn-icon" title="Edit Application">
-                                        <i class="fa-solid fa-pencil"></i>
                                     </a>
                                     <?php if ($application['admin_status'] === 'pending'): ?>
                                         <form action="<?= SITE_URL ?>/admin/applications/approve" method="POST" style="display: inline;">
@@ -79,3 +93,45 @@
         <?php endif; ?>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Status filter functionality
+    const statusFilter = document.getElementById('statusFilter');
+    if (statusFilter) {
+        statusFilter.addEventListener('change', function() {
+            const selectedStatus = this.value;
+            if (selectedStatus === 'all') {
+                window.location.href = '<?= SITE_URL ?>/admin/applications';
+            } else {
+                window.location.href = '<?= SITE_URL ?>/admin/applications?filter=' + selectedStatus;
+            }
+        });
+    }
+    
+    // Search functionality
+    const searchInput = document.getElementById('applicationSearch');
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.applications-table tbody tr');
+            
+            rows.forEach(row => {
+                const applicantName = row.querySelector('.applicant-info strong').textContent.toLowerCase();
+                const applicantEmail = row.querySelector('.contact-info p').textContent.toLowerCase();
+                const jobTitle = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                const company = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                
+                if (applicantName.includes(searchTerm) || 
+                    applicantEmail.includes(searchTerm) || 
+                    jobTitle.includes(searchTerm) || 
+                    company.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
+});
+</script>

@@ -10,9 +10,13 @@
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/components.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-dashboard.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer.css">
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/admin.css">
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/admin-user.css">
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/admin-viewuser.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-viewjob.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-jobform.css">
-    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/admin.css">
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-profile.css">
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/admin-viewjob.css">
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/dropdown.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/employer-dashboard.js" defer></script>
     <?php if(isset($pageScripts)): ?>

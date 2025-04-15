@@ -6,8 +6,9 @@
     </div>
 </div>
 
-<div class="admin-user-view">
-    <div class="dashboard-card">
+<div class="admin-user-view profile-container">
+    <!-- User Details Card -->
+    <div class="dashboard-card profile-card">
         <div class="card-header">
             <div class="user-title-header">
                 <h1><?= htmlspecialchars($user['full_name']) ?></h1>
@@ -24,87 +25,115 @@
             
             <div class="card-actions">
                 <?php if ($user['role'] !== 'admin'): ?>
-                    <button class="btn-secondary dropdown-toggle">
-                        Actions <i class="fa-solid fa-chevron-down"></i>
+                    <button type="button" class="btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="<?= $user['user_id'] ?>">
+                        <i class="fa-solid fa-trash"></i> Delete User
                     </button>
-                    <div class="dropdown-menu">
-                        <a href="<?= SITE_URL ?>/admin/users/edit/<?= $user['user_id'] ?>" class="dropdown-item">
-                            <i class="fa-solid fa-pen-to-square"></i> Edit User
-                        </a>
-                        <a href="#" class="dropdown-item text-danger" data-toggle="modal" data-target="#deleteModal" data-id="<?= $user['user_id'] ?>">
-                            <i class="fa-solid fa-trash"></i> Delete User
-                        </a>
-                    </div>
                 <?php endif; ?>
             </div>
         </div>
         
         <div class="card-body">
-            <div class="user-info-section">
-                <div class="user-detail">
-                    <span class="label">Email:</span>
-                    <span class="value"><?= htmlspecialchars($user['email']) ?></span>
-                </div>
-                
-                <?php if (!empty($user['phone'])): ?>
-                <div class="user-detail">
-                    <span class="label">Phone:</span>
-                    <span class="value"><?= htmlspecialchars($user['phone']) ?></span>
-                </div>
-                <?php endif; ?>
-                
-                <div class="user-detail">
-                    <span class="label">Joined:</span>
-                    <span class="value"><?= date('F j, Y', strtotime($user['created_at'])) ?></span>
-                </div>
-                
-                <?php if ($user['role'] === 'company_admin' && isset($company)): ?>
-                <div class="company-info">
-                    <h3>Company Information</h3>
-                    <div class="company-profile">
-                        <?php if (!empty($company['logo_path'])): ?>
-                        <div class="company-logo">
-                            <img src="<?= SITE_URL ?>/uploads/logos/<?= $company['logo_path'] ?>" alt="<?= htmlspecialchars($company['company_name']) ?>">
-                        </div>
-                        <?php endif; ?>
-                        
-                        <div class="company-details">
-                            <h4><?= htmlspecialchars($company['company_name']) ?></h4>
-                            <?php if (!empty($company['industry'])): ?>
-                            <div class="detail">
-                                <i class="fa-solid fa-briefcase"></i> <?= htmlspecialchars($company['industry']) ?>
-                            </div>
-                            <?php endif; ?>
-                            
-                            <?php if (!empty($company['company_size'])): ?>
-                            <div class="detail">
-                                <i class="fa-solid fa-users"></i> <?= htmlspecialchars($company['company_size']) ?> employees
-                            </div>
-                            <?php endif; ?>
-                            
-                            <?php if (!empty($company['website'])): ?>
-                            <div class="detail">
-                                <i class="fa-solid fa-globe"></i> <a href="<?= htmlspecialchars($company['website']) ?>" target="_blank"><?= htmlspecialchars($company['website']) ?></a>
-                            </div>
-                            <?php endif; ?>
-                            
-                            <div class="detail">
-                                <i class="fa-solid fa-briefcase"></i> <?= $jobCount ?> job<?= $jobCount !== 1 ? 's' : '' ?> posted
-                            </div>
-                            
-                            <a href="<?= SITE_URL ?>/admin/companies/view/<?= $company['company_id'] ?>" class="btn-text">
-                                <i class="fa-solid fa-eye"></i> View Company Profile
-                            </a>
-                        </div>
+            <div class="profile-section">
+                <h3>Basic Information</h3>
+                <div class="profile-content">
+                    <div class="user-detail">
+                        <span class="label">Email:</span>
+                        <span class="value"><?= htmlspecialchars($user['email']) ?></span>
+                    </div>
+                    
+                    <?php if (!empty($user['phone'])): ?>
+                    <div class="user-detail">
+                        <span class="label">Phone:</span>
+                        <span class="value"><?= htmlspecialchars($user['phone']) ?></span>
+                    </div>
+                    <?php endif; ?>
+                    
+                    <div class="user-detail">
+                        <span class="label">Joined:</span>
+                        <span class="value"><?= date('F j, Y', strtotime($user['created_at'])) ?></span>
                     </div>
                 </div>
-                <?php endif; ?>
             </div>
+            
+            <?php if ($user['role'] === 'company_admin' && isset($company)): ?>
+            <!-- Company Information Section (using company profile styling) -->
+            <div class="profile-section">
+                <h3>Company Information</h3>
+                <div class="profile-content">
+                    <div class="company-header">
+                        <div class="company-name-section">
+                            <h1 class="company-name"><?= htmlspecialchars($company['company_name']) ?></h1>
+                        </div>
+                        
+                        <div class="company-info-section">
+                            <div class="company-logo-container">
+                                <?php if (!empty($company['logo_path'])): ?>
+                                    <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $company['logo_path'] ?>" alt="<?= htmlspecialchars($company['company_name']) ?>" class="company-logo">
+                                <?php else: ?>
+                                    <div class="company-logo-placeholder">
+                                        <?= substr($company['company_name'], 0, 1) ?>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <div class="company-basic-info">
+                                <?php if (!empty($company['headquarters_address'])): ?>
+                                    <div class="company-info-item">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span><?= htmlspecialchars($company['headquarters_address']) ?></span>
+                                    </div>
+                                <?php endif; ?>
+                                
+                                <?php if (!empty($company['industry'])): ?>
+                                    <div class="company-info-item">
+                                        <i class="fa-solid fa-briefcase"></i>
+                                        <span><?= htmlspecialchars($company['industry']) ?></span>
+                                    </div>
+                                <?php endif; ?>
+                                
+                                <?php if (!empty($company['company_size'])): ?>
+                                    <div class="company-info-item">
+                                        <i class="fa-solid fa-users"></i>
+                                        <span><?= htmlspecialchars($company['company_size']) ?> employees</span>
+                                    </div>
+                                <?php endif; ?>
+                                
+                                <?php if (!empty($company['website'])): ?>
+                                    <div class="company-info-item company-website">
+                                        <i class="fa-solid fa-globe"></i>
+                                        <a href="<?= filter_var($company['website'], FILTER_VALIDATE_URL) ? $company['website'] : 'https://' . $company['website'] ?>" target="_blank">
+                                            <?= htmlspecialchars($company['website']) ?>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+                                
+                                <div class="company-info-item">
+                                    <i class="fa-solid fa-briefcase"></i>
+                                    <span><?= $jobCount ?? 0 ?> job<?= ($jobCount ?? 0) !== 1 ? 's' : '' ?> posted</span>
+                                </div>
+                                
+                                <div class="company-info-item">
+                                    <i class="fa-solid fa-calendar-alt"></i>
+                                    <span>Joined: <?= date('F j, Y', strtotime($company['created_at'])) ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <?php if (!empty($company['description'])): ?>
+                        <div class="company-description">
+                            <?= nl2br(htmlspecialchars($company['description'])) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+            <?php endif; ?>
         </div>
     </div>
     
+    <!-- Applications Section for Job Seekers -->
     <?php if ($user['role'] === 'job_seeker' && isset($applications)): ?>
-    <div class="dashboard-card applications-card">
+    <div class="dashboard-card profile-card">
         <div class="card-header">
             <h2>Applications (<?= $applicationCount ?>)</h2>
         </div>
@@ -115,7 +144,7 @@
                     <div class="empty-icon">
                         <i class="fa-solid fa-file-lines"></i>
                     </div>
-                    <p>No job applications submitted</p>
+                    <p class="empty-text">No job applications submitted</p>
                 </div>
             <?php else: ?>
                 <div class="responsive-table">
@@ -140,7 +169,7 @@
                                     <td>
                                         <div class="company-name-cell">
                                             <?php if (!empty($application['logo_path'])): ?>
-                                                <img src="<?= SITE_URL ?>/uploads/logos/<?= $application['logo_path'] ?>" alt="<?= htmlspecialchars($application['company_name']) ?>" class="company-logo-small">
+                                                <img src="<?= SITE_URL ?>/public/uploads/logos/<?= $application['logo_path'] ?>" alt="<?= htmlspecialchars($application['company_name']) ?>" class="company-logo-small">
                                             <?php endif; ?>
                                             <span><?= htmlspecialchars($application['company_name']) ?></span>
                                         </div>
@@ -160,6 +189,47 @@
                             <?php endforeach; ?>
                         </tbody>
                     </table>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+    
+    <?php if ($user['role'] === 'company_admin' && isset($jobs)): ?>
+    <div class="profile-section">
+        <div class="section-header-flex">
+            <h3>Jobs Posted (<?= count($jobs) ?>)</h3>
+        </div>
+        <div class="profile-content">
+            <?php if (empty($jobs)): ?>
+                <p class="empty-text">No jobs posted yet.</p>
+            <?php else: ?>
+                <div class="profile-jobs-list">
+                    <?php foreach ($jobs as $job): ?>
+                    <a href="<?= SITE_URL ?>/admin/jobs/view/<?= $job['job_id'] ?>" class="profile-job-item">
+                        <div class="profile-job-content">
+                            <h4 class="profile-job-title"><?= htmlspecialchars($job['title']) ?></h4>
+                            <div class="profile-job-meta">
+                                <span><i class="fa-solid fa-location-dot"></i> <?= htmlspecialchars($job['location']) ?></span>
+                                <span><i class="fa-solid fa-briefcase"></i> <?= htmlspecialchars($job['job_type']) ?></span>
+                                <?php if (isset($job['work_model']) && !empty($job['work_model'])): ?>
+                                    <span><i class="fa-solid fa-clock"></i> <?= htmlspecialchars(ucfirst($job['work_model'])) ?></span>
+                                <?php else: ?>
+                                    <span><i class="fa-solid fa-clock"></i> Not specified</span>
+                                <?php endif; ?>
+                                <span class="profile-job-status status-<?= strtolower($job['status']) ?>">
+                                    <?= ucfirst($job['status']) ?>
+                                </span>
+                                <span class="admin-status-badge admin-status-<?= strtolower($job['admin_status']) ?>">
+                                    <?= ucfirst($job['admin_status']) ?>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="profile-job-arrow">
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </div>
+                    </a>
+                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </div>
@@ -186,8 +256,7 @@
             </div>
         </div>
         <div class="modal-footer">
-            <form action="<?= SITE_URL ?>/admin/users/delete" method="POST">
-                <input type="hidden" name="user_id" id="deleteUserId" value="<?= $user['user_id'] ?>">
+            <form action="<?= SITE_URL ?>/admin/users/delete/<?= $user['user_id'] ?>" method="POST">
                 <button type="button" id="cancelDelete" class="btn-secondary">Cancel</button>
                 <button type="submit" class="btn-danger">Delete User</button>
             </form>
@@ -208,7 +277,6 @@ document.addEventListener('DOMContentLoaded', function() {
         deleteBtn.addEventListener('click', function(e) {
             e.preventDefault();
             modal.style.display = 'block';
-            document.getElementById('deleteUserId').value = this.getAttribute('data-id');
         });
     }
     

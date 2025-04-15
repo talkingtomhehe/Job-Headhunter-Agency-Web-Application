@@ -1,17 +1,31 @@
-<div class="filter-bar">
-    <div class="filter-options">
-        <a href="<?= SITE_URL ?>/admin/jobs" class="filter-btn <?= $currentFilter === 'all' ? 'active' : '' ?>">All Jobs</a>
-        <a href="<?= SITE_URL ?>/admin/jobs?filter=pending" class="filter-btn <?= $currentFilter === 'pending' ? 'active' : '' ?>">Pending</a>
-        <a href="<?= SITE_URL ?>/admin/jobs?filter=active" class="filter-btn <?= $currentFilter === 'active' ? 'active' : '' ?>">Active</a>
-        <a href="<?= SITE_URL ?>/admin/jobs?filter=rejected" class="filter-btn <?= $currentFilter === 'rejected' ? 'active' : '' ?>">Rejected</a>
+<div class="section-header">
+    <div class="section-actions">
+        <a href="<?= SITE_URL ?>/admin/addJob" class="btn-primary">
+            <i class="fa-solid fa-plus"></i> Add New Job
+        </a>
     </div>
-    
-    <a href="<?= SITE_URL ?>/admin/addJob" class="btn-primary">
-        <i class="fa-solid fa-plus"></i> Add New Job
-    </a>
 </div>
 
 <div class="dashboard-card">
+    <div class="card-header">
+        <div class="card-filters">
+            <div class="filter-group">
+                <label for="statusFilter">Filter by Status:</label>
+                <select id="statusFilter" class="filter-select">
+                    <option value="all" <?= ($activeFilter ?? '') === 'all' ? 'selected' : '' ?>>All Status</option>
+                    <option value="pending" <?= ($activeFilter ?? '') === 'pending_admin' ? 'selected' : '' ?>>Pending Review</option>
+                    <option value="approved" <?= ($activeFilter ?? '') === 'approved' ? 'selected' : '' ?>>Approved</option>
+                    <option value="rejected" <?= ($activeFilter ?? '') === 'rejected' ? 'selected' : '' ?>>Rejected</option>
+                </select>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="jobSearch" placeholder="Search jobs..." class="search-input">
+                <button class="search-button"><i class="fa-solid fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+    
     <div class="card-body">
         <?php if (empty($jobs)): ?>
             <div class="empty-state">
@@ -22,21 +36,20 @@
             </div>
         <?php else: ?>
             <div class="responsive-table">
-                <table class="data-table">
+                <table class="data-table jobs-table">
                     <thead>
                         <tr>
                             <th>Title</th>
                             <th>Company</th>
                             <th>Applications</th>
                             <th>Posted</th>
-                            <th>Status</th>
                             <th>Admin Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($jobs as $job): ?>
-                            <tr>
+                            <tr data-status="<?= strtolower($job['admin_status']) ?>">
                                 <td>
                                     <div class="job-title-cell">
                                         <strong><?= htmlspecialchars($job['title']) ?></strong>
@@ -51,11 +64,6 @@
                                     <span class="application-count"><?= $job['application_count'] ?></span>
                                 </td>
                                 <td><?= date('M d, Y', strtotime($job['created_at'])) ?></td>
-                                <td>
-                                    <span class="status-badge status-<?= strtolower($job['status']) ?>">
-                                        <?= ucfirst($job['status']) ?>
-                                    </span>
-                                </td>
                                 <td>
                                     <span class="status-badge admin-status-<?= strtolower($job['admin_status']) ?>">
                                         <?= ucfirst($job['admin_status']) ?>
@@ -98,8 +106,8 @@
                     <p>Are you sure you want to delete this job posting? This action cannot be undone.</p>
                     <div class="modal-actions">
                         <button id="cancelDelete" class="btn-secondary">Cancel</button>
-                        <form id="deleteForm" method="POST" action="<?= SITE_URL ?>/admin/jobs/delete">
-                            <input type="hidden" name="job_id" id="deleteJobId" value="">
+                        <form id="deleteForm" method="POST">
+                            <input type="hidden" id="deleteJobId" name="job_id" value="">
                             <button type="submit" class="btn-danger">Delete</button>
                         </form>
                     </div>
@@ -111,6 +119,40 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Status filter functionality
+    const statusFilter = document.getElementById('statusFilter');
+    if (statusFilter) {
+        statusFilter.addEventListener('change', function() {
+            const selectedStatus = this.value;
+            if (selectedStatus === 'all') {
+                window.location.href = '<?= SITE_URL ?>/admin/jobs';
+            } else {
+                window.location.href = '<?= SITE_URL ?>/admin/jobs?filter=' + selectedStatus;
+            }
+        });
+    }
+    
+    // Search functionality
+    const searchInput = document.getElementById('jobSearch');
+    if (searchInput) {
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.jobs-table tbody tr');
+            
+            rows.forEach(row => {
+                const title = row.querySelector('.job-title-cell strong').textContent.toLowerCase();
+                const location = row.querySelector('.job-location').textContent.toLowerCase();
+                const company = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || location.includes(searchTerm) || company.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    }
+    
     // Delete modal functionality
     const modal = document.getElementById('deleteModal');
     const deleteButtons = document.querySelectorAll('.btn-delete');
@@ -144,5 +186,12 @@ document.addEventListener('DOMContentLoaded', function() {
             modal.style.display = 'none';
         }
     });
+});
+
+document.getElementById('deleteForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const jobId = document.getElementById('deleteJobId').value;
+    this.action = '<?= SITE_URL ?>/admin/jobs/delete/' + jobId;
+    this.submit();
 });
 </script>
