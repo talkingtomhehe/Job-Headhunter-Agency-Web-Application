@@ -50,7 +50,10 @@
                 <h2>Applicant Information</h2>
                 <div class="applicant-profile">
                     <div class="applicant-avatar large">
-                        <?= substr($application['full_name'], 0, 1) ?>
+                        <?php
+                        $avatarPath = !empty($application['avatar_path']) ? $application['avatar_path'] : 'assets/images/defaultavatar.jpg';
+                        ?>
+                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" alt="<?= htmlspecialchars($application['full_name']) ?>" class="user-avatar">
                     </div>
                     <div class="applicant-details">
                         <h3><?= htmlspecialchars($application['full_name']) ?></h3>

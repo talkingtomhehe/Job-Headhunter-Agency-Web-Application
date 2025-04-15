@@ -167,9 +167,10 @@
                                 <tr>
                                     <td>
                                         <div class="applicant-cell">
-                                            <div class="applicant-avatar">
-                                                <?= substr($application['full_name'], 0, 1) ?>
-                                            </div>
+                                            <?php
+                                            $avatarPath = !empty($application['avatar_path']) ? $application['avatar_path'] : 'assets/images/defaultavatar.jpg';
+                                            ?>
+                                            <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" alt="<?= htmlspecialchars($application['full_name']) ?>" class="applicant-avatar">
                                             <div class="applicant-info">
                                                 <strong><?= htmlspecialchars($application['full_name']) ?></strong>
                                             </div>

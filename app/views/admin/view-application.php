@@ -38,7 +38,10 @@
             <div class="job-meta-section">
                 <div class="job-company-info">
                     <div class="applicant-avatar">
-                        <?= substr($application['full_name'], 0, 1) ?>
+                        <?php
+                        $avatarPath = !empty($user['avatar_path']) ? $user['avatar_path'] : 'assets/images/defaultavatar.jpg';
+                        ?>
+                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" alt="<?= htmlspecialchars($user['full_name']) ?>" class="user-avatar">
                     </div>
                     <div class="company-details">
                         <h3><?= htmlspecialchars($application['full_name']) ?></h3>
@@ -102,13 +105,10 @@
             <div class="job-meta-section">
                 <div class="job-company-info">
                     <div class="company-logo-container">
-                        <?php if (!empty($job['company_logo'])): ?>
-                            <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $job['company_logo'] ?>" alt="<?= htmlspecialchars($job['company_name'] ?? 'Company') ?>" class="company-logo">
-                        <?php else: ?>
-                            <div class="company-logo-placeholder">
-                                <?= substr($job['company_name'] ?? 'C', 0, 1) ?>
-                            </div>
-                        <?php endif; ?>
+                        <?php
+                        $logoPath = !empty($job['company_logo']) ? $job['company_logo'] : 'uploads/logo/defaultlogo.jpg';
+                        ?>
+                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $logoPath ?>" alt="<?= htmlspecialchars($job['company_name'] ?? 'Company') ?>" class="company-logo">
                     </div>
                     <div class="company-details">
                         <h3><?= htmlspecialchars($job['title']) ?></h3>

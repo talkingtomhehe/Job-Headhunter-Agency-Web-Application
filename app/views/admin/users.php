@@ -45,7 +45,10 @@
                                 <td>
                                     <div class="user-cell">
                                         <div class="user-avatar">
-                                            <?= substr($user['full_name'], 0, 1) ?>
+                                            <?php
+                                            $avatarPath = !empty($user['avatar_path']) ? $user['avatar_path'] : 'assets/images/defaultavatar.jpg';
+                                            ?>
+                                            <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" alt="<?= htmlspecialchars($user['full_name']) ?>" class="user-avatar">
                                         </div>
                                         <div class="user-info">
                                             <strong><?= htmlspecialchars($user['full_name']) ?></strong>

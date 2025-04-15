@@ -8,7 +8,7 @@ class Application extends Model {
     // Get application by ID
     public function getApplicationById($id) {
         $query = "SELECT a.*, j.title as job_title, j.created_at as job_created_at,
-                  u.full_name, u.email, u.phone
+                  u.full_name, u.email, u.phone, u.avatar_path
                   FROM job_applications a
                   JOIN job_posts j ON a.job_id = j.job_id
                   JOIN users u ON a.seeker_id = u.user_id
@@ -22,12 +22,12 @@ class Application extends Model {
     
     // Get applications by job ID
     public function getApplicationsByJob($jobId) {
-        $query = "SELECT a.*, u.full_name, u.email, a.status as status
+        $query = "SELECT a.*, u.full_name, u.email, u.phone, u.avatar_path
                   FROM job_applications a
                   JOIN users u ON a.seeker_id = u.user_id
-                  WHERE a.job_id = ? AND a.admin_status = 'approved'
+                  WHERE a.job_id = ?
                   ORDER BY a.created_at DESC";
-                  
+        
         $this->db->query($query);
         $this->db->bind(1, $jobId);
         
@@ -36,13 +36,14 @@ class Application extends Model {
     
     // Get applications by employer
     public function getApplicationsByEmployer($employerId) {
-        $query = "SELECT a.*, j.title as job_title, u.full_name, a.status as application_status
+        $query = "SELECT a.*, j.title as job_title, j.company_id, j.location, j.job_type,
+                  u.full_name, u.email, u.phone, u.avatar_path
                   FROM job_applications a
                   JOIN job_posts j ON a.job_id = j.job_id
                   JOIN users u ON a.seeker_id = u.user_id
-                  WHERE j.employer_id = ? AND a.admin_status = 'approved'
+                  WHERE j.employer_id = ?
                   ORDER BY a.created_at DESC";
-                  
+        
         $this->db->query($query);
         $this->db->bind(1, $employerId);
         

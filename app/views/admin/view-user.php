@@ -11,16 +11,24 @@
     <div class="dashboard-card profile-card">
         <div class="card-header">
             <div class="user-title-header">
-                <h1><?= htmlspecialchars($user['full_name']) ?></h1>
-                <span class="user-role-badge role-<?= $user['role'] ?>">
-                    <?php if ($user['role'] === 'admin'): ?>
-                        <i class="fa-solid fa-shield"></i> Administrator
-                    <?php elseif ($user['role'] === 'company_admin'): ?>
-                        <i class="fa-solid fa-building"></i> Employer
-                    <?php else: ?>
-                        <i class="fa-solid fa-user"></i> Job Seeker
-                    <?php endif; ?>
-                </span>
+                <div class="user-avatar-container">
+                    <?php
+                    $avatarPath = !empty($user['avatar_path']) ? $user['avatar_path'] : 'assets/images/defaultavatar.jpg';
+                    ?>
+                    <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" alt="<?= htmlspecialchars($user['full_name']) ?>" class="user-avatar">
+                </div>
+                <div class="user-info">
+                    <h1><?= htmlspecialchars($user['full_name']) ?></h1>
+                    <span class="user-role-badge role-<?= $user['role'] ?>">
+                        <?php if ($user['role'] === 'admin'): ?>
+                            <i class="fa-solid fa-shield"></i> Administrator
+                        <?php elseif ($user['role'] === 'company_admin'): ?>
+                            <i class="fa-solid fa-building"></i> Employer
+                        <?php else: ?>
+                            <i class="fa-solid fa-user"></i> Job Seeker
+                        <?php endif; ?>
+                    </span>
+                </div>
             </div>
             
             <div class="card-actions">

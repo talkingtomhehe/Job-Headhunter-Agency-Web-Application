@@ -27,8 +27,8 @@ class User extends Model {
     
     // Register user
     public function register($email, $password, $fullName, $role, $phone) {
-        $query = "INSERT INTO users (email, password, full_name, role, phone, active, created_at) 
-                  VALUES (?, ?, ?, ?, ?, 1, NOW())";
+        $query = "INSERT INTO users (email, password, full_name, role, phone, avatar_path, active, created_at) 
+                  VALUES (?, ?, ?, ?, ?, 'assets/images/defaultavatar.jpg', 1, NOW())";
                   
         $this->db->query($query);
         $this->db->bind(1, $email);
@@ -103,6 +103,7 @@ class User extends Model {
                 email = ?,
                 role = ?,
                 status = ?,
+                avatar_path = ?,
                 updated_at = NOW()
                 WHERE user_id = ?";
                 
@@ -111,7 +112,8 @@ class User extends Model {
         $this->db->bind(2, $data['email']);
         $this->db->bind(3, $data['role']);
         $this->db->bind(4, $data['status']);
-        $this->db->bind(5, $userId);
+        $this->db->bind(5, $data['avatar_path'] ?? 'assets/images/defaultavatar.jpg');
+        $this->db->bind(6, $userId);
         
         return $this->db->execute();
     }
@@ -152,5 +154,23 @@ class User extends Model {
         $this->db->query("SELECT COUNT(*) as count FROM users");
         $result = $this->db->single();
         return $result['count'] ?? 0;
+    }
+
+    public function getUserAvatar($user) {
+        if (!empty($user['avatar_path']) && file_exists(ROOT_PATH . '/public/' . $user['avatar_path'])) {
+            return $user['avatar_path'];
+        }
+        
+        return 'assets/images/defaultavatar.jpg';
+    }
+
+    public function updateAvatar($userId, $avatarPath) {
+        $query = "UPDATE users SET avatar_path = ?, updated_at = NOW() WHERE user_id = ?";
+        
+        $this->db->query($query);
+        $this->db->bind(1, $avatarPath);
+        $this->db->bind(2, $userId);
+        
+        return $this->db->execute();
     }
 }
