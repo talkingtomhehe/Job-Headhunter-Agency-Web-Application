@@ -67,13 +67,10 @@
                         
                         <div class="company-info-section">
                             <div class="company-logo-container">
-                                <?php if (!empty($company['logo_path'])): ?>
-                                    <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $company['logo_path'] ?>" alt="<?= htmlspecialchars($company['company_name']) ?>" class="company-logo">
-                                <?php else: ?>
-                                    <div class="company-logo-placeholder">
-                                        <?= substr($company['company_name'], 0, 1) ?>
-                                    </div>
-                                <?php endif; ?>
+                                <?php
+                                $logoPath = !empty($company['logo_path']) ? $company['logo_path'] : 'uploads/logo/defaultlogo.jpg';
+                                ?>
+                                <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $logoPath ?>" alt="<?= htmlspecialchars($company['company_name']) ?>" class="company-logo">
                             </div>
                             
                             <div class="company-basic-info">
@@ -168,9 +165,10 @@
                                     </td>
                                     <td>
                                         <div class="company-name-cell">
-                                            <?php if (!empty($application['logo_path'])): ?>
-                                                <img src="<?= SITE_URL ?>/public/uploads/logos/<?= $application['logo_path'] ?>" alt="<?= htmlspecialchars($application['company_name']) ?>" class="company-logo-small">
-                                            <?php endif; ?>
+                                            <?php
+                                            $logoPath = !empty($application['logo_path']) ? $application['logo_path'] : 'uploads/logo/defaultlogo.jpg';
+                                            ?>
+                                            <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $logoPath ?>" alt="<?= htmlspecialchars($application['company_name']) ?>" class="company-logo-small">
                                             <span><?= htmlspecialchars($application['company_name']) ?></span>
                                         </div>
                                     </td>

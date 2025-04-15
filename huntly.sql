@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 15, 2025 lúc 02:46 PM
+-- Thời gian đã tạo: Th4 15, 2025 lúc 06:22 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -46,12 +46,12 @@ CREATE TABLE `companies` (
 --
 
 INSERT INTO `companies` (`company_id`, `employer_id`, `company_name`, `headquarters_address`, `description`, `logo_path`, `created_at`, `updated_at`, `website`, `company_size`, `industry`) VALUES
-(1, 2, 'Tiki', 'Tòa nhà Viettel, 285 Cách Mạng Tháng 8, P.12, Q.10, HCMC', 'Tiki là một công ty thương mại điện tử hàng đầu Việt Nam', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL),
-(2, 3, 'MoMo', 'Tòa nhà VNPT, 57 Huỳnh Thúc Kháng, Đống Đa, Hà Nội', 'MoMo là ví điện tử hàng đầu Việt Nam', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL),
-(3, 4, 'Sendo', 'Tòa nhà Sendo, 123 Nguyễn Thị Minh Khai, Q.1, HCMC', 'Sendo là sàn thương mại điện tử lớn tại Việt Nam', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL),
-(4, 5, 'VNG', 'Tòa nhà VNG Campus, Quận 7, HCMC', 'VNG là công ty công nghệ hàng đầu Việt Nam', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL),
-(5, 6, 'FPT Software', 'FPT Complex, Đà Nẵng', 'FPT Software là công ty phần mềm hàng đầu Việt Nam', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL),
-(6, 7, 'Shopee', 'Tòa nhà Lim Tower, Quận 1, HCMC', 'Shopee là nền tảng thương mại điện tử hàng đầu Đông Nam Á', NULL, '2025-04-11 17:25:25', NULL, NULL, NULL, NULL);
+(1, 2, 'Tiki', 'Tòa nhà Viettel, 285 Cách Mạng Tháng 8, P.12, Q.10, HCMC', 'Tiki là một công ty thương mại điện tử hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
+(2, 3, 'MoMo', 'Tòa nhà VNPT, 57 Huỳnh Thúc Kháng, Đống Đa, Hà Nội', 'MoMo là ví điện tử hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
+(3, 4, 'Sendo', 'Tòa nhà Sendo, 123 Nguyễn Thị Minh Khai, Q.1, HCMC', 'Sendo là sàn thương mại điện tử lớn tại Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
+(4, 5, 'VNG', 'Tòa nhà VNG Campus, Quận 7, HCMC', 'VNG là công ty công nghệ hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
+(5, 6, 'FPT Software', 'FPT Complex, Đà Nẵng', 'FPT Software là công ty phần mềm hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
+(6, 7, 'Shopee', 'Tòa nhà Lim Tower, Quận 1, HCMC', 'Shopee là nền tảng thương mại điện tử hàng đầu Đông Nam Á', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 

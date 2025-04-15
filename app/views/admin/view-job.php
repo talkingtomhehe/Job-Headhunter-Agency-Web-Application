@@ -42,13 +42,10 @@
             <div class="job-meta-section">
                 <div class="job-company-info">
                     <div class="company-logo-container">
-                        <?php if (!empty($company['logo_path'])): ?>
-                            <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $company['logo_path'] ?>" alt="<?= htmlspecialchars($company['company_name']) ?>" class="company-logo">
-                        <?php else: ?>
-                            <div class="company-logo-placeholder">
-                                <?= substr($company['company_name'] ?? 'C', 0, 1) ?>
-                            </div>
-                        <?php endif; ?>
+                        <?php
+                        $logoPath = !empty($company['logo_path']) ? $company['logo_path'] : 'uploads/logo/defaultlogo.jpg';
+                        ?>
+                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $logoPath ?>" alt="<?= htmlspecialchars($company['company_name']) ?>" class="company-logo">
                     </div>
                     <div class="company-details">
                         <h3><?= htmlspecialchars($company['company_name'] ?? 'Unknown Company') ?></h3>

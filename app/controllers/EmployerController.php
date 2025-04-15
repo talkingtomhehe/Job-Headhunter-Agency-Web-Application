@@ -716,7 +716,7 @@ class EmployerController extends Controller {
             'description' => $_POST['description'] ?? null,
             'industry' => $_POST['industry'] ?? null,
             'company_size' => $_POST['company_size'] ?? null,
-            'logo_path' => $company['logo_path'] // Default to current logo
+            'logo_path' => $company['logo_path'] ?: 'uploads/logo/defaultlogo.jpg' // Use default if empty
         ];
         
         // Handle logo upload if present

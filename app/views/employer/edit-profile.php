@@ -56,14 +56,10 @@
                                 <label>Company Logo</label>
                                 <div class="logo-upload-container">
                                     <div class="logo-preview-wrapper">
-                                        <?php if (!empty($company['logo_path'])): ?>
-                                            <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $company['logo_path'] ?>" alt="Company Logo" class="logo-preview" id="logoPreview">
-                                        <?php else: ?>
-                                            <div class="logo-preview empty" id="logoPreview">
-                                                <i class="fa-solid fa-image"></i>
-                                                <span>No logo</span>
-                                            </div>
-                                        <?php endif; ?>
+                                        <?php 
+                                        $logoPath = !empty($company['logo_path']) ? $company['logo_path'] : 'uploads/logo/defaultlogo.jpg';
+                                        ?>
+                                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $logoPath ?>" alt="Company Logo" class="logo-preview" id="logoPreview">
                                     </div>
                                     <div class="logo-upload-actions">
                                         <div class="file-upload-wrapper">

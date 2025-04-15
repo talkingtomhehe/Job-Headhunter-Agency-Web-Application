@@ -15,7 +15,7 @@ class Company extends Model {
     }
     
     // Create new company
-    public function createCompany($employerId, $companyName, $logoPath = null) {
+    public function createCompany($employerId, $companyName, $logoPath = 'uploads/logo/defaultlogo.jpg') {
         $query = "INSERT INTO companies (employer_id, company_name, logo_path, created_at) 
                   VALUES (?, ?, ?, NOW())";
                   
@@ -25,6 +25,15 @@ class Company extends Model {
         $this->db->bind(3, $logoPath);
         
         return $this->db->execute();
+    }
+    
+    // Get company logo with fallback to default
+    public function getCompanyLogo($company) {
+        if (!empty($company['logo_path']) && file_exists(ROOT_PATH . '/public/' . $company['logo_path'])) {
+            return $company['logo_path'];
+        }
+        
+        return 'uploads/logo/defaultlogo.jpg';
     }
     
     // Update company
