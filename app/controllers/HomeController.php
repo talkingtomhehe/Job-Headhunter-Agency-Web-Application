@@ -2,6 +2,8 @@
 namespace controllers;
 
 use core\Controller;
+use models\JobPost;
+use models\Company;
 
 class HomeController extends Controller {
     

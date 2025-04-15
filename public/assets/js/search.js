@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: 'query=' + encodeURIComponent(keyword)
+                    body: 'location=' + encodeURIComponent(keyword)
                 })
                 .then(response => {
                     if (!response.ok) {
