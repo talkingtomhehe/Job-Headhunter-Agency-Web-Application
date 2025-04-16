@@ -23,6 +23,7 @@
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/dropdown.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/header.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/pagination.js"></script>
+    <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/validation.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/search.js" defer></script>
 
     <?php if ($view === 'pages/auth'): ?>

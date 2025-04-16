@@ -70,7 +70,7 @@
 
         <div id="employerContent" class="right-panel-content">
             <h2 class="register-heading">Create Employer Account</h2>
-            <form id="registerForm" class="auth-form" action="<?= SITE_URL ?>/auth/register" method="POST">
+            <form id="registerForm" class="auth-form needs-validation" action="<?= SITE_URL ?>/auth/register" method="POST" novalidate>
                 <input type="hidden" name="user_role" value="employer">
 
                 <div class="form-group">
@@ -120,7 +120,7 @@
         <!-- Job Seeker Registration Form -->
         <div id="job_seekerRegisterContent" class="right-panel-content">
             <h2 class="register-heading">Create Job Seeker Account</h2>
-            <form id="seekerRegisterForm" class="auth-form" action="<?= SITE_URL ?>/auth/register" method="POST">
+            <form id="seekerRegisterForm" class="auth-form needs-validation" action="<?= SITE_URL ?>/auth/register" method="POST" novalidate>
                 <input type="hidden" name="user_role" value="job_seeker">
 
                 <div class="form-group">
