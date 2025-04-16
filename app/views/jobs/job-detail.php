@@ -41,7 +41,7 @@
                             </a>
                             
                             <?php if (!empty($job['pdf_path'])): ?>
-                                <a href="<?= SITE_URL ?>/job/download/<?= $job['job_id'] ?>" class="jd-download-pdf-button">
+                                <a href="<?= SITE_URL ?>/job/downloadPdf/<?= $job['job_id'] ?>" class="jd-download-pdf-button">
                                     <i class="fa-solid fa-file-pdf"></i> Download Job Description
                                 </a>
                             <?php endif; ?>
@@ -156,7 +156,7 @@
                             </div>
                             
                             <?php if (!empty($job['pdf_path'])): ?>
-                                <a href="<?= SITE_URL ?>/job/download/<?= $job['job_id'] ?>" class="jd-download-pdf-button">
+                                <a href="<?= SITE_URL ?>/job/downloadPdf/<?= $job['job_id'] ?>" class="jd-download-pdf-button">
                                     <i class="fa-solid fa-file-pdf"></i> Download Job Description
                                 </a>
                             <?php endif; ?>

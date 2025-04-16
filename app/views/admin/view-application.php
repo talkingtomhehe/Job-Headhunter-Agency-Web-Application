@@ -86,7 +86,7 @@
                 <div class="job-section pdf-section">
                     <h3>Resume/CV</h3>
                     <div class="pdf-container">
-                        <a href="<?= SITE_URL . PUBLIC_PATH ?>/uploads/resumes/<?= $application['resume_path'] ?>" target="_blank" class="btn-document">
+                        <a href="<?= SITE_URL . PUBLIC_PATH ?>/<?= $application['resume_path'] ?>" target="_blank" class="btn-document">
                             <i class="fa-solid fa-file-pdf"></i> View Resume
                         </a>
                     </div>

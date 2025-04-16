@@ -149,12 +149,24 @@ class JobController extends Controller {
             if (file_exists($pdfPath)) {
                 // Set appropriate headers for PDF download
                 header('Content-Type: application/pdf');
+                // Change from 'inline' to 'attachment' to force download
                 header('Content-Disposition: attachment; filename="job_' . $jobId . '.pdf"');
-                header('Cache-Control: max-age=0');
+                header('Content-Length: ' . filesize($pdfPath));
+                header('Cache-Control: private, max-age=0, must-revalidate');
+                header('Pragma: public');
+                
+                // Clear any buffered output
+                ob_clean();
+                flush();
                 
                 // Output the PDF file
                 readfile($pdfPath);
                 exit;
+            } else {
+                // File doesn't exist even though path is in database
+                $_SESSION['error'] = 'PDF file not found on server';
+                $this->redirect('jobs/view/' . $jobId);
+                return;
             }
         }
         
@@ -234,13 +246,7 @@ class JobController extends Controller {
         // Handle resume upload
         $resumePath = '';
         if (isset($_FILES['resume']) && $_FILES['resume']['error'] === UPLOAD_ERR_OK) {
-            // Validate file type (PDF only)
-            $fileType = $_FILES['resume']['type'];
-            if ($fileType !== 'application/pdf') {
-                $_SESSION['error'] = 'Resume must be in PDF format';
-                $this->redirect('jobs/apply/' . $jobId);
-                return;
-            }
+            // Process file upload logic...
             
             // Generate unique filename
             $fileName = uniqid('resume_') . '.pdf';
@@ -267,25 +273,30 @@ class JobController extends Controller {
             return;
         }
         
-        // Prepare application data
+        // Get seeker_id if user is logged in (null otherwise)
+        $seekerId = null;
+        if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'job_seeker') {
+            $seekerId = $_SESSION['user_id'];
+        }
+        
+        // Prepare application data with the correct field mapping
         $applicationData = [
             'job_id' => $jobId,
-            'full_name' => $fullName,
+            'seeker_id' => $seekerId, // This can now be null for guest users
             'email' => $email,
             'phone' => $phone,
             'resume_path' => $resumePath,
             'cover_letter' => $_POST['cover_letter'] ?? '',
-            'status' => 'pending',
-            'guest_application' => 1
+            'status' => 'pending'
         ];
         
         // Submit application
         if ($this->applicationModel->createApplication($applicationData)) {
             $_SESSION['success'] = 'Your application has been submitted successfully!';
-            $this->redirect('jobs/view/' . $jobId);
+            $this->redirect('job/viewJob/' . $jobId);
         } else {
             $_SESSION['error'] = 'Failed to submit application. Please try again.';
-            $this->redirect('jobs/apply/' . $jobId);
+            $this->redirect('job/apply/' . $jobId);
         }
     }
     

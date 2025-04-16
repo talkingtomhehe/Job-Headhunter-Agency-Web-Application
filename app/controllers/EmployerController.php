@@ -576,8 +576,8 @@ class EmployerController extends Controller {
         // Get the application details
         $application = $this->applicationModel->getApplicationById($id);
         
-        if (!$application) {
-            $_SESSION['error'] = 'Application not found';
+        if (!$application || $application['admin_status'] !== 'approved') {
+            $_SESSION['error'] = 'Application not found or not approved yet';
             $this->redirect('employer/applications');
             return;
         }

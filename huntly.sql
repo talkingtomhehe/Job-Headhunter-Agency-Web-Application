@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 15, 2025 lúc 06:59 PM
+-- Thời gian đã tạo: Th4 16, 2025 lúc 05:05 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -49,9 +49,10 @@ INSERT INTO `companies` (`company_id`, `employer_id`, `company_name`, `headquart
 (1, 2, 'Tiki', 'Tòa nhà Viettel, 285 Cách Mạng Tháng 8, P.12, Q.10, HCMC', 'Tiki là một công ty thương mại điện tử hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
 (2, 3, 'MoMo', 'Tòa nhà VNPT, 57 Huỳnh Thúc Kháng, Đống Đa, Hà Nội', 'MoMo là ví điện tử hàng đầu Việt Nam', 'uploads/company_logos/company_2_1744736136.png', '2025-04-11 17:25:25', '2025-04-15 16:55:36', '', '1001+', ''),
 (3, 4, 'Sendo', 'Tòa nhà Sendo, 123 Nguyễn Thị Minh Khai, Q.1, HCMC', 'Sendo là sàn thương mại điện tử lớn tại Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
-(4, 5, 'VNG', 'Tòa nhà VNG Campus, Quận 7, HCMC', 'VNG là công ty công nghệ hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
+(4, 5, 'VNG Corporation', 'Tòa nhà VNG Campus, Quận 7, HCMC', 'Build Technologies & Grow People. From Vietnam to the World.', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 20:58:09', NULL, NULL, NULL),
 (5, 6, 'FPT Software', 'FPT Complex, Đà Nẵng', 'FPT Software là công ty phần mềm hàng đầu Việt Nam', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
-(6, 7, 'Shopee', 'Tòa nhà Lim Tower, Quận 1, HCMC', 'Shopee là nền tảng thương mại điện tử hàng đầu Đông Nam Á', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL);
+(6, 7, 'Shopee', 'Tòa nhà Lim Tower, Quận 1, HCMC', 'Shopee là nền tảng thương mại điện tử hàng đầu Đông Nam Á', 'uploads/logo/defaultlogo.jpg', '2025-04-11 17:25:25', '2025-04-15 15:51:13', NULL, NULL, NULL),
+(7, 14, 'Nhân Phan\'s Company', NULL, NULL, 'uploads/logo/defaultlogo.jpg', '2025-04-15 18:10:38', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,7 @@ INSERT INTO `companies` (`company_id`, `employer_id`, `company_name`, `headquart
 CREATE TABLE `job_applications` (
   `application_id` int(11) NOT NULL,
   `job_id` int(11) NOT NULL,
-  `seeker_id` int(11) NOT NULL,
+  `seeker_id` int(11) DEFAULT NULL,
   `applicant_email` varchar(255) DEFAULT NULL,
   `applicant_phone` varchar(20) DEFAULT NULL,
   `status` enum('pending','reviewing','shortlisted','hired','rejected') DEFAULT 'pending',
@@ -84,7 +85,9 @@ CREATE TABLE `job_applications` (
 INSERT INTO `job_applications` (`application_id`, `job_id`, `seeker_id`, `applicant_email`, `applicant_phone`, `status`, `admin_status`, `resume_path`, `cover_letter`, `employer_notes`, `created_at`, `updated_at`, `interview_date`, `interview_location`, `source`) VALUES
 (2, 2, 8, 'applicant1@example.com', '0987123456', 'pending', 'approved', 'uploads/resumes/applicant1_cv.pdf', 'Tôi có kinh nghiệm làm việc với Laravel và các framework PHP...', NULL, '2025-04-11 17:25:25', '2025-04-15 11:54:56', NULL, NULL, 'direct'),
 (3, 3, 9, 'applicant2@example.com', '0987123457', 'reviewing', 'approved', 'uploads/resumes/applicant2_cv.pdf', 'Tôi đam mê phát triển ứng dụng di động và mong muốn được học hỏi tại MoMo...', NULL, '2025-04-11 17:25:25', '2025-04-15 16:43:16', NULL, NULL, 'direct'),
-(4, 4, 9, 'applicant2@example.com', '0987123457', 'pending', 'approved', 'uploads/resumes/applicant2_cv.pdf', 'Tôi mong muốn được tham gia vào đội ngũ phát triển của MoMo...', NULL, '2025-04-11 17:25:25', '2025-04-15 11:55:00', NULL, NULL, 'direct');
+(4, 4, 9, 'applicant2@example.com', '0987123457', 'pending', 'approved', 'uploads/resumes/applicant2_cv.pdf', 'Tôi mong muốn được tham gia vào đội ngũ phát triển của MoMo...', NULL, '2025-04-11 17:25:25', '2025-04-15 11:55:00', NULL, NULL, 'direct'),
+(5, 2, NULL, 'user1@gmail.com', '2124322535', 'pending', 'rejected', 'uploads/resumes/resume_67ff0e6d469ed.pdf', 'i am good', NULL, '2025-04-16 01:57:01', '2025-04-16 02:23:38', NULL, NULL, 'direct'),
+(6, 2, NULL, 'user2@gmail.com', '23139213', 'pending', 'approved', 'uploads/resumes/resume_67ff0f173e9a0.pdf', 'I am the best', NULL, '2025-04-16 01:59:51', '2025-04-16 02:30:47', NULL, NULL, 'direct');
 
 -- --------------------------------------------------------
 
@@ -148,15 +151,15 @@ CREATE TABLE `job_posts` (
 --
 
 INSERT INTO `job_posts` (`job_id`, `company_id`, `employer_id`, `category_id`, `title`, `description`, `requirements`, `benefits`, `job_type`, `work_model`, `experience_level`, `location`, `salary_min`, `salary_max`, `hide_salary`, `pdf_path`, `status`, `admin_status`, `application_deadline`, `created_at`, `updated_at`) VALUES
-(2, 1, 2, 2, 'Backend Developer', 'Phát triển API và xử lý logic backend', 'PHP, MySQL, Laravel', 'skill', 'Full-time', 'hybrid', 'mid', 'Ho Chi Minh City', 1500.00, 2500.00, 0, 'uploads/job_pdfs/1744512810_chabong_shop.pdf', 'active', 'pending', '2025-05-30', '2025-04-11 17:25:25', '2025-04-14 21:18:24'),
-(3, 2, 3, 1, 'Mobile Developer', 'Phát triển ứng dụng di động cho MoMo', 'Android, iOS, Flutter', '', 'Full-time', '', '', 'Ha Noi', 1800.00, 2800.00, 0, NULL, 'closed', 'pending', NULL, '2025-04-11 17:25:25', '2025-04-14 22:28:52'),
-(4, 2, 3, 1, 'QA Engineer', 'Kiểm thử chất lượng ứng dụng', 'Manual Testing, Automation Testing, Selenium', '', 'Full-time', '', '', 'Ha Noi', 1200.00, 2000.00, 0, NULL, 'pending', 'pending', NULL, '2025-04-11 17:25:25', '2025-04-14 22:28:58'),
-(5, 3, 4, 1, 'Data Analyst', 'Phân tích dữ liệu người dùng', 'SQL, Python, Data Visualization', NULL, 'Full-time', NULL, NULL, 'Ho Chi Minh City', 1600.00, 2600.00, 0, NULL, 'active', 'pending', NULL, '2025-04-11 17:25:25', '2025-04-14 21:18:24'),
+(2, 1, 2, 1, 'Backend Developer', 'Phát triển API và xử lý logic backend', 'PHP, MySQL, Laravel', 'skill', 'Full-time', 'hybrid', 'mid', 'Ho Chi Minh City', 1500.00, 2500.00, 0, 'uploads/job_pdfs/1744512810_chabong_shop.pdf', 'active', 'approved', '2025-05-30', '2025-04-11 17:25:25', '2025-04-15 22:50:24'),
+(3, 2, 3, 1, 'Mobile Developer', 'Phát triển ứng dụng di động cho MoMo', 'Android, iOS, Flutter', '', 'Full-time', '', '', 'Ha Noi', 1800.00, 2800.00, 0, NULL, 'active', 'approved', NULL, '2025-04-11 17:25:25', '2025-04-15 20:29:30'),
+(4, 2, 3, 1, 'QA Engineer', 'Kiểm thử chất lượng ứng dụng', 'Manual Testing, Automation Testing, Selenium', '', 'Full-time', '', '', 'Ha Noi', 1200.00, 2000.00, 0, NULL, 'active', 'approved', NULL, '2025-04-11 17:25:25', '2025-04-15 20:29:31'),
+(5, 3, 4, 1, 'Data Analyst', 'Phân tích dữ liệu người dùng', 'SQL, Python, Data Visualization', NULL, 'Full-time', NULL, NULL, 'Ho Chi Minh City', 1600.00, 2600.00, 0, NULL, 'active', 'approved', NULL, '2025-04-11 17:25:25', '2025-04-15 20:29:34'),
 (6, 4, 5, 1, 'Game Developer', 'Phát triển game mobile cho VNG', 'Unity, C#, Gaming', NULL, 'Full-time', NULL, NULL, 'Ho Chi Minh City', 2000.00, 3500.00, 0, NULL, 'active', 'pending', NULL, '2025-04-11 17:25:25', '2025-04-14 21:18:24'),
 (7, 5, 6, 1, 'DevOps Engineer', 'Quản lý hệ thống CI/CD', 'Docker, Kubernetes, AWS', NULL, 'Full-time', NULL, NULL, 'Da Nang', 1800.00, 3000.00, 0, NULL, 'active', 'pending', NULL, '2025-04-11 17:25:25', '2025-04-14 21:18:24'),
 (8, 6, 7, 1, 'UI/UX Designer', 'Thiết kế giao diện cho Shopee', 'Figma, Adobe XD, UX Research', NULL, 'Full-time', NULL, NULL, 'Ho Chi Minh City', 1500.00, 2400.00, 0, NULL, 'active', 'pending', NULL, '2025-04-11 17:25:25', '2025-04-14 21:18:24'),
-(10, 2, 3, 6, 'Designer', 'Draw', 'Draw beautifully', 'Money, skill', 'Full-time', 'remote', 'entry', 'Ho Chi Minh', 1000.00, 3000.00, 0, 'uploads/job_pdfs/1744666371_Assignment 3 - Job Portal.pdf', 'pending', 'rejected', '2025-05-30', '2025-04-14 21:32:51', '2025-04-14 22:31:42'),
-(11, 2, 3, 6, 'Farmer', 'Plant, water', 'Skill', 'Money', 'Full-time', 'onsite', 'mid', 'Tien Giang', 1000.00, 2000.00, 0, NULL, 'rejected', 'rejected', '2025-10-10', '2025-04-14 21:35:13', '2025-04-15 11:06:30');
+(10, 2, 3, 5, 'Designer', 'Draw', 'Draw beautifully', 'Money, skill', 'Full-time', 'remote', 'entry', 'Ho Chi Minh', 1000.00, 3000.00, 0, 'uploads/job_pdfs/1744666371_Assignment 3 - Job Portal.pdf', 'active', 'approved', '2025-05-30', '2025-04-14 21:32:51', '2025-04-15 22:50:36'),
+(11, 2, 3, 8, 'Farmer', 'Plant, water', 'Skill', 'Money', 'Full-time', 'onsite', 'mid', 'Tien Giang', 1000.00, 2000.00, 0, NULL, 'active', 'approved', '2025-10-10', '2025-04-14 21:35:13', '2025-04-15 22:50:44');
 
 -- --------------------------------------------------------
 
@@ -181,7 +184,8 @@ CREATE TABLE `job_seekers` (
 
 INSERT INTO `job_seekers` (`seeker_id`, `resume_path`, `cover_letter`, `skills`, `experience_years`, `education`, `created_at`, `updated_at`) VALUES
 (8, NULL, NULL, 'JavaScript, React, Vue, HTML, CSS', 3, NULL, '2025-04-11 17:25:25', NULL),
-(9, NULL, NULL, 'Java, Python, SQL, Data Analysis', 2, NULL, '2025-04-11 17:25:25', NULL);
+(9, NULL, NULL, 'Java, Python, SQL, Data Analysis', 2, NULL, '2025-04-11 17:25:25', NULL),
+(15, NULL, NULL, NULL, NULL, NULL, '2025-04-15 18:20:18', NULL);
 
 -- --------------------------------------------------------
 
@@ -238,7 +242,16 @@ INSERT INTO `notifications` (`notification_id`, `user_id`, `title`, `message`, `
 (31, 9, 'Application Approved', 'Your application for \"Mobile Developer\" has been approved by admin.', '', 3, 0, '2025-04-15 11:54:58'),
 (32, 3, 'New Application Available', 'A new application from Jane Applicant for \"Mobile Developer\" is available for review.', '', 3, 0, '2025-04-15 11:54:58'),
 (33, 9, 'Application Approved', 'Your application for \"QA Engineer\" has been approved by admin.', '', 4, 0, '2025-04-15 11:55:00'),
-(34, 3, 'New Application Available', 'A new application from Jane Applicant for \"QA Engineer\" is available for review.', '', 4, 0, '2025-04-15 11:55:00');
+(34, 3, 'New Application Available', 'A new application from Jane Applicant for \"QA Engineer\" is available for review.', '', 4, 0, '2025-04-15 11:55:00'),
+(35, 3, 'Job Post Approved', 'Your job posting \"Farmer\" has been approved and is now active.', 'approval', 11, 0, '2025-04-15 20:20:41'),
+(36, 3, 'Job Post Approved', 'Your job posting \"Designer\" has been approved and is now active.', 'approval', 10, 0, '2025-04-15 20:20:47'),
+(37, 2, 'Job Post Approved', 'Your job posting \"Backend Developer\" has been approved and is now visible to job seekers.', 'approval', 2, 0, '2025-04-15 20:20:56'),
+(38, 2, 'Job Post Approved', 'Your job posting \"Backend Developer\" has been approved and is now visible to job seekers.', 'approval', 2, 0, '2025-04-15 20:21:30'),
+(39, 3, 'Job Post Approved', 'Your job posting \"Mobile Developer\" has been approved and is now visible to job seekers.', 'approval', 3, 0, '2025-04-15 20:29:30'),
+(40, 3, 'Job Post Approved', 'Your job posting \"QA Engineer\" has been approved and is now visible to job seekers.', 'approval', 4, 0, '2025-04-15 20:29:31'),
+(41, 4, 'Job Post Approved', 'Your job posting \"Data Analyst\" has been approved and is now visible to job seekers.', 'approval', 5, 0, '2025-04-15 20:29:34'),
+(42, 2, 'New Application Available', 'A new application from Guest Applicant for \"Backend Developer\" is available for review.', 'application', 5, 0, '2025-04-16 02:23:27'),
+(43, 2, 'New Application Available', 'A new application from Guest Applicant for \"Backend Developer\" is available for review.', 'application', 6, 0, '2025-04-16 02:30:47');
 
 -- --------------------------------------------------------
 
@@ -272,7 +285,9 @@ INSERT INTO `users` (`user_id`, `email`, `password`, `full_name`, `role`, `phone
 (6, 'fpt@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'FPT Employer', 'company_admin', '0987654325', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
 (7, 'shopee@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'Shopee Employer', 'company_admin', '0987654326', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
 (8, 'applicant1@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'John Applicant', 'job_seeker', '0987123456', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
-(9, 'applicant2@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'Jane Applicant', 'job_seeker', '0987123457', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45');
+(9, 'applicant2@example.com', '$2y$10$IZe/hpLEGpPkjqBnOw5.wON.JqAUD9DjLQEi/OKh0ghjLH6pGYcP6', 'Jane Applicant', 'job_seeker', '0987123457', 'assets/images/defaultavatar.jpg', 1, '2025-04-11 17:25:25', '2025-04-15 16:26:45'),
+(14, 'phankhanhnhan01@gmail.com', '$2y$10$Wv0D5mrRJgJsZd1xKA7B6OkMyuLbppTp8jivgjcnmlSmV9.NlT5qu', 'Nhân Phan', 'company_admin', NULL, 'uploads/avatars/google_0ecb1fca5c75bdb84931d7d5ebc84cb5_1744740638.jpg', 1, '2025-04-15 18:10:38', '2025-04-15 18:10:38'),
+(15, 'user1@gmail.com', '$2y$10$tGtqZ8Q1pLCsFff8SWA8wuPpFZM5YfObkPkFg3cqim.UcaTKwtT2C', 'Nguyen Van A', 'job_seeker', '0123456789', 'assets/images/defaultavatar.jpg', 1, '2025-04-15 18:20:18', NULL);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -337,13 +352,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT cho bảng `companies`
 --
 ALTER TABLE `companies`
-  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `job_applications`
 --
 ALTER TABLE `job_applications`
-  MODIFY `application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT cho bảng `job_categories`
@@ -361,13 +376,13 @@ ALTER TABLE `job_posts`
 -- AUTO_INCREMENT cho bảng `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Các ràng buộc cho các bảng đã đổ

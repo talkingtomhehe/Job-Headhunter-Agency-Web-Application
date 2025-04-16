@@ -45,7 +45,7 @@ if (strpos($uri, '/job') !== false) {
                 <?php if (\helpers\Session::isLoggedIn()): ?>
                     <li><a href="<?= SITE_URL ?>/notifications" class="<?= ($currentPage == 'notifications') ? 'active' : '' ?>">Notification <i class="fa-solid fa-bell"></i></a></li>
                 <?php endif; ?>
-                <li><a href="<?= SITE_URL ?>/about" class="<?= ($currentPage == 'about') ? 'active' : '' ?>">About Us</a></li>
+                <li><a href="<?= SITE_URL ?>/home/about" class="<?= ($currentPage == 'about') ? 'active' : '' ?>">About Us</a></li>
             </ul>
         </nav>
 

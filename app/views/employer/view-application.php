@@ -84,9 +84,9 @@
                 <div class="resume-preview">
                     <div class="file-download">
                         <i class="fa-solid fa-file-pdf"></i>
-                        <a href="<?= SITE_URL . PUBLIC_PATH . '/' . $application['resume_path'] ?>" target="_blank" class="btn-primary">
-                            View Resume
-                        </a>
+                            <a href="<?= SITE_URL . PUBLIC_PATH ?>/<?= $application['resume_path'] ?>" target="_blank" class="btn-document">
+                                <i class="fa-solid fa-file-pdf"></i> View Resume
+                            </a>
                     </div>
                 </div>
             </div>

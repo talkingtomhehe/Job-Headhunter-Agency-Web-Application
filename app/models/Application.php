@@ -11,7 +11,7 @@ class Application extends Model {
                   u.full_name, u.email, u.phone, u.avatar_path
                   FROM job_applications a
                   JOIN job_posts j ON a.job_id = j.job_id
-                  JOIN users u ON a.seeker_id = u.user_id
+                  LEFT JOIN users u ON a.seeker_id = u.user_id
                   WHERE a.application_id = ?";
         
         $this->db->query($query);
@@ -24,8 +24,8 @@ class Application extends Model {
     public function getApplicationsByJob($jobId) {
         $query = "SELECT a.*, u.full_name, u.email, u.phone, u.avatar_path
                   FROM job_applications a
-                  JOIN users u ON a.seeker_id = u.user_id
-                  WHERE a.job_id = ?
+                  LEFT JOIN users u ON a.seeker_id = u.user_id
+                  WHERE a.job_id = ? AND a.admin_status = 'approved'
                   ORDER BY a.created_at DESC";
         
         $this->db->query($query);
@@ -40,8 +40,8 @@ class Application extends Model {
                   u.full_name, u.email, u.phone, u.avatar_path
                   FROM job_applications a
                   JOIN job_posts j ON a.job_id = j.job_id
-                  JOIN users u ON a.seeker_id = u.user_id
-                  WHERE j.employer_id = ?
+                  LEFT JOIN users u ON a.seeker_id = u.user_id
+                  WHERE j.employer_id = ? AND a.admin_status = 'approved'
                   ORDER BY a.created_at DESC";
         
         $this->db->query($query);
@@ -145,7 +145,7 @@ class Application extends Model {
         $query = "SELECT a.*, j.title as job_title, u.full_name as applicant_name
                   FROM job_applications a 
                   JOIN job_posts j ON a.job_id = j.job_id
-                  JOIN users u ON a.seeker_id = u.user_id
+                  LEFT JOIN users u ON a.seeker_id = u.user_id
                   WHERE j.employer_id = ? AND a.admin_status = 'approved'
                   ORDER BY a.created_at DESC
                   LIMIT ?";
@@ -230,15 +230,18 @@ class Application extends Model {
     // Get all applications with detailed information
     public function getDetailedApplicationsByEmployer($employerId, $filters = []) {
         $query = "SELECT a.*, j.title as job_title, j.location, j.job_type,
-                    u.full_name, u.email, u.phone, 
+                    COALESCE(u.full_name, 'Guest Applicant') as full_name, 
+                    COALESCE(u.email, a.applicant_email) as email, 
+                    COALESCE(u.phone, a.applicant_phone) as phone, 
+                    u.avatar_path, 
                     c.company_name, c.logo_path, a.status as status
                     FROM job_applications a
                     JOIN job_posts j ON a.job_id = j.job_id
-                    JOIN users u ON a.seeker_id = u.user_id
+                    LEFT JOIN users u ON a.seeker_id = u.user_id
                     JOIN companies c ON j.company_id = c.company_id
-                    WHERE j.employer_id = ?";
+                    WHERE j.employer_id = ? AND a.admin_status = 'approved'";
         
-        // Add filters if provided
+        // Add other filters if provided
         if (!empty($filters['status'])) {
             $query .= " AND a.status = ?";
         }
@@ -249,7 +252,7 @@ class Application extends Model {
         
         // Add search term if provided
         if (!empty($filters['search'])) {
-            $query .= " AND (u.full_name LIKE ? OR j.title LIKE ?)";
+            $query .= " AND (COALESCE(u.full_name, 'Guest Applicant') LIKE ? OR j.title LIKE ?)";
         }
         
         $query .= " ORDER BY a.created_at DESC";
@@ -288,7 +291,7 @@ class Application extends Model {
         $query = "SELECT a.*, j.title as job_title, u.full_name, c.company_name
                 FROM job_applications a
                 JOIN job_posts j ON a.job_id = j.job_id
-                JOIN users u ON a.seeker_id = u.user_id
+                LEFT JOIN users u ON a.seeker_id = u.user_id
                 JOIN companies c ON j.company_id = c.company_id
                 ORDER BY a.created_at DESC";
         $this->db->query($query);
@@ -299,7 +302,7 @@ class Application extends Model {
         $query = "SELECT a.*, j.title as job_title, u.full_name 
                   FROM job_applications a
                   JOIN job_posts j ON a.job_id = j.job_id
-                  JOIN users u ON a.seeker_id = u.user_id
+                  LEFT JOIN users u ON a.seeker_id = u.user_id
                   ORDER BY a.created_at DESC
                   LIMIT ?";
                   

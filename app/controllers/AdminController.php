@@ -708,8 +708,7 @@ class AdminController extends Controller {
     }
     
     public function approveApplication($id) {
-        $this->requireAdminLogin();
-        
+        // Get the application
         $application = $this->applicationModel->getApplicationById($id);
         
         if (!$application) {
@@ -718,40 +717,46 @@ class AdminController extends Controller {
             return;
         }
         
-        // Update admin_status to approved
+        // Update application status
         if ($this->applicationModel->updateAdminStatus($id, 'approved')) {
-            // Create notification for the job seeker
-            $this->notificationModel->createNotification([
-                'user_id' => $application['seeker_id'],
-                'title' => 'Application Approved',
-                'message' => 'Your application for "' . $application['job_title'] . '" has been approved by admin.',
-                'type' => 'application_approved',
-                'reference_id' => $id
-            ]);
-            
-            // Create notification for the employer
+            // Get the job details
             $job = $this->jobModel->getJobById($application['job_id']);
-            if ($job) {
+            
+            // Create notification for the job seeker (only if it's a registered user)
+            if ($application['seeker_id'] !== null) {
                 $this->notificationModel->createNotification([
-                    'user_id' => $job['employer_id'],
-                    'title' => 'New Application Available',
-                    'message' => 'A new application from ' . $application['full_name'] . ' for "' . $application['job_title'] . '" is available for review.',
-                    'type' => 'new_application',
+                    'user_id' => $application['seeker_id'],
+                    'title' => 'Application Approved',
+                    'message' => 'Your application for "' . $job['title'] . '" has been approved by admin.',
+                    'type' => 'approval',
                     'reference_id' => $id
                 ]);
             }
+            
+            // Create notification for the employer
+            $this->notificationModel->createNotification([
+                'user_id' => $job['employer_id'],
+                'title' => 'New Application Available',
+                'message' => 'A new application from ' . ($application['full_name'] ?? 'Guest Applicant') . ' for "' . $job['title'] . '" is available for review.',
+                'type' => 'application',
+                'reference_id' => $id
+            ]);
             
             $_SESSION['success'] = 'Application approved successfully';
         } else {
             $_SESSION['error'] = 'Failed to approve application';
         }
         
-        $this->redirect('admin/applications');
+        // Check if there's a redirect URL in the request
+        if (isset($_POST['redirect_url']) && !empty($_POST['redirect_url'])) {
+            $this->redirect($_POST['redirect_url']);
+        } else {
+            $this->redirect('admin/applications');
+        }
     }
-    
+
     public function rejectApplication($id) {
-        $this->requireAdminLogin();
-        
+        // Get the application
         $application = $this->applicationModel->getApplicationById($id);
         
         if (!$application) {
@@ -760,23 +765,34 @@ class AdminController extends Controller {
             return;
         }
         
-        // Update admin_status to rejected
+        // Update application status
         if ($this->applicationModel->updateAdminStatus($id, 'rejected')) {
-            // Create notification for the job seeker
-            $this->notificationModel->createNotification([
-                'user_id' => $application['seeker_id'],
-                'title' => 'Application Rejected',
-                'message' => 'Your application for "' . $application['job_title'] . '" has been rejected by admin.',
-                'type' => 'application_rejected',
-                'reference_id' => $id
-            ]);
+            // Only create notification if it's a registered user
+            if ($application['seeker_id'] !== null) {
+                // Get the job details
+                $job = $this->jobModel->getJobById($application['job_id']);
+                
+                // Create notification for the job seeker
+                $this->notificationModel->createNotification([
+                    'user_id' => $application['seeker_id'],
+                    'title' => 'Application Rejected',
+                    'message' => 'Your application for "' . $job['title'] . '" has been rejected by admin.',
+                    'type' => 'rejection',
+                    'reference_id' => $id
+                ]);
+            }
             
             $_SESSION['success'] = 'Application rejected successfully';
         } else {
             $_SESSION['error'] = 'Failed to reject application';
         }
         
-        $this->redirect('admin/applications');
+        // Check if there's a redirect URL in the request
+        if (isset($_POST['redirect_url']) && !empty($_POST['redirect_url'])) {
+            $this->redirect($_POST['redirect_url']);
+        } else {
+            $this->redirect('admin/applications');
+        }
     }
 
     public function addJob() {
