@@ -1,93 +1,408 @@
-/* Application Form Styles */
+/* Application Form Styles - Using jd- prefix to avoid conflicts */
 
-.job-application-section {
-    padding: 40px 0;
+/* Overall form layout and container styling */
+.jd-application-section {
+    padding: 100px 0 50px; 
+    background-color: #f8fafc;
+    min-height: calc(100vh - 70px); 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    padding-right: 200px;
 }
 
-.application-form-card {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    margin-bottom: 40px;
-}
-
-.job-summary {
-    margin-bottom: 30px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 20px;
-}
-
-.job-summary h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.job-summary .company-name {
-    font-size: 1.2rem;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.job-summary .job-location {
-    font-size: 1rem;
-    color: #666;
-}
-
-.job-summary .job-location i {
-    margin-right: 5px;
-    color: var(--primary-color);
-}
-
-.form-section {
-    margin-bottom: 30px;
-}
-
-.form-section h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 8px;
-    color: #333;
-}
-
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="tel"],
-.form-group textarea {
+.jd-application-section .container {
     width: 100%;
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-    transition: border-color 0.2s ease;
+    max-width: 1000px; 
+    margin: 0 auto; 
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: var(--primary-color);
-    outline: none;
+/* Back link with hover animation */
+.jd-back-link {
+    margin-bottom: 123rem;
 }
 
-.file-upload-container {
+.jd-btn-back {
+    display: inline-flex;
+    align-items: center;
+    color: #495057;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.25s ease;
+    background-color: white;
+    padding: 10px 18px;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f2f5;
+}
+
+.jd-btn-back i {
+    margin-right: 8px;
+    transition: transform 0.2s;
+}
+
+.jd-btn-back:hover {
+    background-color: #0631BC;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(6, 49, 188, 0.15);
+    border-color: #0631BC;
+}
+
+.jd-btn-back:hover i {
+    transform: translateX(-3px);
+    color: white;
+}
+
+/* Form card with subtle shadow and animation */
+.jd-application-form-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-bottom: 40px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.jd-application-form-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Job summary section with gradient background */
+.jd-job-summary {
+    padding: 0 0 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #0631BC, #1b51ff);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Create a subtle pattern overlay */
+.jd-job-summary::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* Header with company info */
+.jd-summary-header {
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    position: relative;
+    z-index: 2;
+}
+
+.jd-summary-info {
+    flex: 1;
+}
+
+/* Company logo with glass effect */
+.jd-company-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: 12px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     position: relative;
 }
 
-.file-input {
+.jd-company-logo::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+    pointer-events: none;
+}
+
+.jd-company-logo img {
+    max-width: 85%;
+    max-height: 85%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.1));
+}
+
+/* Job title and company styles */
+.jd-job-summary h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+    line-height: 1.3;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.jd-job-summary .jd-company-name {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 18px;
+    font-weight: 500;
+}
+
+/* Job meta info layout */
+.jd-job-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.jd-job-meta p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.95rem;
+    padding: 6px 16px;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    backdrop-filter: blur(5px);
+}
+
+.jd-job-meta i {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+/* Application steps bar */
+.jd-application-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 30px 20px;
+    margin-top: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.jd-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 160px;
+    position: relative;
+}
+
+.jd-step-number {
+    width: 36px;
+    height: 36px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: 10px;
+    transition: all 0.4s;
+}
+
+.jd-step.current .jd-step-number {
+    background-color: white;
+    color: #0631BC;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.2);
+}
+
+.jd-step-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.3s;
+}
+
+.jd-step.current .jd-step-label {
+    color: white;
+    font-weight: 600;
+    transform: translateY(2px);
+}
+
+.jd-step-connector {
+    flex-grow: 1;
+    height: 3px;
+    background-color: rgba(255, 255, 255, 0.3);
+    margin: 0 5px;
+    position: relative;
+    top: -8px;
+    max-width: 80px;
+}
+
+/* Main form styling */
+.jd-application-form {
+    padding: 40px;
+}
+
+.jd-form-section {
+    margin-bottom: 35px;
+    background-color: #fafbfd;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #f0f2f5;
+}
+
+.jd-form-section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.jd-form-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.jd-form-section h3::before {
+    content: '';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: #0631BC;
+}
+
+.jd-form-section:nth-child(1) h3::before {
+    content: '\f007'; /* person icon */
+}
+
+.jd-form-section:nth-child(2) h3::before {
+    content: '\f0b1'; /* briefcase icon */
+}
+
+.jd-form-section:nth-child(3) h3::before {
+    content: '\f15c'; /* document icon */
+}
+
+.jd-form-section:nth-child(4) h3::before {
+    content: '\f075'; /* comment icon */
+}
+
+.jd-form-section h3::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #0631BC;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.jd-form-section:hover h3::after {
+    width: 100px;
+}
+
+.jd-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    margin-bottom: 20px;
+}
+
+.jd-form-group {
+    flex: 1;
+    min-width: 250px;
+    margin-bottom: 22px;
+}
+
+/* Label styling */
+.jd-form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.jd-form-group:focus-within label {
+    color: #0631BC;
+}
+
+.jd-required {
+    color: #dc3545;
+    margin-left: 2px;
+}
+
+/* Input field styling */
+.jd-form-group input[type="text"],
+.jd-form-group input[type="email"],
+.jd-form-group input[type="tel"],
+.jd-form-group select,
+.jd-form-group textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.25s ease;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+}
+
+.jd-form-group input[type="text"]:focus,
+.jd-form-group input[type="email"]:focus,
+.jd-form-group input[type="tel"]:focus,
+.jd-form-group select:focus,
+.jd-form-group textarea:focus {
+    border-color: #0631BC;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(6, 49, 188, 0.1);
+    background-color: #fff;
+    transform: translateY(-2px);
+}
+
+.jd-form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+/* Custom select styling */
+.jd-form-group select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="%230631BC" d="M8 11L3 6h10L8 11z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+/* File upload styling */
+.jd-file-upload-container {
+    position: relative;
+}
+
+.jd-file-input {
     position: absolute;
     width: 0.1px;
     height: 0.1px;
@@ -96,118 +411,256 @@
     z-index: -1;
 }
 
-.file-upload-interface {
+.jd-file-upload-interface {
     display: flex;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    align-items: stretch;
+    border: 2px dashed #dee2e6;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+.jd-file-upload-interface:hover {
+    border-color: #0631BC;
+    background-color: #f8faff;
+}
+
+.jd-file-name {
+    flex-grow: 1;
+    padding: 16px 20px;
+    font-size: 0.95rem;
+    color: #666;
+}
+
+.jd-file-name.file-selected {
+    color: #0631BC;
+    font-weight: 500;
+}
+
+.jd-file-upload-button {
+    padding: 14px 25px;
+    background-color: #f1f3f5;
+    color: #495057;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+}
+
+.jd-file-upload-button:hover {
+    background-color: #0631BC;
+    color: white;
+}
+
+.jd-form-text {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Checkbox styling */
+.jd-form-privacy {
+    margin-bottom: 35px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.jd-form-privacy:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+}
+
+.jd-checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+/* Custom checkbox design */
+.jd-checkbox-container input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #ced4da;
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.jd-checkbox-container input[type="checkbox"]:checked {
+    background-color: #0631BC;
+    border-color: #0631BC;
+}
+
+.jd-checkbox-container input[type="checkbox"]:checked::after {
+    content: "✓";
+    position: absolute;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    top: 1px;
+    left: 5px;
+}
+
+.jd-checkbox-container label {
+    font-size: 0.95rem;
+    color: #495057;
+    line-height: 1.5;
+}
+
+.jd-checkbox-container a {
+    color: #0631BC;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.jd-checkbox-container a:hover {
+    text-decoration: underline;
+    color: #052592;
+}
+
+/* Submit button */
+.jd-form-submit {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.jd-submit-button {
+    background-color: #0631BC;
+    color: #fff;
+    padding: 16px 45px;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(6, 49, 188, 0.2);
+    position: relative;
     overflow: hidden;
 }
 
-.file-name {
-    flex-grow: 1;
-    padding: 12px 15px;
-    font-size: 1rem;
-    color: #666;
-    background: #f8f9fa;
+.jd-submit-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
 }
 
-.file-upload-button {
-    padding: 12px 20px;
-    background-color: #f0f2f5;
-    color: #333;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+.jd-submit-button:hover {
+    background-color: #052592;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(6, 49, 188, 0.3);
 }
 
-.file-upload-button:hover {
-    background-color: #e2e6ea;
+.jd-submit-button:hover::before {
+    transform: translateX(100%);
 }
 
-.form-text {
-    display: block;
-    margin-top: 5px;
+/* Error styling */
+.jd-error-message {
+    color: #dc3545;
     font-size: 0.85rem;
-    color: #666;
-}
-
-.form-submit {
-    margin-top: 30px;
-    text-align: center;
-}
-
-.submit-button {
-    background-color: var(--primary-color);
-    color: #fff;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-.submit-button:hover {
-    background-color: var(--primary-color-dark);
-}
-
-/* Error Message */
-.error-message {
-    text-align: center;
-    padding: 40px 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-}
-
-.error-message h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 15px;
-}
-
-.error-message p {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 20px;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.btn-primary {
-    display: inline-block;
-    background-color: var(--primary-color);
-    color: #fff;
-    padding: 10px 20px;
-    border-radius: 4px;
-    text-decoration: none;
+    margin-top: 8px;
+    display: block;
+    animation: fadeIn 0.3s ease;
+    padding-left: 5px;
     font-weight: 500;
-    transition: background-color 0.2s ease;
 }
 
-.btn-primary:hover {
-    background-color: var(--primary-color-dark);
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Adjustments */
+.jd-form-group.error input,
+.jd-form-group.error select,
+.jd-form-group.error textarea,
+.error .jd-file-upload-interface {
+    border-color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.02);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .jd-application-form {
+        padding: 30px 25px;
+    }
+    
+    .jd-step {
+        width: 120px;
+    }
+    
+    .jd-step-connector {
+        max-width: 50px;
+    }
+}
+
 @media (max-width: 768px) {
-    .application-form-card {
-        padding: 20px;
+    .jd-summary-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
     }
     
-    .job-summary h2 {
-        font-size: 1.5rem;
+    .jd-application-steps {
+        flex-direction: column;
+        gap: 15px;
     }
     
-    .job-summary .company-name {
-        font-size: 1.1rem;
+    .jd-step {
+        width: 100%;
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 15px;
     }
     
-    .form-section h3 {
-        font-size: 1.2rem;
+    .jd-step-connector {
+        width: 3px;
+        height: 30px;
+        max-width: none;
+        margin: 5px 0;
+    }
+    
+    .jd-application-form {
+        padding: 25px 20px;
+    }
+    
+    .jd-job-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .jd-job-meta p {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .jd-form-section {
+        padding: 20px 15px;
+    }
+    
+    .jd-submit-button {
+        width: 100%;
     }
 }

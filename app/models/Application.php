@@ -375,52 +375,20 @@ class Application extends Model {
     }
 
     public function createApplication($data) {
-        // Determine if this is a guest application
-        $isGuest = isset($data['guest_application']) && $data['guest_application'] == 1;
+        // Change the table name from 'applications' to 'job_applications'
+        $query = "INSERT INTO job_applications (job_id, seeker_id, applicant_email, applicant_phone, 
+                  resume_path, cover_letter, status, admin_status, created_at) 
+                  VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', NOW())";
         
-        if ($isGuest) {
-            $query = "INSERT INTO applications (
-                        job_id, 
-                        full_name, 
-                        email, 
-                        phone, 
-                        resume_path, 
-                        cover_letter,
-                        status,
-                        is_guest,
-                        application_date
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, 1, NOW())";
-            
-            $this->db->query($query);
-            $this->db->bind(1, $data['job_id']);
-            $this->db->bind(2, $data['full_name']);
-            $this->db->bind(3, $data['email']);
-            $this->db->bind(4, $data['phone']);
-            $this->db->bind(5, $data['resume_path']);
-            $this->db->bind(6, $data['cover_letter'] ?? null);
-            $this->db->bind(7, $data['status'] ?? 'pending');
-        } else {
-            // Normal registered user application
-            $query = "INSERT INTO job_applications (
-                       job_id, 
-                       seeker_id, 
-                       cover_letter, 
-                       resume_path, 
-                       status, 
-                       created_at
-                    ) VALUES (?, ?, ?, ?, 'pending', NOW())";
-            
-            $this->db->query($query);
-            $this->db->bind(1, $data['job_id']);
-            $this->db->bind(2, $data['seeker_id']);
-            $this->db->bind(3, $data['cover_letter'] ?? null);
-            $this->db->bind(4, $data['resume_path']);
-        }
+        $this->db->query($query);
+        $this->db->bind(1, $data['job_id']);
+        $this->db->bind(2, $data['seeker_id'] ?? null);
+        $this->db->bind(3, $data['email']);
+        $this->db->bind(4, $data['phone']);
+        $this->db->bind(5, $data['resume_path']);
+        $this->db->bind(6, $data['cover_letter'] ?? null);
+        $this->db->bind(7, $data['status'] ?? 'pending');
         
-        if ($this->db->execute()) {
-            return $this->db->lastInsertId();
-        }
-        
-        return false;
+        return $this->db->execute();
     }
 }

@@ -1,0 +1,682 @@
+/**
+ * Job Detail & Application Page Fixes
+ * This file ensures styling for job detail pages doesn't conflict with other CSS
+ */
+
+/* Fix spacing for header and main content */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    padding-top: 70px !important; /* Clear fixed header */
+    flex: 1; /* Allow main to expand and push footer down */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure job detail containers don't get affected by other styles */
+.jd-job-hero-banner .container,
+.jd-job-detail-section .container {
+    display: block;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Improved hero banner */
+.jd-job-hero-banner {
+    background: linear-gradient(135deg, #0631BC, #1b51ff) !important;
+    position: relative;
+    padding: 40px 0 !important;
+    margin-bottom: 0;
+    overflow: hidden;
+}
+
+/* Create a subtle wave pattern in the hero banner */
+.jd-job-hero-banner::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="rgba(255, 255, 255, 0.08)"></path></svg>');
+    background-size: cover;
+}
+
+/* Create a subtle pattern overlay */
+.jd-job-hero-banner::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.5;
+}
+
+/* Improved header card with glassmorphism effect */
+.jd-job-header-card {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 16px !important;
+    padding: 30px !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.jd-job-header-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Improved job content wrapper */
+.jd-job-content-wrapper {
+    display: grid !important;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) !important;
+    gap: 30px !important;
+    margin-top: -20px;
+    position: relative;
+    z-index: 5;
+}
+
+/* Fix for icons in buttons */
+.jd-apply-button i,
+.jd-download-pdf-button i,
+.jd-share-button i,
+.jd-btn-back i {
+    margin-right: 8px;
+}
+
+/* Enhanced action buttons */
+.jd-apply-button {
+    background-color: white !important;
+    color: #0631BC !important;
+    padding: 14px 30px !important;
+    border-radius: 50px !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+.jd-apply-button:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.jd-download-pdf-button {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    padding: 14px 30px !important;
+    border-radius: 50px !important;
+}
+
+/* Fix position for share dropdown */
+.jd-share-dropdown {
+    position: absolute !important;
+    z-index: 100 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    overflow: hidden !important;
+}
+
+/* Improved job detail section */
+.jd-job-detail-section {
+    padding: 40px 0 60px !important;
+    background-color: #f5f8fc !important;
+    position: relative;
+    flex: 1;
+}
+
+/* Enhanced cards for job detail section */
+.jd-job-detail-card,
+.jd-company-card,
+.jd-deadline-card {
+    border-radius: 16px !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06) !important;
+    overflow: hidden !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.jd-job-detail-card:hover,
+.jd-company-card:hover,
+.jd-deadline-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Improved meta info section */
+.jd-job-meta-info {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
+    gap: 15px !important;
+    padding: 25px !important;
+    background-color: #f9fafc !important;
+    border-bottom: 1px solid #eee !important;
+}
+
+/* Enhanced meta items */
+.jd-meta-item {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    transition: transform 0.2s ease;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.jd-meta-item:hover {
+    background-color: rgba(6, 49, 188, 0.05);
+    transform: translateY(-3px);
+}
+
+.jd-meta-label {
+    font-size: 0.85rem !important;
+    color: #666 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.jd-meta-label i {
+    color: #0631BC;
+    font-size: 0.9rem;
+}
+
+.jd-meta-value {
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+}
+
+/* Improved section headers */
+.jd-job-description h2,
+.jd-job-requirements h2,
+.jd-job-benefits h2 {
+    padding: 20px 25px !important;
+    margin: 0 !important;
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    border-bottom: 1px solid #eee !important;
+    background-color: #f9fafc !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.jd-job-description h2 i,
+.jd-job-requirements h2 i,
+.jd-job-benefits h2 i {
+    color: #0631BC;
+}
+
+/* Improved content sections */
+.jd-description-content,
+.jd-requirements-content,
+.jd-benefits-content {
+    padding: 25px !important;
+    line-height: 1.7 !important;
+    font-size: 1rem;
+}
+
+/* Enhanced job footer */
+.jd-job-footer {
+    padding: 25px !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 20px !important;
+    border-top: 1px solid #eee !important;
+    background-color: #f9fafc !important;
+    border-radius: 0 0 16px 16px !important;
+}
+
+/* Action buttons in footer */
+.jd-action-buttons {
+    display: flex !important;
+    gap: 15px !important;
+}
+
+/* Share button styling */
+.jd-share-button {
+    background-color: #f0f5ff !important;
+    color: #0631BC !important;
+    border: none !important;
+    padding: 10px 20px !important;
+    border-radius: 50px !important;
+    font-weight: 500 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+}
+
+.jd-share-button:hover {
+    background-color: #e0ebff !important;
+    transform: translateY(-3px) !important;
+    box-shadow: 0 5px 15px rgba(6, 49, 188, 0.15) !important;
+}
+
+/* Company card styling */
+.jd-company-card {
+    background-color: white !important;
+    padding: 0 !important;
+}
+
+.jd-company-card h3 {
+    padding: 20px 25px !important;
+    margin: 0 !important;
+    font-size: 1.2rem !important;
+    font-weight: 600 !important;
+    border-bottom: 1px solid #eee !important;
+    background-color: #f9fafc !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.jd-company-card h3 i {
+    color: #0631BC;
+}
+
+.jd-company-info {
+    padding: 25px !important;
+}
+
+/* Fix text color and font weight issues */
+.jd-job-title-container .jd-job-title {
+    font-size: 2.2rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 15px !important;
+    line-height: 1.3 !important;
+    color: white !important;
+}
+
+.jd-job-title-container .jd-company-name {
+    font-size: 1.2rem !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    margin-bottom: 20px !important;
+}
+
+/* Enhanced job tags */
+.jd-job-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    margin-top: 20px !important;
+}
+
+.jd-job-tag {
+    background-color: rgba(255, 255, 255, 0.25) !important;
+    color: white !important;
+    padding: 8px 18px !important;
+    border-radius: 50px !important;
+    font-size: 0.9rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    backdrop-filter: blur(5px) !important;
+    transition: all 0.3s ease !important;
+}
+
+.jd-job-tag:hover {
+    background-color: rgba(255, 255, 255, 0.35) !important;
+    transform: translateY(-3px) !important;
+}
+
+/* No job found styling */
+.jd-job-not-found {
+    text-align: center !important;
+    padding: 60px 30px !important;
+    background-color: white !important;
+    border-radius: 16px !important;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08) !important;
+    max-width: 600px !important;
+    margin: 60px auto !important;
+}
+
+.jd-job-not-found h2 {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #333 !important;
+    margin-bottom: 20px !important;
+}
+
+.jd-job-not-found p {
+    font-size: 1.1rem !important;
+    color: #666 !important;
+    margin-bottom: 30px !important;
+    max-width: 500px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.jd-btn-primary {
+    display: inline-block !important;
+    background-color: #0631BC !important;
+    color: #fff !important;
+    padding: 14px 30px !important;
+    border-radius: 50px !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 5px 15px rgba(6, 49, 188, 0.2) !important;
+}
+
+.jd-btn-primary:hover {
+    background-color: #052592 !important;
+    transform: translateY(-5px) !important;
+    box-shadow: 0 10px 25px rgba(6, 49, 188, 0.3) !important;
+}
+
+/* Related jobs section */
+.jd-related-jobs {
+    padding: 60px 0 !important;
+    background-color: white !important;
+}
+
+.jd-related-jobs .section-title {
+    text-align: center !important;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 40px !important;
+    color: #333 !important;
+}
+
+/* Enhanced deadline card styling */
+.jd-deadline-card {
+    background-color: white !important;
+    border-radius: 16px !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06) !important;
+    overflow: hidden !important;
+    margin-bottom: 25px !important;
+    display: flex !important;
+    align-items: stretch !important;
+    transition: all 0.3s ease;
+}
+
+.jd-deadline-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.jd-deadline-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #0631BC, #1b51ff) !important;
+    color: white !important;
+    padding: 20px !important;
+    font-size: 1.5rem !important;
+    width: 80px !important;
+    flex-shrink: 0 !important;
+}
+
+.jd-deadline-info {
+    padding: 20px !important;
+    flex-grow: 1 !important;
+}
+
+.jd-deadline-info h4 {
+    margin: 0 0 10px 0 !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+}
+
+.jd-deadline-info p {
+    margin: 0 0 10px 0 !important;
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #0631BC !important;
+}
+
+.jd-days-left {
+    display: inline-block !important;
+    padding: 5px 12px !important;
+    background-color: rgba(6, 49, 188, 0.1) !important;
+    color: #0631BC !important;
+    border-radius: 50px !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+}
+
+.jd-deadline-expired {
+    display: inline-block !important;
+    padding: 5px 12px !important;
+    background-color: rgba(220, 53, 69, 0.1) !important;
+    color: #dc3545 !important;
+    border-radius: 50px !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+}
+
+/* Blue underline for Similar Jobs title */
+.jd-related-jobs .section-title .title-underline {
+    background-color: #0631BC !important;
+    height: 3px !important;
+    width: 100px !important;
+    margin: 10px auto 0 !important;
+    display: block !important;
+}
+
+.jd-related-jobs .section-title {
+    color: #0631BC !important;
+    font-size: 1.8rem !important;
+    margin-bottom: 30px !important;
+    position: relative !important;
+    padding-bottom: 10px !important;
+}
+
+/* Smaller, more compact related job cards */
+.jd-related-jobs .jobs-container {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    gap: 20px !important;
+    margin: 0 auto !important;
+    max-width: 1200px !important;
+}
+
+.jd-related-jobs .job-card {
+    background-color: white !important;
+    border-radius: 12px !important;
+    padding: 15px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid #f0f0f0 !important;
+    cursor: pointer !important;
+    position: relative !important;
+    overflow: hidden !important;
+    height: 100% !important;
+}
+
+.jd-related-jobs .job-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1) !important;
+    border-color: #0631BC !important;
+}
+
+.jd-related-jobs .job-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 4px !important;
+    height: 100% !important;
+    background-color: #0631BC !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+.jd-related-jobs .job-card:hover::before {
+    opacity: 1 !important;
+}
+
+.jd-related-jobs .job-header {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+}
+
+.jd-related-jobs .company-logo {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 8px !important;
+    margin-bottom: 15px !important;
+    background-color: #f9f9f9 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1px solid #eee !important;
+}
+
+.jd-related-jobs .company-logo img {
+    max-width: 80% !important;
+    max-height: 80% !important;
+    object-fit: contain !important;
+}
+
+.jd-related-jobs .job-info {
+    flex-grow: 1 !important;
+    margin-bottom: 15px !important;
+}
+
+.jd-related-jobs .job-title {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+    margin: 0 0 8px 0 !important;
+    transition: color 0.3s ease !important;
+    line-height: 1.4 !important;
+}
+
+.jd-related-jobs .job-card:hover .job-title {
+    color: #0631BC !important;
+}
+
+.jd-related-jobs .company-name {
+    font-size: 0.9rem !important;
+    color: #666 !important;
+    margin: 0 0 12px 0 !important;
+}
+
+.jd-related-jobs .job-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin-bottom: 15px !important;
+}
+
+.jd-related-jobs .job-tag {
+    background-color: #f0f7ff !important;
+    color: #0631BC !important;
+    padding: 4px 10px !important;
+    border-radius: 20px !important;
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+    display: inline-flex !important;
+}
+
+.jd-related-jobs .job-meta {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    font-size: 0.85rem !important;
+    color: #666 !important;
+    border-top: 1px solid #f0f0f0 !important;
+    padding-top: 12px !important;
+}
+
+.jd-related-jobs .job-meta p {
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+
+.jd-related-jobs .job-meta i {
+    color: #0631BC !important;
+    width: 16px !important;
+    text-align: center !important;
+}
+
+.jd-related-jobs .view-job-btn {
+    background-color: rgba(6, 49, 188, 0.1) !important;
+    color: #0631BC !important;
+    padding: 8px 15px !important;
+    border-radius: 4px !important;
+    font-size: 0.85rem !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    display: inline-block !important;
+    margin-top: 10px !important;
+    text-decoration: none !important;
+    align-self: flex-start !important;
+    transition: all 0.3s ease !important;
+}
+
+.jd-related-jobs .view-job-btn:hover {
+    background-color: #0631BC !important;
+    color: white !important;
+}
+
+/* Fix layout issues on mobile */
+@media (max-width: 1024px) {
+    .jd-job-content-wrapper {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .jd-job-sidebar {
+        order: -1; /* Move sidebar above main content on mobile */
+    }
+    
+    .jd-job-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .jd-action-buttons {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .jd-job-header-content {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
+    
+    .jd-apply-btn-container {
+        width: 100% !important;
+        margin-top: 20px !important;
+        flex-direction: column;
+    }
+    
+    .jd-apply-button, 
+    .jd-download-pdf-button {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+    
+    .jd-action-buttons {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+}

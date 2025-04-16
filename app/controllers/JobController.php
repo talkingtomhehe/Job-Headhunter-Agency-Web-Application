@@ -119,10 +119,10 @@ class JobController extends Controller {
             'company' => $company,
             'relatedJobs' => $relatedJobs,
             'isGuest' => !isset($_SESSION['logged_in']),
-            'canViewContactInfo' => $canViewContactInfo, // Pass this to the view
+            'canViewContactInfo' => $canViewContactInfo,
             'formatSalary' => [FormatHelper::class, 'formatSalary'],
             'formatDate' => [FormatHelper::class, 'formatDate'],
-            'additionalCss' => ['jobdetail.css']
+            'additionalCss' => ['jobdetail.css', 'jobdetail-fixes.css']
         ]);
     }
     
@@ -188,7 +188,10 @@ class JobController extends Controller {
         $this->view('jobs/apply', [
             'pageTitle' => 'Apply for ' . $job['title'],
             'job' => $job,
-            'company' => $company
+            'company' => $company,
+            'formatSalary' => [FormatHelper::class, 'formatSalary'],
+            'formatDate' => [FormatHelper::class, 'formatDate'],
+            'additionalCss' => ['application-form.css']
         ]);
     }
     

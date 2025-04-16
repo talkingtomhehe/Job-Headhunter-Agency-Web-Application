@@ -43,7 +43,7 @@
                 </div>
                 
                 <div class="confirmation-actions">
-                    <a href="<?= SITE_URL ?>/jobs" class="btn-primary">Browse More Jobs</a>
+                    <a href="<?= SITE_URL ?>/job" class="btn-primary">Browse More Jobs</a>
                     <a href="<?= SITE_URL ?>" class="btn-secondary">Return to Home</a>
                 </div>
                 
