@@ -48,24 +48,9 @@
     font-size: 24px;
 }
 
-.admin-dashboard .stat-box:nth-child(1) .stat-icon {
-    background-color: rgba(52, 152, 219, 0.1);
-    color: #3498db;
-}
-
-.admin-dashboard .stat-box:nth-child(2) .stat-icon {
-    background-color: rgba(231, 76, 60, 0.1);
-    color: #e74c3c;
-}
-
-.admin-dashboard .stat-box:nth-child(3) .stat-icon {
-    background-color: rgba(46, 204, 113, 0.1);
-    color: #2ecc71;
-}
-
-.admin-dashboard .stat-box:nth-child(4) .stat-icon {
-    background-color: rgba(155, 89, 182, 0.1);
-    color: #9b59b6;
+.admin-dashboard .stat-box .stat-icon {
+    background-color: #e1f3fb;
+    color: #0631BC;
 }
 
 .admin-dashboard .stat-content {

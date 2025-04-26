@@ -78,6 +78,38 @@ Huntly is a comprehensive job listing platform that connects job seekers with em
 - `EmployerController.php`: Handles employer functionality
 - `JobController.php`: Handles job listing and application functionality
 
-## License
+## Environment Setup
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+1. Copy `app/config/env.sample.php` to `app/config/env.php`
+2. Update `env.php` with your actual Google OAuth credentials:
+   - Get credentials from the Google Developer Console
+   - Set authorized redirect URI to `http://localhost/huntly/auth/googlecallback`
+
+## Dependencies and Setup
+
+### Composer Dependencies
+
+This project uses Composer to manage PHP dependencies. If you encounter errors related to missing vendor files:
+
+1. Install Composer:
+
+   - Download from [getcomposer.org](https://getcomposer.org/download/)
+   - Follow installation instructions for your operating system
+
+2. Install dependencies:
+
+   ```bash
+   cd /path/to/huntly
+   composer require google/apiclient:"^2.0"
+   ```
+
+3. If you encounter memory limit issues:
+
+   ```bash
+   php -d memory_limit=-1 /path/to/composer.phar install
+   ```
+
+4. Update dependencies:
+   ```bash
+   composer update
+   ```

@@ -13,8 +13,8 @@ class GoogleOAuth {
     public function __construct() {
         require_once ROOT_PATH . '/vendor/autoload.php';
 
-        $this->clientId = '475827883823-2unkk5kf7s1avq4gteuql468j8635u6c.apps.googleusercontent.com'; 
-        $this->clientSecret = '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'; 
+        $this->clientId = GOOGLE_CLIENT_ID; 
+        $this->clientSecret = GOOGLE_CLIENT_SECRET; 
         $this->redirectUri = SITE_URL . '/auth/googlecallback';
         
         // Initialize Google Client

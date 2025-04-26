@@ -22,7 +22,7 @@
 
                             <div class="input-group">
                                 <i class="fa-solid fa-location-dot"></i>
-                                <input type="text" id="location-search" name="location" placeholder="City, State">
+                                <input type="text" id="location-search" name="location" placeholder="City, State" autocomplete="off">
                                 <div id="location-hint" class="search-hints"></div>
                             </div>
 
@@ -120,10 +120,7 @@
                                     onerror="this.src='<?= SITE_URL . PUBLIC_PATH ?>/assets/images/default-logo.png'">
                             </div>
                             <h3 class="company-title"><?= htmlspecialchars($company['company_name']) ?></h3>
-                            <p class="company-location">
-                                <i class="fa-solid fa-location-dot"></i> 
-                                <?= !empty($company['headquarters_address']) ? htmlspecialchars($company['headquarters_address']) : 'Location not specified' ?>
-                            </p>
+                            
                             <p class="company-jobs">Open jobs - <span><?= $company['job_count'] ?></span></p>
                         </div>
                     <?php endforeach; ?>

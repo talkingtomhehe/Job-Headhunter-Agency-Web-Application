@@ -2,6 +2,13 @@
 
 namespace config;
 
+// Load environment-specific configuration if it exists
+if (file_exists(dirname(__FILE__) . '/env.php')) {
+    require_once dirname(__FILE__) . '/env.php';
+} else {
+    die('Environment configuration file not found. Please create app/config/env.php based on env.sample.php');
+}
+
 // Define site URL
 define('SITE_URL', 'http://localhost/huntly');
 

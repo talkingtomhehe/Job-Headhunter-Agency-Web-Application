@@ -170,9 +170,8 @@ class JobPost extends Model {
         $params = [];
         
         if(!empty($keyword)) {
-            $query .= " AND (j.title LIKE ? OR j.description LIKE ? OR c.company_name LIKE ?)";
+            $query .= " AND (j.title LIKE ? OR c.company_name LIKE ?)";
             $keyword = "%$keyword%";
-            $params[] = $keyword;
             $params[] = $keyword;
             $params[] = $keyword;
         }
@@ -493,10 +492,10 @@ class JobPost extends Model {
         $params = [];
         
         if(!empty($keyword)) {
-            $query .= " AND (j.title LIKE ? OR c.company_name LIKE ? OR j.description LIKE ?)";
-            $params[] = "%$keyword%";
-            $params[] = "%$keyword%";
-            $params[] = "%$keyword%";
+            $query .= " AND (j.title LIKE ? OR c.company_name LIKE ?)";
+            $keyword = "$keyword%";
+            $params[] = $keyword;
+            $params[] = $keyword;
         }
         
         if(!empty($location)) {
@@ -567,10 +566,11 @@ class JobPost extends Model {
         $params = [];
         
         if(!empty($keyword)) {
-            $query .= " AND (j.title LIKE ? OR c.company_name LIKE ? OR j.description LIKE ?)";
-            $params[] = "%$keyword%";
-            $params[] = "%$keyword%";
-            $params[] = "%$keyword%";
+            $query .= " AND (j.title LIKE ? OR c.company_name LIKE ?)";
+            $keyword = "$keyword%";
+            $params[] = $keyword;
+            $params[] = $keyword;
+            // Remove the description parameter
         }
         
         if(!empty($location)) {
