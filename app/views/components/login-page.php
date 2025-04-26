@@ -162,6 +162,34 @@
             </form>
         </div>
     </div>
+
+    <!-- Registration Success Modal -->
+    <div id="registration-success-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <i class="fa-solid fa-circle-check success-icon"></i>
+                <h2>Registration Successful!</h2>
+            </div>
+            <div class="modal-body">
+                <p>Your account has been created successfully. Please check your email to verify your account.</p>
+                
+                <?php if (isset($_SESSION['auth_warning'])): ?>
+                    <div class="alert alert-warning">
+                        <?= $_SESSION['auth_warning'] ?>
+                        <?php unset($_SESSION['auth_warning']) ?>
+                    </div>
+                <?php endif; ?>
+
+                <div id="modal-resend-verification" class="resend-section">
+                    <p>Didn't receive verification email? <a href="<?= SITE_URL ?>/auth/resendverification" class="resend-link">Resend</a></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="close-registration-modal" class="btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -195,4 +223,61 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if there's an error message about verification
+    const errorMessages = document.querySelectorAll('.alert.alert-danger');
+    errorMessages.forEach(message => {
+        // If the error message mentions verification
+        if (message.textContent.toLowerCase().includes('verify') || 
+            message.textContent.toLowerCase().includes('verification')) {
+            // Show the resend verification section
+            const resendSection = document.getElementById('resend-verification');
+            if (resendSection) {
+                resendSection.style.display = 'block';
+            }
+        }
+    });
+});
+
+// Check for successful registration
+document.addEventListener('DOMContentLoaded', function() {
+    // Show modal if registration was successful
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('registered') === 'true') {
+        showRegistrationSuccessModal();
+    }
+    
+    // Close modal when clicking the close button
+    const closeModalButton = document.querySelector('.close-modal');
+    if (closeModalButton) {
+        closeModalButton.addEventListener('click', function() {
+            document.getElementById('registration-success-modal').style.display = 'none';
+        });
+    }
+    
+    // Close modal when clicking the close button in footer
+    const closeModalBtn = document.getElementById('close-registration-modal');
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', function() {
+            document.getElementById('registration-success-modal').style.display = 'none';
+        });
+    }
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('registration-success-modal');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+// Function to show the registration success modal
+function showRegistrationSuccessModal() {
+    const modal = document.getElementById('registration-success-modal');
+    if (modal) {
+        modal.style.display = 'block';
+    }
+}
 </script>

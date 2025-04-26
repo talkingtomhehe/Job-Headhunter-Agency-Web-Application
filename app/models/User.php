@@ -177,4 +177,81 @@ class User extends Model {
         
         return $this->db->single();
     }
+
+    // Register user with verification
+    public function registerWithVerification($email, $password, $fullName, $role, $phone) {
+        // Generate verification token
+        $verificationToken = bin2hex(random_bytes(32));
+        $tokenExpiry = date('Y-m-d H:i:s', strtotime('+24 hours'));
+        
+        $query = "INSERT INTO users (email, password, full_name, role, phone, 
+                avatar_path, active, verification_token, token_expiry, created_at) 
+                VALUES (?, ?, ?, ?, ?, 'assets/images/defaultavatar.jpg', 0, ?, ?, NOW())";
+                
+        $this->db->query($query);
+        $this->db->bind(1, $email);
+        $this->db->bind(2, $password);
+        $this->db->bind(3, $fullName);
+        $this->db->bind(4, $role);
+        $this->db->bind(5, $phone);
+        $this->db->bind(6, $verificationToken);
+        $this->db->bind(7, $tokenExpiry);
+        
+        if ($this->db->execute()) {
+            return [
+                'success' => true,
+                'user_id' => $this->db->lastInsertId(),
+                'verification_token' => $verificationToken
+            ];
+        } else {
+            return ['success' => false];
+        }
+    }
+
+    // Verify user with token
+    public function verifyUser($token) {
+        // First, find the user with this token
+        $this->db->query("SELECT * FROM users WHERE verification_token = ? AND token_expiry > NOW()");
+        $this->db->bind(1, $token);
+        $user = $this->db->single();
+        
+        if ($user) {
+            // Update user to be active and clear verification token
+            $this->db->query("UPDATE users SET active = 1, verification_token = NULL, 
+                            token_expiry = NULL, email_verified_at = NOW() 
+                            WHERE user_id = ?");
+            $this->db->bind(1, $user['user_id']);
+            
+            if ($this->db->execute()) {
+                return $user;
+            }
+        }
+        
+        return false;
+    }
+
+    // Check if user is verified
+    public function isVerified($userId) {
+        $this->db->query("SELECT active FROM users WHERE user_id = ?");
+        $this->db->bind(1, $userId);
+        $result = $this->db->single();
+        
+        return ($result && $result['active'] == 1);
+    }
+
+    // Find an unverified user by email
+    public function findUnverifiedUserByEmail($email) {
+        $this->db->query("SELECT * FROM users WHERE email = ? AND active = 0");
+        $this->db->bind(1, $email);
+        return $this->db->single();
+    }
+
+    // Update verification token
+    public function updateVerificationToken($userId, $token, $expiry) {
+        $this->db->query("UPDATE users SET verification_token = ?, token_expiry = ? WHERE user_id = ?");
+        $this->db->bind(1, $token);
+        $this->db->bind(2, $expiry);
+        $this->db->bind(3, $userId);
+        return $this->db->execute();
+    }
 }

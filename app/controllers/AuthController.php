@@ -6,18 +6,21 @@ use models\User;
 use models\Company;
 use models\JobSeeker;
 use helpers\GoogleOAuth;
+use helpers\EmailService;
 
 class AuthController extends Controller {
     private $userModel;
     private $companyModel;
     private $seekerModel;
     private $googleOAuth;
+    private $emailService;
     
     public function __construct() {
         $this->userModel = new User();
         $this->companyModel = new Company();
         $this->seekerModel = new JobSeeker();
         $this->googleOAuth = new GoogleOAuth();
+        $this->emailService = new EmailService();
     }
     
     // Auth page - show login form
@@ -67,6 +70,13 @@ class AuthController extends Controller {
             return;
         }
         
+        // Check if user is verified
+        if($user['active'] != 1) {
+            $_SESSION['auth_error'] = 'Please verify your email before logging in. Check your inbox for the verification link.';
+            $this->redirect('auth');
+            return;
+        }
+        
         // Verify password
         if(!password_verify($password, $user['password'])) {
             $_SESSION['auth_error'] = 'Invalid email or password';
@@ -74,7 +84,6 @@ class AuthController extends Controller {
             return;
         }
         
-        // At this point, authentication is successful
         // Store user data in session
         $_SESSION['logged_in'] = true;
         $_SESSION['user_id'] = $user['user_id'];
@@ -152,9 +161,18 @@ class AuthController extends Controller {
         // Hash the password for security
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         
-        // Register the user and related records
-        if($this->userModel->register($email, $hashedPassword, $fullName, $role === 'employer' ? 'company_admin' : 'job_seeker', $phone)) {
-            $userId = $this->userModel->getLastInsertId();
+        // Register the user with verification token
+        $registrationResult = $this->userModel->registerWithVerification(
+            $email, 
+            $hashedPassword, 
+            $fullName, 
+            $role === 'employer' ? 'company_admin' : 'job_seeker', 
+            $phone
+        );
+        
+        if ($registrationResult['success']) {
+            $userId = $registrationResult['user_id'];
+            $verificationToken = $registrationResult['verification_token'];
             
             // For employers, create a company record
             if($role === 'employer' && !empty($companyName)) {
@@ -166,14 +184,88 @@ class AuthController extends Controller {
                 $this->seekerModel->createJobSeeker($userId);
             }
             
-            // Set success message
-            $_SESSION['auth_success'] = 'Account created successfully! Please log in.';
+            // Send verification email
+            $emailSent = $this->emailService->sendVerificationEmail($email, $fullName, $verificationToken);
+            
+            if ($emailSent) {
+                $_SESSION['auth_success'] = 'Registration successful! Please check your email to verify your account.';
+            } else {
+                $_SESSION['auth_warning'] = 'Account created, but we could not send a verification email. Please contact support.';
+            }
             
             // Redirect back to auth page
-            $this->redirect('auth');
+            $this->redirect('auth?registered=true');
         } else {
             $_SESSION['auth_error'] = 'Registration failed. Please try again.';
             $this->redirect('auth');
+        }
+    }
+    
+    public function verify($token = '') {
+        if (empty($token)) {
+            $_SESSION['error'] = 'Invalid verification link';
+            $this->redirect('auth');
+            return;
+        }
+        
+        $user = $this->userModel->verifyUser($token);
+        
+        if ($user) {
+            $_SESSION['success'] = 'Email verified successfully! You can now log in.';
+            $this->redirect('auth');
+        } else {
+            $_SESSION['error'] = 'Invalid or expired verification link';
+            $this->redirect('auth');
+        }
+    }
+
+    public function resendVerification() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'] ?? '';
+            
+            if (empty($email)) {
+                $_SESSION['auth_error'] = 'Please enter your email address';
+                $this->redirect('auth/resend-verification');
+                return;
+            }
+            
+            // Find the unverified user - Use userModel instead of direct db access
+            $user = $this->userModel->findUnverifiedUserByEmail($email);
+            
+            if (!$user) {
+                $_SESSION['auth_error'] = 'No unverified account found with this email';
+                $this->redirect('auth/resend-verification');
+                return;
+            }
+            
+            // Generate new token
+            $verificationToken = bin2hex(random_bytes(32));
+            $tokenExpiry = date('Y-m-d H:i:s', strtotime('+24 hours'));
+            
+            // Update user with new token - Use userModel instead of direct db access
+            $updated = $this->userModel->updateVerificationToken($user['user_id'], $verificationToken, $tokenExpiry);
+            
+            if ($updated) {
+                // Send email
+                $emailSent = $this->emailService->sendVerificationEmail($user['email'], $user['full_name'], $verificationToken);
+                
+                if ($emailSent) {
+                    $_SESSION['auth_success'] = 'Verification email has been resent. Please check your inbox.';
+                } else {
+                    $_SESSION['auth_error'] = 'Failed to send verification email. Please try again.';
+                }
+            } else {
+                $_SESSION['auth_error'] = 'Something went wrong. Please try again.';
+            }
+            
+            $this->redirect('auth');
+        } else {
+            // Show resend verification form
+            $data = [
+                'pageTitle' => 'Resend Verification Email - Huntly'
+            ];
+            
+            $this->view('pages/resendverification', $data);
         }
     }
     
