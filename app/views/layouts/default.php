@@ -25,7 +25,7 @@
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/pagination.js"></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/validation.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/search.js" defer></script>
-
+    <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/navbar-toggle.js" defer></script>
     <?php if ($view === 'pages/auth'): ?>
         <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/login-page.js" defer></script>
         <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/password-toggle.js" defer></script>

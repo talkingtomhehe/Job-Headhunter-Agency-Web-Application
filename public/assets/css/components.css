@@ -1,13 +1,11 @@
-/* Hero Banner with properly sized image that fills entire space */
 .hero-banner {
     position: relative;
     width: 100%;
-    height: 140vh; /* Changed from 70vh to 100vh to fill entire viewport */
+    height: 140vh; 
     overflow: hidden;
     margin-bottom: 0;
 }
 
-/* Image container takes full size */
 .image-container {
     position: absolute;
     background-color: white;
@@ -15,19 +13,17 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0; /* Ensure it stays behind content */
+    z-index: 0; 
 }
 
-/* Ensure image fully covers all available space */
 .hero-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 0; /* Align to top center */
-    transform: scale(1.05); /* Slight scale to prevent any edge gaps */
+    object-position: center 0; 
+    transform: scale(1.05); 
 }
 
-/* Adjust overlay to match new full-size image */
 .image-overlay {
     position: absolute;
     top: 0;
@@ -37,7 +33,6 @@
     z-index: 1;
 }
 
-/* Adjust hero section position with the navbar */
 .hero-section {
     position: absolute;
     top: 0;
@@ -47,7 +42,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 5rem 1rem 2rem; /* Added top padding to account for navbar */
+    padding: 5rem 1rem 2rem; 
     z-index: 2;
 }
 
@@ -65,7 +60,6 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Search Form - Standardized Styles */
 .search-form-container {
     width: 100%;
     display: flex;
@@ -102,7 +96,6 @@
     border-right: none;
 }
 
-/* Consistent icon styling */
 .input-group i {
     color: #0631BC;
     margin-right: 10px;
@@ -110,7 +103,6 @@
     flex-shrink: 0;
 }
 
-/* Consistent input and select styling */
 .input-group input,
 .input-group select {
     width: 100%;
@@ -127,21 +119,18 @@
     color: black;
 }
 
-/* Placeholder text consistency */
 .input-group input::placeholder {
     color: #777;
     font-weight: 400;
     opacity: 1;
 }
 
-/* Select options consistency */
 .input-group select option {
     font-weight: 400;
     color: #333;
     background-color: white;
 }
 
-/* Custom dropdown arrow */
 .input-group select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -153,13 +142,11 @@
     cursor: pointer;
 }
 
-/* Button container styling */
 .search-button-container {
     display: flex;
     justify-content: center;
 }
 
-/* Search button styling */
 .search-button {
     background-color: #0631BC;
     color: white;
@@ -184,14 +171,12 @@
     transform: translateY(0);
 }
 
-/* LIVE SEARCH */
 .search-hints {
     position: absolute;
     top: 100%;
     left: 0;
     width: 100%;
     background: white;
-    /* Sửa màu nền từ đen thành trắng */
     color: #333;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -254,7 +239,6 @@
     font-style: italic;
 }
 
-/* Recent Jobs Section - Improved Layout */
 .recent-jobs {
     padding: 3rem 0;
     background-color: white;
@@ -262,15 +246,13 @@
     z-index: 5;
 }
 
-/* Fix container layout in recent jobs section */
 .recent-jobs .container {
     display: flex;
-    flex-direction: column; /* Stack children vertically */
-    align-items: center;    /* Center items horizontally */
+    flex-direction: column; 
+    align-items: center;    
     width: 100%;
 }
 
-/* Properly position the title */
 .section-title {
     text-align: center;
     color: #333;
@@ -278,11 +260,10 @@
     font-weight: 700;
     margin-bottom: 3rem;
     position: relative;
-    width: auto; /* Let it size to content */
-    display: inline-block; /* Keep it centered */
+    width: auto; 
+    display: inline-block; 
 }
 
-/* Title underline */
 .title-underline {
     display: block;
     width: 170px;
@@ -292,23 +273,21 @@
     border-radius: 1px;
 }
 
-/* Job containers below title */
 .jobs-container {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     max-width: 1000px;
-    width: 100%; /* Take full width up to max-width */
+    width: 100%; 
 }
 
-/* Job card styling - more rectangular */
 .job-card {
     background-color: white;
-    border-radius: 8px; /* Less rounded corners */
+    border-radius: 8px; 
     padding: 1.5rem;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s, box-shadow 0.2s;
-    width: 100%; /* Full width */
+    width: 100%; 
 }
 
 .job-card:hover {
@@ -316,7 +295,6 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* Job header with consistent alignment */
 .job-header {
     display: grid;
     grid-template-columns: 70px minmax(0, 1fr) 160px;
@@ -324,7 +302,6 @@
     align-items: start;
 }
 
-/* Company logo with fixed width */
 .company-logo {
     width: 60px;
     height: 60px;
@@ -371,18 +348,38 @@
 }
 
 .job-tag {
-    background-color: #E1F3FB;
-    color: #0631BC;
-    padding: 0.2rem 0.7rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
     font-weight: 500;
+}
+
+.job-tag.work-model {
+    background-color: #E5F6FF;
+    color: #0077B6;
+}
+
+.job-tag.category {
+    background-color: #E5FFE6;
+    color: #008A0E;
+}
+
+.job-tag.job-type {
+    background-color: #F5E5FF;
+    color: #8E00B6;
+}
+
+.job-tag i {
+    font-size: 10px;
 }
 
 .job-meta {
     grid-column: 3;
-    margin-left: 0; /* Remove margin since grid handles spacing */
-    width: 160px; /* Fixed width for consistent alignment */
+    margin-left: 0; 
+    width: 160px; 
 }
 
 .job-location, .job-salary {
@@ -441,7 +438,7 @@
 /* Responsive styles for the jobs section */
 @media (max-width: 768px) {
     .job-header {
-        grid-template-columns: 1fr; /* Stack in mobile view */
+        grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
     }
     
@@ -475,9 +472,8 @@
 }
 
 /* Top Companies Section */
-/* Top Companies Section - Fixed Layout */
 .top-companies {
-    padding: 1rem 0 5rem; /* Added more padding at bottom */
+    padding: 1rem 0 5rem; 
     background-color: white;
     position: relative;
     z-index: 5;
@@ -485,12 +481,11 @@
 
 .top-companies .container {
     display: flex;
-    flex-direction: column; /* Ensure stacked vertically */
+    flex-direction: column; 
     align-items: center;
     width: 100%;
 }
 
-/* Force section title to be full width and centered */
 .top-companies .section-title {
     width: 100%;
     text-align: center;
@@ -498,16 +493,14 @@
     display: block;
 }
 
-/* Adjusted company cards container - 4 cards in one row */
 .companies-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* Changed from 4 to 5 columns */
-    gap: 1.5rem; /* Increased gap between cards */
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 1.5rem; 
     width: 100%;
-    max-width: 1200px; /* Increased max-width */
+    max-width: 1200px; 
 }
 
-/* Make cards longer */
 .company-card {
     background-color: white;
     border-radius: 8px;
@@ -518,20 +511,18 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    min-height: 260px; /* Increased from 220px */
+    min-height: 260px;
     width: 100%; 
 }
 
-/* Match hover animation with job cards */
 .company-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-/* Centered logo at top */
 .company-logo-large {
     width: 100%;
-    height: 120px; /* Increased from 80px */
+    height: 120px; 
     border-radius: 8px;
     overflow: hidden;
     background-color: #f5f5f5;
@@ -539,21 +530,19 @@
     align-items: center;
     justify-content: center;
     border: 1px solid #eee;
-    margin-bottom: 1.5rem; /* Increased spacing below logo */
+    margin-bottom: 1.5rem; 
     padding: 0.5rem;
 }
 
-/* Better image display that fills container appropriately */
 .company-logo-large img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Maintain aspect ratio while filling space */
+    object-fit: contain; 
     padding: 0.5rem;
 }
 
-/* Improved spacing for text elements */
 .company-title {
-    margin: 0 0 0.75rem; /* Increased bottom margin */
+    margin: 0 0 0.75rem; 
     font-size: 1.1rem;
     font-weight: 600;
     color: #333;
@@ -561,7 +550,7 @@
 }
 
 .company-location {
-    margin: 0 0 0.75rem; /* Increased bottom margin */
+    margin: 0 0 0.75rem; 
     font-size: 0.9rem;
     color: #777;
     display: flex;
@@ -571,7 +560,6 @@
     width: 100%;
 }
 
-/* Bold the jobs count */
 .company-jobs {
     margin: 0;
     font-size: 0.95rem;
@@ -581,35 +569,35 @@
 }
 
 .company-jobs span {
-    font-weight: 700; /* Make the job count bold */
+    font-weight: 700; 
 }
 
 /* Responsive adjustments */
 @media (max-width: 1200px) {
     .companies-container {
-        grid-template-columns: repeat(4, 1fr); /* Four columns on large screens */
+        grid-template-columns: repeat(4, 1fr); 
     }
 }
 
 @media (max-width: 992px) {
     .companies-container {
-        grid-template-columns: repeat(3, 1fr); /* Three columns on medium screens */
+        grid-template-columns: repeat(3, 1fr); 
     }
 }
 
 @media (max-width: 768px) {
     .companies-container {
-        grid-template-columns: repeat(2, 1fr); /* Two columns on smaller screens */
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 576px) {
     .companies-container {
-        grid-template-columns: 1fr; /* Single column on mobile */
+        grid-template-columns: 1fr; 
     }
     
     .company-card {
-        max-width: 320px; /* Wider cards on mobile */
+        max-width: 320px; 
         margin: 0 auto 1.5rem;
     }
 }
@@ -617,11 +605,11 @@
 /* Auth Page Styles */
 .auth-page-container {
     display: flex;
-    min-height: calc(100vh - 70px); /* Subtract header height */
-    padding-top: 90px; /* Account for navbar */
-    background-color: white; /* Changed from #F2FBFF to white */
-    overflow-y: auto; /* Enable vertical scrolling */
-    flex-wrap: wrap; /* Allow wrapping on small screens */
+    min-height: calc(100vh - 70px); 
+    padding-top: 90px; 
+    background-color: white; 
+    overflow-y: auto; 
+    flex-wrap: wrap; 
 }
 
 /* Left Panel - Login Form */
@@ -817,7 +805,7 @@
 /* Right Panel - Content changes based on role */
 .auth-right-panel {
     flex: 1;
-    background-color: white; /* Changed from #EEFAFF to white */
+    background-color: white; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -828,9 +816,9 @@
     display: none;
     max-width: 500px;
     width: 100%;
-    overflow-y: visible; /* Changed from auto to visible to hide scrollbar */
+    overflow-y: visible;
     padding: 1rem;
-    max-height: none; /* Remove max-height constraint */
+    max-height: none; 
 }
 
 .right-panel-content.active {
@@ -841,7 +829,7 @@
     width: 100%;
     height: auto;
     object-fit: contain;
-    max-height: none; /* Remove max-height constraint */
+    max-height: none; 
 }
 
 .register-heading {

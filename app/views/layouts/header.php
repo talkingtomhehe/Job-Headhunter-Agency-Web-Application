@@ -22,12 +22,22 @@ if (strpos($uri, '/job') !== false) {
             <img src="<?= SITE_URL . PUBLIC_PATH ?>/assets/images/logo.png" alt="Huntly">
         </a>
 
-        <nav class="main-nav">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNav">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <nav class="main-nav collapse navbar-collapse" id="mainNav">
             <!-- Navigation content -->
             <ul class="nav-links">
                 <li><a href="<?= SITE_URL ?>" class="<?= ($currentPage == 'home' || empty($currentPage)) ? 'active' : '' ?>">Home</a></li>
                 <li class="dropdown <?= ($currentPage == 'jobs') ? 'active' : '' ?>">
-                    <a href="<?= SITE_URL ?>/job" class="dropdown-toggle">All jobs <i class="fa-solid fa-caret-down"></i></a>
+                    <a href="<?= SITE_URL ?>/job" class="dropdown-toggle">
+                        All jobs <i class="fa-solid fa-caret-down"></i>
+                    </a>
                     <ul class="dropdown-menu">
                         <?php if (!empty($categories)): ?>
                             <?php foreach ($categories as $category): ?>

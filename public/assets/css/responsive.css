@@ -1,87 +1,303 @@
-/* Mobile and responsive styles */
-@media (max-width: 768px) {
-    .footer-links {
-        justify-content: flex-start;
+/* Base responsive rules */
+@media (max-width: 1200px) {
+    .container {
+        width: 100%;
+        padding: 0 20px;
+    }
+}
+
+/* Tablet & smaller desktop devices */
+@media (max-width: 992px) {
+    /* Header adjustments */
+    header .container {
+        flex-wrap: wrap;
     }
 
-    .footer-bottom {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
+    .logo {
+        height: 60px;
     }
-    .container {
-        padding: 0 10px;
+
+    /* Hero section adjustments */
+    .hero-banner {
+        height: 120vh;
     }
-    
+
     .hero-title {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
+        margin-bottom: 3rem;
     }
-    
+
+    /* Search inputs - stack on smaller screens */
     .search-inputs {
         flex-direction: column;
+        border-radius: 20px;
+        padding: 15px;
     }
-    
+
+    .input-group {
+        border-right: none;
+        border-bottom: 1px solid #e1e1e1;
+        padding: 10px 5px;
+        margin-bottom: 10px;
+    }
+
+    .input-group:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    /* Recent jobs section */
     .job-header {
-        grid-template-columns: 1fr;
+        grid-template-columns: 60px 1fr;
+    }
+
+    .job-meta {
+        grid-column: 1 / span 2;
+        margin-top: 15px;
+    }
+
+    /* Companies section */
+    .companies-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+    /* Header and navigation */
+    .mobile-menu-toggle {
+        display: none; 
+    }
+
+    .main-nav.active {
+        display: block; 
     }
     
-    .companies-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .mobile-menu-toggle {
-        display: block;
-        margin-left: auto;
-    }
-
-    .main-nav {
-        justify-content: flex-end;
-    }
-
     .nav-links {
-        display: none;
-        position: absolute;
+        flex-direction: column;
+        gap: 0;
+        padding: 10px 0;
+        margin: 0;
+    }
+    
+    .main-nav {
+        position: fixed;
         top: 70px;
         left: 0;
         right: 0;
-        background: white;
-        flex-direction: column;
-        padding: 1rem;
+        width: 100%;
+        height: auto;
+        max-height: 0;
+        background-color: white;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        gap: 1rem;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        padding: 0;
+    }
+    
+    .main-nav.in {
+        padding: 0 0 20px;
     }
 
-    .nav-links.active {
-        display: flex;
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links a {
+        padding: 12px 0;
+        width: 100%;
+        display: block;
     }
 
     .dropdown-menu {
         position: static;
         box-shadow: none;
-        padding-left: 1rem;
+        background-color: #f5f5f5;
+        border-top: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
+        margin: 0;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        display: none;
+    }
+    
+    .dropdown.active .dropdown-menu {
+        display: block;
+        max-height: 300px;
+    }
+    
+    .dropdown-menu a {
+        padding: 12px 25px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .dropdown-menu a:last-child {
+        border-bottom: none;
+    }
+    
+    .dropdown-toggle .fa-caret-down {
+        transition: transform 0.3s ease;
+    }
+    
+    .dropdown.active .dropdown-toggle .fa-caret-down {
+        transform: rotate(180deg);
     }
 
     .auth {
-        display: none;
+        margin-left: auto;
+        order: 2;
     }
 
-    .nav-links .auth-mobile {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
+    /* Hero section */
+    .hero-banner {
+        height: 150vh;
     }
-}
 
-@media (max-width: 576px) {
+    .hero-section {
+        padding-top: 90px;
+    }
+
     .hero-title {
         font-size: 1.5rem;
     }
-    
+
+    .search-button-container {
+        width: 100%;
+    }
+
+    .search-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Recent jobs */
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .job-card {
+        padding: 20px 15px;
+    }
+
+    .job-header {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .company-logo {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 5px;
+        float: left;
+        margin-right: 15px;
+    }
+
+    .job-info {
+        grid-column: 1;
+        padding-left: 65px; 
+        margin-top: -55px;
+    }
+
+    .job-title {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+    }
+
+    .company-name {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+
+    .job-tags {
+        padding-left: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .job-tag {
+        font-size: 0.7rem;
+        padding: 3px 8px;
+    }
+
+    .job-meta {
+        grid-column: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px 0;
+        border-top: 1px solid #f0f2f5;
+        margin-top: 10px;
+    }
+
+    .job-meta p {
+        margin: 0;
+        font-size: 0.85rem;
+    }
+
+    .job-meta i {
+        width: 20px;
+        text-align: center;
+        color: #0631BC;
+    }
+
+    .view-job-btn {
+        margin-top: 10px;
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 576px) {
+    /* Header */
+    .logo {
+        height: 50px;
+    }
+
+    .auth .login-btn {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+
+    /* Hero section */
+    .search-form-container {
+        width: 100%;
+    }
+
+    /* Footer */
+    .footer-links {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer-col {
+        width: 100%;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+
+    /* Companies section */
     .companies-container {
         grid-template-columns: 1fr;
     }
-    
-    .search-button {
-        width: 100%;
+
+    .company-card {
+        min-height: auto;
+        padding-bottom: 20px;
+    }
+
+    .company-logo-large {
+        height: 100px;
     }
 }

@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <a href="/huntly/public/auth_controller.php?action=forgot_password" class="forgot-password">Forgotten password?</a>
+                <a href="/huntly/public/auth_controller.php?action=forgot_password" class="forgot-password">Forgot password?</a>
 
                 <button type="submit" class="auth-submit-btn">Login</button>
 

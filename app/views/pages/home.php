@@ -79,9 +79,15 @@
                                     <h3 class="job-title"><?= htmlspecialchars($job['title']) ?></h3>
                                     <p class="company-name"><?= htmlspecialchars($job['company_name']) ?></p>
                                     <div class="job-tags">
-                                        <span class="job-tag"><?= htmlspecialchars($job['work_model'] ?? '') ?></span>
-                                        <span class="job-tag"><?= htmlspecialchars($job['category_name'] ?? '') ?></span>
-                                        <span class="job-tag"><?= htmlspecialchars($job['experience_level'] ?? '') ?></span>
+                                        <?php if (!empty($job['work_model'])): ?>
+                                            <span class="job-tag work-model"><i class="fa-solid fa-house"></i> <?= htmlspecialchars($job['work_model']) ?></span>
+                                        <?php endif; ?>
+                                        <?php if (!empty($job['category_name'])): ?>
+                                            <span class="job-tag category"><i class="fa-solid fa-tag"></i> <?= htmlspecialchars($job['category_name']) ?></span>
+                                        <?php endif; ?>
+                                        <?php if (!empty($job['job_type'])): ?>
+                                            <span class="job-tag job-type"><i class="fa-solid fa-clock"></i> <?= htmlspecialchars($job['job_type']) ?></span>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                                 <div class="job-meta">

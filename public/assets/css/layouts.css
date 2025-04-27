@@ -30,14 +30,14 @@ body {
 
 /* === HEADER === */
 header {
-    background-color: transparent; /* Start completely transparent */
+    background-color: transparent;
     color: #0631BC;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 100;
-    transition: all 0.3s ease; /* Smooth transition for all changes */
+    transition: all 0.3s ease; 
 }
 
 /* Semi-transparent overlay for header that appears on scroll */
@@ -70,7 +70,7 @@ header .container {
 .logo img {
     max-height: 100%;
     width: auto;
-    position: relative; /* Ensure it's above the transparent background */
+    position: relative;
     z-index: 5;
 }
 
@@ -79,15 +79,6 @@ header .container {
     flex: 1;
     display: flex;
     justify-content: center;
-}
-
-.mobile-menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: #0631BC;
-    font-size: 1.5rem;
-    cursor: pointer;
 }
 
 .nav-links {
@@ -199,47 +190,17 @@ header .container {
     background-color: #0631BC;
     border: 1px solid #0631BC;
     color: white;
-    text-decoration: none; /* Add this to remove underline */
-    display: inline-block; /* For consistent padding */
+    text-decoration: none; 
+    display: inline-block; 
 }
 
 .login-btn:hover {
-    background-color: #052592; /* Darker blue on hover */
+    background-color: #052592; 
 }
 
 /* === MAIN === */
 main {
     flex: 1;
-}
-
-/* Background Video */
-#background-video {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    width: auto;
-    height: auto;
-    z-index: -2;
-    object-fit: cover;
-    transition: opacity 0.8s ease-in-out;
-    
-    /* Fix for top part hidden by navbar */
-    top: 0;
-    transform: scale(1.05); /* Slightly enlarge to cover any gaps */
-    transform-origin: center center;
-}
-
-/* Add overlay for better text visibility */
-.video-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(242, 251, 255, 0.3); /* Light blue tint */
-    z-index: -1; /* Between video and content */
 }
 
 /* === FOOTER === */
@@ -371,4 +332,149 @@ footer .container {
     background-color: #FFFFFF;
     color: #0631BC;
     transform: translateY(-3px);
+}
+
+.mobile-menu-toggle {
+    display: none !important;
+    background: none;
+    border: none;
+    color: #0631BC;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 8px;
+    transition: color 0.3s;
+    z-index: 101;
+}
+
+.mobile-menu-toggle:hover {
+    color: #052592;
+}
+
+.nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 90;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(3px);
+}
+
+.nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Prevent body scroll when nav is open */
+body.nav-open {
+    overflow: hidden;
+}
+
+/* Bootstrap-style hamburger menu */
+.navbar-header {
+    display: none;
+}
+
+.navbar-toggle {
+    position: relative;
+    padding: 9px 10px;
+    margin-right: 15px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.navbar-toggle:focus {
+    outline: none;
+}
+
+.navbar-toggle .icon-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: #0631BC;
+    transition: all 0.2s;
+}
+
+.navbar-toggle .icon-bar + .icon-bar {
+    margin-top: 4px;
+}
+
+.navbar-toggle.active .icon-bar:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.navbar-toggle.active .icon-bar:nth-child(2) {
+    opacity: 0;
+}
+
+.navbar-toggle.active .icon-bar:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+@media (max-width: 768px) {
+    .navbar-header {
+        display: block;
+    }
+    
+    .main-nav {
+        display: block;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: white;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        width: 100%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .main-nav.collapse {
+        max-height: 0;
+    }
+    
+    .main-nav.collapse.in {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .mobile-menu-toggle {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) {
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    
+    .dropdown-toggle {
+        pointer-events: none;
+    }
+    
+    .dropdown > a {
+        pointer-events: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .dropdown:hover .dropdown-menu {
+        display: none;
+    }
+    
+    .dropdown.active .dropdown-menu {
+        display: block;
+    }
+    
+    .dropdown-toggle {
+        pointer-events: auto;
+    }
 }
