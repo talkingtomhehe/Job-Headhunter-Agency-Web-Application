@@ -339,8 +339,15 @@ class EmployerController extends Controller {
         $deadline = !empty($_POST['application_deadline']) ? $_POST['application_deadline'] : null;
         
         // Handle new category creation
-        if (!empty($newCategory) && empty($categoryId)) {
+        if (!empty($newCategory) && (empty($categoryId) || $categoryId === 'new')) {
+            // Create new category and get its ID
             $categoryId = $this->jobModel->createCategory($newCategory);
+            
+            if (!$categoryId) {
+                $_SESSION['error'] = 'Failed to create new category';
+                $this->redirect('employer/jobs/editJob/' . $jobId);
+                return;
+            }
         }
     
         // Handle PDF upload if new one provided

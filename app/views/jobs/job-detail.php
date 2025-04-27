@@ -3,7 +3,7 @@
     <section class="jd-job-hero-banner">
         <div class="container">
             <div class="jd-back-link">
-                <a href="<?= SITE_URL ?>/job" class="jd-btn-back">
+                <a href="<?= SITE_URL ?>/job" class="jd-btn-back" id="back-to-jobs-button">
                     <i class="fa-solid fa-arrow-left"></i> Back to Jobs
                 </a>
             </div>
@@ -192,13 +192,6 @@
                                 </div>
                                 <?php endif; ?>
                                 
-                                <?php if (!empty($company['website'])): ?>
-                                <div class="jd-company-detail">
-                                    <i class="fa-solid fa-globe"></i>
-                                    <a href="<?= htmlspecialchars($company['website']) ?>" target="_blank">Visit Website</a>
-                                </div>
-                                <?php endif; ?>
-                                
                                 <?php if (!empty($company['description'])): ?>
                                 <div class="jd-company-description">
                                     <?= nl2br(htmlspecialchars($company['description'])) ?>
@@ -262,10 +255,13 @@
                                 <p class="company-name"><?= htmlspecialchars($relatedJob['company_name']) ?></p>
                                 <div class="job-tags">
                                     <?php if (!empty($relatedJob['work_model'])): ?>
-                                        <span class="job-tag"><?= htmlspecialchars($relatedJob['work_model']) ?></span>
+                                        <span class="job-tag work-model"><i class="fa-solid fa-house"></i> <?= htmlspecialchars($relatedJob['work_model']) ?></span>
+                                    <?php endif; ?>
+                                    <?php if (!empty($relatedJob['category_name'])): ?>
+                                        <span class="job-tag category"><i class="fa-solid fa-tag"></i> <?= htmlspecialchars($relatedJob['category_name']) ?></span>
                                     <?php endif; ?>
                                     <?php if (!empty($relatedJob['job_type'])): ?>
-                                        <span class="job-tag"><?= htmlspecialchars($relatedJob['job_type']) ?></span>
+                                        <span class="job-tag job-type"><i class="fa-solid fa-clock"></i> <?= htmlspecialchars($relatedJob['job_type']) ?></span>
                                     <?php endif; ?>
                                 </div>
                             </div>

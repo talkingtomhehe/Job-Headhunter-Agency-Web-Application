@@ -358,8 +358,15 @@ class AdminController extends Controller {
         }
         
         // Handle new category if provided
-        if (!empty($newCategory) && empty($categoryId)) {
+        if (!empty($newCategory) && (empty($categoryId) || $categoryId === 'new')) {
+            // Create new category and get its ID
             $categoryId = $this->jobModel->createCategory($newCategory);
+            
+            if (!$categoryId) {
+                $_SESSION['error'] = 'Failed to create new category';
+                $this->redirect('admin/jobs/edit/' . $jobId);
+                return;
+            }
         }
         
         // Handle PDF upload if a new one is provided
@@ -397,14 +404,13 @@ class AdminController extends Controller {
             'status' => $status,
             'application_deadline' => $deadline
         ];
+
+        if (!empty($categoryId)) {
+            $updateData['category_id'] = $categoryId;
+        }
         
         // Update job
         $updated = $this->jobModel->updateJob($jobId, $updateData);
-        
-        // Update category if needed
-        if (!empty($categoryId) && $categoryId != $job['category_id']) {
-            $this->jobModel->updateJobCategory($jobId, $categoryId);
-        }
         
         // Update admin status if changed
         if ($adminStatus != $job['admin_status']) {

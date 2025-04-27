@@ -246,8 +246,6 @@ class JobController extends Controller {
         // Handle resume upload
         $resumePath = '';
         if (isset($_FILES['resume']) && $_FILES['resume']['error'] === UPLOAD_ERR_OK) {
-            // Process file upload logic...
-            
             // Generate unique filename
             $fileName = uniqid('resume_') . '.pdf';
             $uploadDir = ROOT_PATH . '/public/uploads/resumes/';
@@ -282,7 +280,7 @@ class JobController extends Controller {
         // Prepare application data with the correct field mapping
         $applicationData = [
             'job_id' => $jobId,
-            'seeker_id' => $seekerId, // This can now be null for guest users
+            'seeker_id' => $seekerId,
             'email' => $email,
             'phone' => $phone,
             'resume_path' => $resumePath,

@@ -1,25 +1,29 @@
-/* Application Form Styles - Using jd- prefix to avoid conflicts */
-
-/* Overall form layout and container styling */
 .jd-application-section {
-    padding: 100px 0 50px; 
+    padding: 50px 0;
     background-color: #f8fafc;
-    min-height: calc(100vh - 70px); 
+    min-height: calc(100vh - 70px);
     display: flex;
     flex-direction: column;
-    align-items: center; 
-    padding-right: 200px;
+    align-items: center;
+    padding-top: 5rem;
 }
 
-.jd-application-section .container {
+.back-button-container {
+    margin-bottom: 20px;
     width: 100%;
-    max-width: 1000px; 
-    margin: 0 auto; 
+    display: flex;
+    justify-content: flex-start;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Back link with hover animation */
 .jd-back-link {
-    margin-bottom: 123rem;
+    margin-bottom: 0;
 }
 
 .jd-btn-back {
@@ -56,6 +60,7 @@
 
 /* Form card with subtle shadow and animation */
 .jd-application-form-card {
+    width: 100%;
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
@@ -70,7 +75,6 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
-/* Job summary section with gradient background */
 .jd-job-summary {
     padding: 0 0 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -80,7 +84,6 @@
     overflow: hidden;
 }
 
-/* Create a subtle pattern overlay */
 .jd-job-summary::after {
     content: "";
     position: absolute;
@@ -188,7 +191,7 @@
 .jd-application-steps {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center !important;
     padding: 5px 30px 20px;
     margin-top: 20px;
     position: relative;
@@ -615,43 +618,160 @@
     }
 }
 
-@media (max-width: 768px) {
-    .jd-summary-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-    }
-    
+@media (min-width: 768px) and (max-width: 991px) {
     .jd-application-steps {
-        flex-direction: column;
-        gap: 15px;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        padding: 10px 15px 20px !important;
+        width: 100% !important;
+        gap: 0 !important;
     }
     
     .jd-step {
-        width: 100%;
-        flex-direction: row;
-        justify-content: flex-start;
-        gap: 15px;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        width: auto !important;
+        min-width: 100px !important;
+        position: relative !important;
+        padding: 0 5px !important;
+        z-index: 2 !important;
     }
     
     .jd-step-connector {
-        width: 3px;
-        height: 30px;
-        max-width: none;
-        margin: 5px 0;
+        display: block !important;
+        width: 40px !important;
+        min-width: 40px !important;
+        max-width: 40px !important;
+        height: 2px !important;
+        background-color: rgba(255, 255, 255, 0.3) !important;
+        margin: 0 !important;
+        position: relative !important;
+        top: -8px !important;
+        z-index: 1 !important;
+        flex-shrink: 0 !important;
     }
     
+    .jd-step-number {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 0.9rem !important;
+        margin-bottom: 8px !important;
+        position: relative !important;
+        z-index: 2 !important;
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    .jd-step.current .jd-step-number {
+        background-color: white !important;
+        color: #0631BC !important;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) !important;
+    }
+    
+    .jd-step-label {
+        font-size: 0.8rem !important;
+        white-space: normal !important;
+        line-height: 1.3 !important;
+        color: rgba(255, 255, 255, 0.8) !important;
+    }
+    
+    .jd-step.current .jd-step-label {
+        color: white !important;
+        font-weight: 600 !important;
+    }
+}
+
+@media (max-width: 768px) {
     .jd-application-form {
         padding: 25px 20px;
+    }
+
+    .jd-summary-header {
+        padding: 20px 15px !important;
+        gap: 15px !important;
+    }
+    
+    .jd-company-logo {
+        width: 70px;
+        height: 70px;
+        border-radius: 10px;
+    }
+    
+    .jd-summary-info {
+        width: 100%;
+    }
+    
+    .jd-job-summary h2 {
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+        line-height: 1.3;
+    }
+    
+    .jd-job-summary .jd-company-name {
+        font-size: 1rem;
+        margin-bottom: 12px;
     }
     
     .jd-job-meta {
         flex-direction: column;
         gap: 10px;
+        width: 100%;
     }
     
     .jd-job-meta p {
+        display: inline-block !important;
+        width: auto !important;
+        max-width: 100% !important;
+        font-size: 0.85rem;
+        padding: 5px 12px;
+        margin: 0;
+        background-color: rgba(255, 255, 255, 0.15);
+        border-radius: 50px;
+        white-space: normal !important;
+        word-break: break-word !important;
+        text-overflow: ellipsis !important;
+        overflow: visible !important;
+    }
+    
+    .job-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
         width: 100%;
+    }
+    
+    .job-tag {
+        display: inline-flex !important;
+        align-items: center !important;
+        padding: 4px 10px !important;
+        border-radius: 15px !important;
+        font-size: 0.75rem !important;
+        white-space: normal !important;
+        line-height: 1.4 !important;
+        max-width: 100% !important;
+        word-break: break-word !important;
+    }
+    
+    .jd-application-steps {
+        padding: 5px 15px 15px;
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+    
+    .jd-step {
+        width: auto;
+        min-width: 100px;
+    }
+    
+    .jd-step-connector {
+        max-width: 40px;
     }
 }
 
@@ -662,5 +782,88 @@
     
     .jd-submit-button {
         width: 100%;
+    }
+    
+    .jd-job-summary h2 {
+        font-size: 1.2rem;
+    }
+    
+    .jd-company-logo {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .jd-application-steps {
+        padding: 10px 5px 15px;
+        justify-content: center !important;
+        width: 100%;
+        overflow-x: visible;
+    }
+    
+    .jd-step {
+        min-width: 70px;
+        width: auto;
+        padding: 0 5px;
+    }
+    
+    .jd-step-connector {
+        display: block !important;
+        max-width: 20px !important;
+        height: 2px !important;
+        background-color: rgba(255, 255, 255, 0.3) !important;
+        margin: 0 2px !important;
+        position: relative !important;
+        top: -8px !important;
+        opacity: 1 !important;
+        width: 100% !important;
+        min-width: 10px !important;
+    }
+    
+    .jd-step-number {
+        width: 25px;
+        height: 25px;
+        font-size: 0.8rem;
+    }
+    
+    .jd-step-label {
+        font-size: 0.7rem;
+        white-space: nowrap;
+    }
+    
+    .jd-btn-back {
+        white-space: nowrap;
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+    
+    .jd-application-form {
+        padding: 20px 15px;
+    }
+
+    .job-tag {
+        font-size: 0.7rem !important;
+        padding: 3px 8px !important;
+    }
+    
+    .job-tag i {
+        font-size: 0.65rem !important;
+    }
+    
+    .jd-job-meta p {
+        padding: 4px 10px;
+        font-size: 0.8rem;
+        width: 100% !important;
+        display: flex !important;
+        align-items: center;
+    }
+    
+    .jd-job-meta p i {
+        width: 16px;
+        text-align: center;
+        margin-right: 6px;
+    }
+    
+    .jd-summary-header {
+        padding: 15px !important;
     }
 }

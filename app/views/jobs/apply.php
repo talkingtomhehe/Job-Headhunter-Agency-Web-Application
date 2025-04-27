@@ -1,14 +1,15 @@
-<!-- filepath: c:\xampp\htdocs\huntly\app\views\jobs\application-form.php -->
 <main>
     <section class="jd-application-section">
-        <div class="container">
+        <div class="container back-button-container">
             <!-- Back to job link -->
             <div class="jd-back-link">
                 <a href="<?= SITE_URL ?>/job/viewJob/<?= $job['job_id'] ?>" class="jd-btn-back">
                     <i class="fa-solid fa-arrow-left"></i> Back to Job
                 </a>
             </div>
-            
+        </div>
+        
+        <div class="container form-container">
             <?php if (isset($job) && $job): ?>
                 <div class="jd-application-form-card">
                     <div class="jd-job-summary">

@@ -296,7 +296,6 @@ main {
     padding: 25px !important;
 }
 
-/* Fix text color and font weight issues */
 .jd-job-title-container .jd-job-title {
     font-size: 2.2rem !important;
     font-weight: 700 !important;
@@ -395,6 +394,11 @@ main {
     font-weight: 700 !important;
     margin-bottom: 40px !important;
     color: #333 !important;
+    position: relative !important;
+    width: auto !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 /* Enhanced deadline card styling */
@@ -465,15 +469,6 @@ main {
     font-weight: 500 !important;
 }
 
-/* Blue underline for Similar Jobs title */
-.jd-related-jobs .section-title .title-underline {
-    background-color: #0631BC !important;
-    height: 3px !important;
-    width: 100px !important;
-    margin: 10px auto 0 !important;
-    display: block !important;
-}
-
 .jd-related-jobs .section-title {
     color: #0631BC !important;
     font-size: 1.8rem !important;
@@ -482,13 +477,28 @@ main {
     padding-bottom: 10px !important;
 }
 
-/* Smaller, more compact related job cards */
+.jd-related-jobs .title-underline {
+    display: block !important;
+    width: 170px !important;
+    height: 3px !important;
+    background-color: #0631BC !important;
+    margin: 0.4rem auto 0 !important;
+    border-radius: 1px !important;
+}
+
+.jd-related-jobs .container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
 .jd-related-jobs .jobs-container {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)) !important;
+    grid-template-columns: repeat(3, 1fr) !important;
     gap: 20px !important;
-    margin: 0 auto !important;
     max-width: 1200px !important;
+    width: 100% !important;
 }
 
 .jd-related-jobs .job-card {
@@ -634,6 +644,36 @@ main {
     color: white !important;
 }
 
+.jd-related-jobs .job-tag {
+    font-size: 12px !important;
+    padding: 4px 10px !important;
+    border-radius: 15px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    font-weight: 500 !important;
+    margin-right: 5px !important;
+}
+
+.jd-related-jobs .job-tag.work-model {
+    background-color: #E5F6FF !important;
+    color: #0077B6 !important;
+}
+
+.jd-related-jobs .job-tag.category {
+    background-color: #E5FFE6 !important;
+    color: #008A0E !important;
+}
+
+.jd-related-jobs .job-tag.job-type {
+    background-color: #F5E5FF !important;
+    color: #8E00B6 !important;
+}
+
+.jd-related-jobs .job-tag i {
+    font-size: 10px !important;
+}
+
 /* Fix layout issues on mobile */
 @media (max-width: 1024px) {
     .jd-job-content-wrapper {
@@ -678,5 +718,187 @@ main {
     .jd-action-buttons {
         grid-template-columns: 1fr;
         width: 100%;
+    }
+}
+
+/* Responsive media queries for Related Jobs section */
+@media (max-width: 1200px) {
+    .jd-related-jobs .jobs-container {
+        grid-template-columns: repeat(3, 1fr) !important;
+        padding: 0 20px !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .jd-job-content-wrapper {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+    
+    .jd-related-jobs .jobs-container {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+    
+    .jd-related-jobs .section-title {
+        font-size: 1.8rem !important;
+        margin-bottom: 30px !important;
+    }
+    
+    .jd-related-jobs .job-card {
+        padding: 15px !important;
+    }
+    
+    .jd-related-jobs .job-title {
+        font-size: 1.1rem !important;
+    }
+    
+    .jd-related-jobs .company-name {
+        font-size: 0.9rem !important;
+    }
+    
+    .jd-related-jobs {
+        padding: 50px 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .jd-related-jobs .container {
+        padding: 0 15px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    .jd-related-jobs .jobs-container {
+        grid-template-columns: 1fr !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        gap: 15px !important;
+    }
+    
+    .job-card {
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .job-header {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+    
+    .company-logo {
+        width: 50px !important;
+        height: 50px !important;
+        float: left !important;
+        margin-right: 15px !important;
+    }
+    
+    .job-info {
+        padding-left: 0 !important;
+        min-height: 60px !important;
+        margin-top: 0 !important;
+        width: 100% !important;
+        position: relative !important;
+    }
+    
+    .job-info:after {
+        content: "" !important;
+        display: table !important;
+        clear: both !important;
+    }
+    
+    .job-title {
+        margin-left: 65px !important;
+        font-size: 1.1rem !important;
+        margin-bottom: 5px !important;
+        width: calc(100% - 65px) !important;
+        display: block !important;
+    }
+    
+    .company-name {
+        margin-left: 65px !important;
+        font-size: 0.9rem !important;
+        margin-bottom: 10px !important;
+        display: block !important;
+    }
+    
+    .job-tags {
+        clear: both !important;
+        padding-top: 5px !important;
+        width: 100% !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 6px !important;
+    }
+    
+    .job-meta {
+        margin-top: 10px !important;
+        padding: 10px 0 !important;
+        border-top: 1px solid #f0f2f5 !important;
+        position: relative !important;
+        padding-bottom: 45px !important;
+    }
+    
+    .view-job-btn {
+        position: absolute !important;
+        bottom: 0 !important;
+        right: 0 !important;
+        width: auto !important;
+        margin-top: 10px !important;
+        font-size: 13px !important;
+        padding: 6px 12px !important;
+        background-color: rgba(6, 49, 188, 0.1) !important;
+        color: #0631BC !important;
+        border-radius: 4px !important;
+        text-align: center !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .jd-related-jobs .jobs-container {
+        grid-template-columns: 1fr !important;
+        max-width: 90% !important;
+        margin: 0 auto !important;
+    }
+    
+    .jd-related-jobs .section-title {
+        font-size: 1.5rem !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .jd-related-jobs .job-card {
+        padding: 12px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .jd-related-jobs .job-meta {
+        padding-bottom: 40px !important;
+    }
+    
+    .jd-related-jobs .company-logo {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    .jd-related-jobs .job-info {
+        padding-left: 55px !important;
+        margin-top: -45px !important;
+    }
+    
+    .jd-related-jobs {
+        padding: 30px 0 !important;
+    }
+    
+    .jd-related-jobs .job-tag {
+        font-size: 0.65rem !important;
+        padding: 2px 6px !important;
+    }
+    
+    .jd-related-jobs .view-job-btn {
+        font-size: 0.8rem !important;
+        padding: 5px 10px !important;
+        right: 0 !important;
+        bottom: 0 !important;
     }
 }

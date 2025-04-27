@@ -266,15 +266,44 @@ class JobPost extends Model {
     }
 
     public function createCategory($categoryName) {
-        $query = "INSERT INTO job_categories (name) VALUES (?)";
+        // Generate a unique slug from the category name
+        $slug = $this->generateSlug($categoryName);
+        
+        $query = "INSERT INTO job_categories (name, slug) VALUES (?, ?)";
         $this->db->query($query);
         $this->db->bind(1, $categoryName);
+        $this->db->bind(2, $slug);
         
         if ($this->db->execute()) {
             return $this->db->lastInsertId();
         }
         
         return false;
+    }
+    
+    private function generateSlug($text) {
+        $slug = strtolower(trim($text));
+        $slug = preg_replace('/\s+/', '-', $slug);
+        $slug = preg_replace('/[^a-z0-9\-\_]/', '', $slug);
+        
+        $originalSlug = $slug;
+        $counter = 1;
+        
+        while ($this->slugExists($slug)) {
+            $slug = $originalSlug . '-' . $counter;
+            $counter++;
+        }
+        
+        return $slug;
+    }
+    
+    // Check if a slug already exists in the database
+    private function slugExists($slug) {
+        $this->db->query("SELECT COUNT(*) as count FROM job_categories WHERE slug = ?");
+        $this->db->bind(1, $slug);
+        $result = $this->db->single();
+        
+        return $result['count'] > 0;
     }
 
     // Count all jobs
