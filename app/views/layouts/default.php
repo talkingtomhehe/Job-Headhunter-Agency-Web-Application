@@ -19,7 +19,7 @@
             <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/<?= $cssFile ?>">
         <?php endforeach; ?>
     <?php endif; ?>
-
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/confirmation.css">
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/dropdown.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/header.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/pagination.js"></script>

@@ -224,6 +224,15 @@ class JobController extends Controller {
             $this->redirect('jobs');
             return;
         }
+
+        // Get job details to pass to the confirmation page
+        $job = $this->jobModel->getJobById($jobId);
+        
+        if (!$job) {
+            $_SESSION['error'] = 'Job not found';
+            $this->redirect('jobs');
+            return;
+        }
         
         // Validate required fields
         $fullName = trim($_POST['full_name'] ?? '');
@@ -290,8 +299,15 @@ class JobController extends Controller {
         
         // Submit application
         if ($this->applicationModel->createApplication($applicationData)) {
-            $_SESSION['success'] = 'Your application has been submitted successfully!';
-            $this->redirect('job/viewJob/' . $jobId);
+            $applicationId = $this->applicationModel->getLastInsertId();
+            
+            return $this->view('jobs/confirmation', [
+                'pageTitle' => 'Application Submitted',
+                'job' => $job,
+                'applicationId' => $applicationId,
+                'formatSalary' => [FormatHelper::class, 'formatSalary'],
+                'additionalCss' => ['confirmation-page.css']
+            ]);
         } else {
             $_SESSION['error'] = 'Failed to submit application. Please try again.';
             $this->redirect('job/apply/' . $jobId);

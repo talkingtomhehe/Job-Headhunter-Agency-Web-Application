@@ -599,11 +599,84 @@
     .companies-container {
         grid-template-columns: repeat(3, 1fr); 
     }
+
+    .auth-page-container {
+        padding-top: 60px;
+    }
+    
+    .auth-left-panel,
+    .auth-right-panel {
+        width: 90%;
+        margin: 0 auto;
+        padding: 1.5rem;
+    }
+    
+    .auth-left-panel {
+        padding-left: 1.5rem;
+        margin-bottom: 30px;
+    }
+    
+    .auth-box {
+        max-width: 100%;
+    }
+    
+    .auth-heading {
+        font-size: 2rem;
+        text-align: center;
+    }
 }
 
 @media (max-width: 768px) {
     .companies-container {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .auth-page-container {
+        padding-top: 40px;
+    }
+    
+    .auth-left-panel,
+    .auth-right-panel {
+        width: 95%;
+        padding: 1rem;
+    }
+    
+    .auth-box {
+        padding: 1.5rem;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .role-selector {
+        display: flex;
+        gap: 5px;
+    }
+    
+    .role-tab {
+        padding: 0.7rem;
+        font-size: 0.9rem;
+    }
+    
+    .form-group input {
+        padding: 0.7rem;
+    }
+    
+    .auth-submit-btn {
+        padding: 0.8rem;
+    }
+    
+    .social-login-buttons {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .social-btn {
+        width: 100%;
+    }
+    
+    /* Fix modal positioning */
+    .modal-content {
+        width: 95%;
+        margin: 40% auto;
     }
 }
 
@@ -615,6 +688,104 @@
     .company-card {
         max-width: 320px; 
         margin: 0 auto 1.5rem;
+    }
+
+    .auth-page-container {
+        padding-top: 40px;
+        padding-bottom: 30px;
+    }
+    
+    /* Full width for panels on tiny screens */
+    .auth-left-panel,
+    .auth-right-panel {
+        width: 100%;
+        margin: 0;
+        padding: 15px;
+        display: block;
+    }
+    
+    /* Hide the image on the right panel */
+    .auth-right-panel .auth-image {
+        display: none;
+    }
+    
+    /* Stack login & register on top of each other */
+    .auth-left-panel {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    .auth-right-panel {
+        padding-top: 0;
+        background-color: transparent;
+    }
+    
+    /* Make the auth box simpler */
+    .auth-box {
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+        padding: 20px;
+        max-width: none;
+    }
+    
+    /* Smaller heading */
+    .auth-heading {
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    
+    /* Adjust register heading */
+    .register-heading {
+        font-size: 1.5rem;
+        margin: 1.5rem 0;
+        text-align: center;
+    }
+    
+    /* Optimize form controls */
+    .form-group label {
+        font-size: 0.9rem;
+    }
+    
+    .form-group input {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    
+    /* Make buttons touchable */
+    .role-tab {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+    
+    .auth-submit-btn {
+        padding: 12px;
+        font-size: 0.95rem;
+    }
+    
+    /* Compact social login section */
+    .social-login-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .social-btn {
+        width: 100%;
+        padding: 10px;
+    }
+    
+    /* Terms agreement smaller text */
+    .terms-agreement {
+        font-size: 0.75rem;
+    }
+    
+    /* Account toggle (login/register switch) */
+    .account-toggle {
+        font-size: 0.85rem;
+    }
+    
+    /* Ensure right panel content is visible when active */
+    .right-panel-content.active {
+        display: block !important;
     }
 }
 
@@ -888,31 +1059,6 @@
 /* Required field indicator */
 .required {
     color: #ff3333;
-}
-
-/* Responsive design */
-@media (max-width: 992px) {
-    .auth-page-container {
-        flex-direction: column;
-    }
-    
-    .auth-left-panel,
-    .auth-right-panel {
-        padding: 2rem 1rem;
-    }
-    
-    .auth-heading {
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
-    }
-    
-    .auth-box {
-        max-width: 100%;
-    }
-    
-    .auth-right-panel {
-        padding-top: 0;
-    }
 }
 
 /* Auth Messages Styling */

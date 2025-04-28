@@ -368,14 +368,13 @@ class EmployerController extends Controller {
             }
         }
         
-        // Update job post with ALL form fields including category_id
         $updated = $this->jobModel->updateJob($jobId, [
             'title' => $title,
             'description' => $description,
             'requirements' => $requirements,
             'benefits' => $benefits,
             'job_type' => $jobType,
-            'category_id' => $categoryId,  // Now included directly
+            'category_id' => $categoryId,  
             'work_model' => $workModel,
             'experience_level' => $experienceLevel,
             'location' => $location,

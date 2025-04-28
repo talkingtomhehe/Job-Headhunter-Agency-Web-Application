@@ -378,7 +378,6 @@ class Application extends Model {
     }
 
     public function createApplication($data) {
-        // Change the table name from 'applications' to 'job_applications'
         $query = "INSERT INTO job_applications (job_id, seeker_id, applicant_email, applicant_phone, 
                   resume_path, cover_letter, status, admin_status, created_at) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', NOW())";
@@ -393,5 +392,9 @@ class Application extends Model {
         $this->db->bind(7, $data['status'] ?? 'pending');
         
         return $this->db->execute();
+    }
+
+    public function getLastInsertId() {
+        return $this->db->lastInsertId();
     }
 }

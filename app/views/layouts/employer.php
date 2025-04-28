@@ -66,7 +66,6 @@
         </div>
     </div>
     
-    <!-- Include footer with JavaScript -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Sidebar toggle functionality

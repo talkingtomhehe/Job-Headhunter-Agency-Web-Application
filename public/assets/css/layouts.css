@@ -449,6 +449,141 @@ body.nav-open {
     .mobile-menu-toggle {
         display: none;
     }
+
+    header .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px;
+    }
+    
+    /* Logo positioning */
+    .logo {
+        height: 60px;
+        margin-right: auto;
+        flex-shrink: 0;
+    }
+    
+    /* Auth buttons positioning */
+    .auth {
+        display: flex;
+        margin: 0 15px 0 0;
+        order: 1;
+    }
+    
+    .auth .login-btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+    
+    /* Navbar header with hamburger button */
+    .navbar-header {
+        display: block;
+        order: 2;
+    }
+    
+    /* Improved hamburger button */
+    .navbar-toggle {
+        padding: 10px;
+        margin: 0;
+        background-color: transparent;
+        border: none;
+    }
+    
+    .navbar-toggle .icon-bar {
+        background-color: #0631BC;
+        width: 22px;
+        height: 2px;
+        border-radius: 1px;
+        transition: all 0.3s;
+    }
+    
+    /* Enhanced mobile menu styling */
+    .main-nav.in {
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        padding: 0;
+    }
+    
+    /* Improved nav links */
+    .nav-links {
+        padding: 10px 0;
+        margin: 0;
+    }
+    
+    .nav-links li {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .nav-links li:last-child {
+        border-bottom: none;
+    }
+    
+    .nav-links a {
+        padding: 15px 20px;
+        font-size: 1.1rem;
+        color: #333;
+        transition: background 0.2s, color 0.2s;
+    }
+    
+    .nav-links a:hover {
+        background-color: #f5f8ff;
+        color: #0631BC;
+    }
+    
+    .nav-links a.active {
+        color: #0631BC;
+        font-weight: 600;
+        background-color: rgba(6, 49, 188, 0.05);
+    }
+    
+    /* Enhanced dropdown styling */
+    .dropdown-menu {
+        width: 100%;
+        background-color: #f5f8ff;
+        border: none;
+        box-shadow: inset 0 5px 5px -5px rgba(0, 0, 0, 0.1),
+                    inset 0 -5px 5px -5px rgba(0, 0, 0, 0.1);
+        padding: 0;
+    }
+    
+    .dropdown-menu a {
+        padding: 15px 35px !important;
+        color: #555 !important;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        font-size: 1rem !important;
+    }
+    
+    .dropdown-menu a:hover {
+        background-color: rgba(6, 49, 188, 0.05) !important;
+        color: #0631BC !important;
+    }
+    
+    .dropdown-menu a:last-child {
+        border-bottom: none;
+    }
+    
+    /* Enhance toggle icon */
+    .dropdown-toggle .fa-caret-down {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform 0.3s;
+    }
+    
+    .dropdown.active .dropdown-toggle .fa-caret-down {
+        transform: translateY(-50%) rotate(180deg);
+    }
+    
+    /* Fix dropdown positioning */
+    .nav-links .dropdown {
+        position: relative;
+    }
+    
+    .dropdown > a {
+        position: relative;
+        padding-right: 50px !important;
+    }
 }
 
 @media (min-width: 769px) {
