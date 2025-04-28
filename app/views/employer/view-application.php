@@ -51,9 +51,12 @@
                 <div class="applicant-profile">
                     <div class="applicant-avatar large">
                         <?php
-                        $avatarPath = !empty($application['avatar_path']) ? $application['avatar_path'] : 'assets/images/defaultavatar.jpg';
+                        // Get avatar path based on whether this is a registered user or guest
+                        $avatarPath = !empty($application['seeker_id']) && !empty($application['avatar_path']) ? 
+                            $application['avatar_path'] : 'assets/images/defaultavatar.jpg';
                         ?>
-                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" alt="<?= htmlspecialchars($application['full_name']) ?>" class="user-avatar">
+                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" 
+                            alt="<?= htmlspecialchars($application['full_name']) ?>" class="user-avatar">
                     </div>
                     <div class="applicant-details">
                         <h3><?= htmlspecialchars($application['full_name']) ?></h3>
@@ -61,6 +64,11 @@
                             <p><i class="fa-solid fa-envelope"></i> <?= htmlspecialchars($application['email']) ?></p>
                             <?php if (!empty($application['phone'])): ?>
                             <p><i class="fa-solid fa-phone"></i> <?= htmlspecialchars($application['phone']) ?></p>
+                            <?php endif; ?>
+                            <?php if (!empty($application['seeker_id'])): ?>
+                            <p><i class="fa-solid fa-user"></i> Registered User</p>
+                            <?php else: ?>
+                            <p><i class="fa-solid fa-user-check"></i> Guest Applicant</p>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -83,10 +91,9 @@
                 <h2>Resume</h2>
                 <div class="resume-preview">
                     <div class="file-download">
-                        <i class="fa-solid fa-file-pdf"></i>
-                            <a href="<?= SITE_URL . PUBLIC_PATH ?>/<?= $application['resume_path'] ?>" target="_blank" class="btn-document">
-                                <i class="fa-solid fa-file-pdf"></i> View Resume
-                            </a>
+                        <a href="<?= SITE_URL . PUBLIC_PATH ?>/<?= $application['resume_path'] ?>" target="_blank" class="btn-document">
+                            <i class="fa-solid fa-file-pdf"></i> View Resume
+                        </a>
                     </div>
                 </div>
             </div>

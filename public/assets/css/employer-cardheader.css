@@ -1,0 +1,135 @@
+.dashboard-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background-color: #fff;
+    border-bottom: 1px solid var(--border-color, #e9ecef);
+    transition: all 0.25s ease;
+}
+
+.dashboard-card:hover .card-header {
+    border-bottom-color: #c8d1d9;
+    background-color: #eef2f7;
+}
+
+/* Heading style */
+.dashboard-card .card-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary, #333);
+}
+
+/* Filter group styling */
+.dashboard-card .card-header .card-filters {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.dashboard-card .card-header .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dashboard-card .card-header .filter-group label {
+    font-size: 0.9rem;
+    color: var(--text-secondary, #6c757d);
+    white-space: nowrap;
+}
+
+/* Dropdown select styling with hover effects */
+.dashboard-card .card-header .filter-select {
+    padding: 8px 30px 8px 10px;
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 4px;
+    appearance: none;
+    background-color: white;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23333' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    transition: all 0.2s ease;
+}
+
+.dashboard-card .card-header .filter-select:hover {
+    border-color: #adb5bd;
+    box-shadow: 0 0 0 2px rgba(108, 117, 125, 0.1);
+}
+
+.dashboard-card .card-header .filter-select:focus {
+    outline: none;
+    border-color: var(--primary-color, #0631BC);
+    box-shadow: 0 0 0 2px rgba(var(--primary-rgb, 6, 49, 188), 0.25);
+}
+
+/* Search box styling with hover effects */
+.dashboard-card .card-header .search-box {
+    display: flex;
+    flex: 1;
+    min-width: 200px;
+}
+
+.dashboard-card .card-header .search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color, #dee2e6);
+    border-radius: 4px 0 0 4px;
+    transition: all 0.2s ease;
+}
+
+.dashboard-card .card-header .search-input:hover {
+    border-color: #adb5bd;
+}
+
+.dashboard-card .card-header .search-input:focus {
+    outline: none;
+    border-color: var(--primary-color, #0631BC);
+}
+
+.dashboard-card .card-header .search-button {
+    padding: 8px 12px;
+    background-color: var(--primary-color, #0631BC);
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dashboard-card .card-header .search-button:hover {
+    background-color: #052592;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* View all link styling */
+.dashboard-card .card-header .view-all {
+    font-size: 0.9rem;
+    color: var(--primary-color, #0631BC);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.2s ease;
+}
+
+.dashboard-card .card-header .view-all:hover {
+    color: #052592;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-card .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .dashboard-card .card-header .card-filters {
+        width: 100%;
+    }
+}

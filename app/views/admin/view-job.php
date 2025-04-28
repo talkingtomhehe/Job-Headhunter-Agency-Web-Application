@@ -41,11 +41,11 @@
         <div class="card-body">
             <div class="job-meta-section">
                 <div class="job-company-info">
-                    <div class="company-logo-container">
+                    <div class="company-logo-container-admin">
                         <?php
                         $logoPath = !empty($company['logo_path']) ? $company['logo_path'] : 'uploads/logo/defaultlogo.jpg';
                         ?>
-                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $logoPath ?>" alt="<?= htmlspecialchars($company['company_name']) ?>" class="company-logo">
+                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $logoPath ?>" alt="<?= htmlspecialchars($company['company_name']) ?>" class="company-logo-admin">
                     </div>
                     <div class="company-details">
                         <h3><?= htmlspecialchars($company['company_name'] ?? 'Unknown Company') ?></h3>

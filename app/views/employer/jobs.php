@@ -89,6 +89,18 @@
                     </table>
                 </div>
             </div>
+            <?php if (count($jobs) > 0): ?>
+                <div class="pagination-container">
+                    <?php
+                    $totalItems = $totalItems ?? count($jobs);  
+                    $itemsPerPage = $itemsPerPage ?? 10; 
+                    $currentPage = $currentPage ?? 1;  
+                    $urlPattern = SITE_URL . '/employer/jobs?page={page}';
+                    
+                    include ROOT_PATH . '/app/views/components/pagination.php';
+                    ?>
+                </div>
+            <?php endif; ?>
         </div>
         
         <!-- Delete Confirmation Modal -->

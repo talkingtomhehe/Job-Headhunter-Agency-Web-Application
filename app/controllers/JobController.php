@@ -290,6 +290,7 @@ class JobController extends Controller {
         $applicationData = [
             'job_id' => $jobId,
             'seeker_id' => $seekerId,
+            'full_name' => $fullName,
             'email' => $email,
             'phone' => $phone,
             'resume_path' => $resumePath,

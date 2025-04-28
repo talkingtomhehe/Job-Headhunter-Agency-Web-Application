@@ -1,0 +1,105 @@
+/* Pagination styling */
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 1.5rem 0;
+    margin-top: 2rem;
+    font-family: inherit;
+}
+
+.pagination-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 12px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.pagination-link:hover {
+    background-color: #f8f9fa;
+    border-color: #0631BC;
+    color: #0631BC;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.pagination-link.active {
+    background-color: #0631BC;
+    color: white;
+    border-color: #0631BC;
+    box-shadow: 0 2px 8px rgba(6, 49, 188, 0.3);
+}
+
+.pagination-link.prev,
+.pagination-link.next {
+    padding: 0 15px;
+}
+
+.pagination-link.prev i {
+    margin-right: 6px;
+}
+
+.pagination-link.next i {
+    margin-left: 6px;
+}
+
+.pagination-ellipsis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    color: #6c757d;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.pagination-link.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: #f5f5f5;
+    color: #aaa;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .pagination {
+        gap: 5px;
+    }
+    
+    .pagination-link {
+        min-width: 32px;
+        height: 32px;
+        padding: 0 10px;
+        font-size: 0.85rem;
+    }
+    
+    .pagination-link.prev,
+    .pagination-link.next {
+        padding: 0 10px;
+    }
+    
+    .pagination-link.prev i,
+    .pagination-link.next i {
+        font-size: 0.85rem;
+    }
+    
+    /* Hide 'Previous' and 'Next' text on very small screens */
+    .pagination-link.prev span,
+    .pagination-link.next span {
+        display: none;
+    }
+}

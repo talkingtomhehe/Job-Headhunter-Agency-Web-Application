@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-profile.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-jobcard.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-hamburger.css">
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/pagination.css">
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-cardheader.css">
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/employer-hamburger.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/dropdown.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/employer-dashboard.js" defer></script>

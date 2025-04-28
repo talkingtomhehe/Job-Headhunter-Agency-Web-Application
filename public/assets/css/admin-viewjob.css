@@ -103,7 +103,7 @@
     box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
 }
 
-.admin-job-view .company-logo-container {
+.admin-job-view .company-logo-container-admin {
     width: 60px;
     height: 60px;
     border-radius: 10px;
@@ -115,7 +115,7 @@
     margin-right: 15px;
 }
 
-.admin-job-view .company-logo {
+.admin-job-view .company-logo-admin {
     width: 100%;
     height: 100%;
     object-fit: contain;

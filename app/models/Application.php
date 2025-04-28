@@ -4,50 +4,104 @@ namespace models;
 use core\Model;
 
 class Application extends Model {
-    
-    // Get application by ID
     public function getApplicationById($id) {
-        $query = "SELECT a.*, j.title as job_title, j.created_at as job_created_at,
-                  u.full_name, u.email, u.phone, u.avatar_path
-                  FROM job_applications a
-                  JOIN job_posts j ON a.job_id = j.job_id
-                  LEFT JOIN users u ON a.seeker_id = u.user_id
-                  WHERE a.application_id = ?";
+        $query = "SELECT a.*, 
+                j.title as job_title, j.created_at as job_created_at,
+                u.full_name as user_full_name, u.email as user_email, 
+                u.phone as user_phone, u.avatar_path as user_avatar_path,
+                a.applicant_email, a.applicant_phone, a.applicant_full_name
+                FROM job_applications a
+                JOIN job_posts j ON a.job_id = j.job_id
+                LEFT JOIN users u ON a.seeker_id = u.user_id
+                WHERE a.application_id = ?";
         
         $this->db->query($query);
         $this->db->bind(1, $id);
         
-        return $this->db->single();
+        $application = $this->db->single();
+        
+        // If this is a guest application (no seeker_id), use the application table data
+        if ($application && empty($application['seeker_id'])) {
+            $application['full_name'] = $application['applicant_full_name'];
+            $application['email'] = $application['applicant_email'];
+            $application['phone'] = $application['applicant_phone'];
+            $application['avatar_path'] = 'assets/images/defaultavatar.jpg';
+        } else if ($application) {
+            // For logged-in users, use the user table data
+            $application['full_name'] = $application['user_full_name'];
+            $application['email'] = $application['user_email'];
+            $application['phone'] = $application['user_phone'];
+            $application['avatar_path'] = $application['user_avatar_path'];
+        }
+        
+        return $application;
     }
-    
-    // Get applications by job ID
+
     public function getApplicationsByJob($jobId) {
-        $query = "SELECT a.*, u.full_name, u.email, u.phone, u.avatar_path
-                  FROM job_applications a
-                  LEFT JOIN users u ON a.seeker_id = u.user_id
-                  WHERE a.job_id = ? AND a.admin_status = 'approved'
-                  ORDER BY a.created_at DESC";
+        $query = "SELECT a.*, 
+                u.full_name as user_full_name, u.email as user_email, 
+                u.phone as user_phone, u.avatar_path as user_avatar_path,
+                a.applicant_email, a.applicant_phone, a.applicant_full_name
+                FROM job_applications a
+                LEFT JOIN users u ON a.seeker_id = u.user_id
+                WHERE a.job_id = ? AND a.admin_status = 'approved'
+                ORDER BY a.created_at DESC";
         
         $this->db->query($query);
         $this->db->bind(1, $jobId);
         
-        return $this->db->resultSet();
+        $applications = $this->db->resultSet();
+        
+        // Process each application to use correct data source
+        foreach ($applications as &$application) {
+            if (empty($application['seeker_id'])) {
+                $application['full_name'] = $application['applicant_full_name'];
+                $application['email'] = $application['applicant_email'];
+                $application['phone'] = $application['applicant_phone'];
+                $application['avatar_path'] = 'assets/images/defaultavatar.jpg';
+            } else {
+                $application['full_name'] = $application['user_full_name'];
+                $application['email'] = $application['user_email'];
+                $application['phone'] = $application['user_phone'];
+                $application['avatar_path'] = $application['user_avatar_path'];
+            }
+        }
+        
+        return $applications;
     }
-    
-    // Get applications by employer
+
     public function getApplicationsByEmployer($employerId) {
         $query = "SELECT a.*, j.title as job_title, j.company_id, j.location, j.job_type,
-                  u.full_name, u.email, u.phone, u.avatar_path
-                  FROM job_applications a
-                  JOIN job_posts j ON a.job_id = j.job_id
-                  LEFT JOIN users u ON a.seeker_id = u.user_id
-                  WHERE j.employer_id = ? AND a.admin_status = 'approved'
-                  ORDER BY a.created_at DESC";
+                u.full_name as user_full_name, u.email as user_email, 
+                u.phone as user_phone, u.avatar_path as user_avatar_path,
+                a.applicant_email, a.applicant_phone, a.applicant_full_name
+                FROM job_applications a
+                JOIN job_posts j ON a.job_id = j.job_id
+                LEFT JOIN users u ON a.seeker_id = u.user_id
+                WHERE j.employer_id = ? AND a.admin_status = 'approved'
+                ORDER BY a.created_at DESC";
         
         $this->db->query($query);
         $this->db->bind(1, $employerId);
         
-        return $this->db->resultSet();
+        $applications = $this->db->resultSet();
+        
+        // Process each application to use correct data source
+        foreach ($applications as &$application) {
+            if (empty($application['seeker_id'])) {
+                $application['full_name'] = $application['applicant_full_name'];
+                $application['email'] = $application['applicant_email'];
+                $application['phone'] = $application['applicant_phone'];
+                $application['avatar_path'] = 'assets/images/defaultavatar.jpg';
+            } else {
+                $application['full_name'] = $application['user_full_name'];
+                $application['email'] = $application['user_email'];
+                $application['phone'] = $application['user_phone'];
+                $application['avatar_path'] = $application['user_avatar_path'];
+            }
+        }
+        
+        return $applications;
     }
     
     // Get applications by job seeker
@@ -378,23 +432,195 @@ class Application extends Model {
     }
 
     public function createApplication($data) {
-        $query = "INSERT INTO job_applications (job_id, seeker_id, applicant_email, applicant_phone, 
-                  resume_path, cover_letter, status, admin_status, created_at) 
-                  VALUES (?, ?, ?, ?, ?, ?, ?, 'pending', NOW())";
+        $query = "INSERT INTO job_applications (job_id, seeker_id, applicant_full_name, 
+                applicant_email, applicant_phone, resume_path, cover_letter, 
+                status, admin_status, created_at) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())";
         
         $this->db->query($query);
         $this->db->bind(1, $data['job_id']);
         $this->db->bind(2, $data['seeker_id'] ?? null);
-        $this->db->bind(3, $data['email']);
-        $this->db->bind(4, $data['phone']);
-        $this->db->bind(5, $data['resume_path']);
-        $this->db->bind(6, $data['cover_letter'] ?? null);
-        $this->db->bind(7, $data['status'] ?? 'pending');
+        $this->db->bind(3, $data['full_name']);
+        $this->db->bind(4, $data['email']);
+        $this->db->bind(5, $data['phone']);
+        $this->db->bind(6, $data['resume_path']);
+        $this->db->bind(7, $data['cover_letter'] ?? null);
+        $this->db->bind(8, $data['status'] ?? 'pending');
         
         return $this->db->execute();
     }
 
     public function getLastInsertId() {
         return $this->db->lastInsertId();
+    }
+
+    public function countApplicationsByEmployerWithFilters($employerId, $filters = []) {
+        $query = "SELECT COUNT(*) as count FROM job_applications a 
+                  JOIN job_posts j ON a.job_id = j.job_id
+                  LEFT JOIN users u ON a.seeker_id = u.user_id
+                  WHERE j.employer_id = ?";
+        
+        // Add other filters if provided
+        if (!empty($filters['status'])) {
+            $query .= " AND a.status = ?";
+        }
+        
+        if (!empty($filters['job_id'])) {
+            $query .= " AND a.job_id = ?";
+        }
+        
+        // Add search term if provided
+        if (!empty($filters['search'])) {
+            $query .= " AND (
+                        u.full_name LIKE ? OR 
+                        a.applicant_full_name LIKE ? OR 
+                        j.title LIKE ? OR 
+                        a.applicant_email LIKE ?
+                    )";
+        }
+        
+        $this->db->query($query);
+        $paramIndex = 1;
+        $this->db->bind($paramIndex++, $employerId);
+        
+        if (!empty($filters['status'])) {
+            $this->db->bind($paramIndex++, $filters['status']);
+        }
+        
+        if (!empty($filters['job_id'])) {
+            $this->db->bind($paramIndex++, $filters['job_id']);
+        }
+        
+        if (!empty($filters['search'])) {
+            $searchTerm = '%' . $filters['search'] . '%';
+            $this->db->bind($paramIndex++, $searchTerm);
+            $this->db->bind($paramIndex++, $searchTerm);
+            $this->db->bind($paramIndex++, $searchTerm);
+            $this->db->bind($paramIndex++, $searchTerm);
+        }
+        
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
+    
+    public function getApplicationsByEmployerPaginated($employerId, $filters = [], $limit, $offset) {
+        $query = "SELECT a.*, j.title as job_title, j.company_id, j.location, j.job_type,
+                  u.full_name as user_full_name, u.email as user_email, 
+                  u.phone as user_phone, u.avatar_path as user_avatar_path,
+                  a.applicant_email, a.applicant_phone, a.applicant_full_name
+                  FROM job_applications a
+                  JOIN job_posts j ON a.job_id = j.job_id
+                  LEFT JOIN users u ON a.seeker_id = u.user_id
+                  WHERE j.employer_id = ?";
+        
+        // Add other filters if provided
+        if (!empty($filters['status'])) {
+            $query .= " AND a.status = ?";
+        }
+        
+        if (!empty($filters['job_id'])) {
+            $query .= " AND a.job_id = ?";
+        }
+        
+        // Add search term if provided
+        if (!empty($filters['search'])) {
+            $query .= " AND (
+                        u.full_name LIKE ? OR 
+                        a.applicant_full_name LIKE ? OR 
+                        j.title LIKE ? OR 
+                        a.applicant_email LIKE ?
+                    )";
+        }
+        
+        $query .= " ORDER BY a.created_at DESC LIMIT ? OFFSET ?";
+        
+        $this->db->query($query);
+        $paramIndex = 1;
+        $this->db->bind($paramIndex++, $employerId);
+        
+        if (!empty($filters['status'])) {
+            $this->db->bind($paramIndex++, $filters['status']);
+        }
+        
+        if (!empty($filters['job_id'])) {
+            $this->db->bind($paramIndex++, $filters['job_id']);
+        }
+        
+        if (!empty($filters['search'])) {
+            $searchTerm = '%' . $filters['search'] . '%';
+            $this->db->bind($paramIndex++, $searchTerm);
+            $this->db->bind($paramIndex++, $searchTerm);
+            $this->db->bind($paramIndex++, $searchTerm);
+            $this->db->bind($paramIndex++, $searchTerm);
+        }
+        
+        $this->db->bind($paramIndex++, $limit);
+        $this->db->bind($paramIndex++, $offset);
+        
+        $applications = $this->db->resultSet();
+        
+        // Process each application to use correct data source
+        foreach ($applications as &$application) {
+            if (empty($application['seeker_id'])) {
+                $application['full_name'] = $application['applicant_full_name'];
+                $application['email'] = $application['applicant_email'];
+                $application['phone'] = $application['applicant_phone'];
+                $application['avatar_path'] = 'assets/images/defaultavatar.jpg';
+            } else {
+                $application['full_name'] = $application['user_full_name'];
+                $application['email'] = $application['user_email'];
+                $application['phone'] = $application['user_phone'];
+                $application['avatar_path'] = $application['user_avatar_path'];
+            }
+        }
+        
+        return $applications;
+    }
+
+    public function getApplicationsByAdminStatusPaginated($adminStatus, $limit, $offset) {
+        $query = "SELECT a.*, j.title as job_title, j.company_id,
+                  u.full_name, u.email, u.phone, u.avatar_path,
+                  c.company_name, c.logo_path
+                  FROM job_applications a
+                  JOIN job_posts j ON a.job_id = j.job_id
+                  LEFT JOIN users u ON a.seeker_id = u.user_id
+                  LEFT JOIN companies c ON j.company_id = c.company_id
+                  WHERE a.admin_status = ?
+                  ORDER BY a.created_at DESC
+                  LIMIT ? OFFSET ?";
+                  
+        $this->db->query($query);
+        $this->db->bind(1, $adminStatus);
+        $this->db->bind(2, $limit);
+        $this->db->bind(3, $offset);
+        
+        return $this->db->resultSet();
+    }
+    
+    public function getAllApplicationsPaginated($limit, $offset) {
+        $query = "SELECT a.*, j.title as job_title, j.company_id,
+                  u.full_name, u.email, u.phone, u.avatar_path,
+                  c.company_name, c.logo_path
+                  FROM job_applications a
+                  JOIN job_posts j ON a.job_id = j.job_id
+                  LEFT JOIN users u ON a.seeker_id = u.user_id
+                  LEFT JOIN companies c ON j.company_id = c.company_id
+                  ORDER BY a.created_at DESC
+                  LIMIT ? OFFSET ?";
+                  
+        $this->db->query($query);
+        $this->db->bind(1, $limit);
+        $this->db->bind(2, $offset);
+        
+        return $this->db->resultSet();
+    }
+    
+    public function countApplicationsByAdminStatus($adminStatus) {
+        $query = "SELECT COUNT(*) as count FROM job_applications WHERE admin_status = ?";
+        $this->db->query($query);
+        $this->db->bind(1, $adminStatus);
+        
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
     }
 }

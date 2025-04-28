@@ -140,13 +140,26 @@ class EmployerController extends Controller {
             return;
         }
         
-        // Regular job listing code
+        // Regular job listing code with pagination
         $employerId = $_SESSION['user_id'];
-        $jobs = $this->jobModel->getJobsByEmployer($employerId);
+        
+        // Get pagination parameters
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $itemsPerPage = 10;
+        $offset = ($page - 1) * $itemsPerPage;
+        
+        // Get total count of jobs for this employer
+        $totalJobs = $this->jobModel->countAllJobsByEmployer($employerId);
+        
+        // Get paginated jobs
+        $jobs = $this->jobModel->getPaginatedJobsByEmployer($employerId, $itemsPerPage, $offset);
         
         $data = [
+            'pageTitle' => 'My Job Listings',
             'jobs' => $jobs,
-            'pageTitle' => 'My Job Listings'
+            'currentPage' => $page,
+            'totalItems' => $totalJobs,
+            'itemsPerPage' => $itemsPerPage
         ];
         
         $this->view('employer/jobs', $data, 'employer');
@@ -561,17 +574,38 @@ class EmployerController extends Controller {
         // Get all jobs for filter dropdown
         $jobs = $this->jobModel->getJobsByEmployer($employerId);
         
-        // Get application statistics
-        $applicationStats = $this->applicationModel->getApplicationStats($employerId);
+        // Pagination parameters
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $itemsPerPage = 10;
+        $offset = ($page - 1) * $itemsPerPage;
         
-        // Get all applications
-        $applications = $this->applicationModel->getApplicationsByEmployer($employerId);
+        // Get filters if any
+        $filters = [];
+        if (isset($_GET['status']) && $_GET['status'] !== 'all') {
+            $filters['status'] = $_GET['status'];
+        }
+        
+        if (isset($_GET['job_id']) && !empty($_GET['job_id'])) {
+            $filters['job_id'] = $_GET['job_id'];
+        }
+        
+        if (isset($_GET['search']) && !empty($_GET['search'])) {
+            $filters['search'] = $_GET['search'];
+        }
+        
+        // Get total count for pagination
+        $totalApplications = $this->applicationModel->countApplicationsByEmployerWithFilters($employerId, $filters);
+        
+        // Get paginated applications
+        $applications = $this->applicationModel->getApplicationsByEmployerPaginated($employerId, $filters, $itemsPerPage, $offset);
         
         $data = [
+            'pageTitle' => 'Job Applications',
             'applications' => $applications,
             'jobs' => $jobs,
-            'stats' => $applicationStats,
-            'pageTitle' => 'Job Applications'
+            'currentPage' => $page,
+            'totalItems' => $totalApplications,
+            'itemsPerPage' => $itemsPerPage
         ];
         
         $this->view('employer/applications', $data, 'employer');

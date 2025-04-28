@@ -115,6 +115,23 @@
             </div>
         <?php endif; ?>
     </div>
+    <?php if (!empty($jobs)): ?>
+        <div class="pagination-container">
+            <?php
+            // Set required variables for pagination component
+            $totalItems = $totalItems ?? count($jobs);
+            $itemsPerPage = $itemsPerPage ?? 10;
+            $currentPage = $currentPage ?? 1;
+            
+            // Build URL with any existing filters maintained
+            $filterParam = ($activeFilter && $activeFilter !== 'all') ? "?filter={$activeFilter}&" : "?";
+            $urlPattern = SITE_URL . '/admin/jobs' . $filterParam . 'page={page}';
+            
+            // Include pagination component
+            include ROOT_PATH . '/app/views/components/pagination.php';
+            ?>
+        </div>
+    <?php endif; ?>
 </div>
 
 <script>

@@ -53,11 +53,17 @@
                                     <td>
                                         <div class="applicant-cell">
                                             <?php
-                                            $avatarPath = !empty($application['avatar_path']) ? $application['avatar_path'] : 'assets/images/defaultavatar.jpg';
+                                            // Get avatar path based on whether this is a registered user or guest
+                                            $avatarPath = !empty($application['seeker_id']) && !empty($application['avatar_path']) ? 
+                                                $application['avatar_path'] : 'assets/images/defaultavatar.jpg';
                                             ?>
-                                            <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" alt="<?= htmlspecialchars($application['full_name']) ?>" class="applicant-avatar">
+                                            <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" 
+                                                alt="<?= htmlspecialchars($application['full_name']) ?>" class="applicant-avatar">
                                             <div class="applicant-info">
                                                 <strong><?= htmlspecialchars($application['full_name']) ?></strong>
+                                                <?php if (empty($application['seeker_id'])): ?>
+                                                <span class="applicant-type">Guest</span>
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     </td>
@@ -79,6 +85,34 @@
                     </table>
                 </div>
             </div>
+            <?php if (!empty($applications)): ?>
+                <div class="pagination-container">
+                    <?php
+                    // Set required variables for pagination component
+                    $totalItems = $totalItems ?? count($applications);
+                    $itemsPerPage = $itemsPerPage ?? 10;
+                    $currentPage = $currentPage ?? 1;
+                    
+                    // Build URL with any existing filters maintained
+                    $urlParams = [];
+                    if (!empty($_GET['status'])) {
+                        $urlParams[] = 'status=' . urlencode($_GET['status']);
+                    }
+                    if (!empty($_GET['job_id'])) {
+                        $urlParams[] = 'job_id=' . urlencode($_GET['job_id']);
+                    }
+                    if (!empty($_GET['search'])) {
+                        $urlParams[] = 'search=' . urlencode($_GET['search']);
+                    }
+                    
+                    $queryString = !empty($urlParams) ? '&' . implode('&', $urlParams) : '';
+                    $urlPattern = SITE_URL . '/employer/applications?page={page}' . $queryString;
+                    
+                    // Include the pagination component
+                    include ROOT_PATH . '/app/views/components/pagination.php';
+                    ?>
+                </div>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 </div>

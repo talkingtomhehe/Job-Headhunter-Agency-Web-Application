@@ -100,6 +100,23 @@
             </div>
         <?php endif; ?>
     </div>
+    <?php if (!empty($users)): ?>
+        <div class="pagination-container">
+            <?php
+            // Set required variables for pagination component
+            $totalItems = $totalItems ?? count($users);
+            $itemsPerPage = $itemsPerPage ?? 10;
+            $currentPage = $currentPage ?? 1;
+            
+            // Build URL with any existing filters maintained
+            $roleParam = ($activeRole !== 'all') ? "?role={$activeRole}&" : "?";
+            $urlPattern = SITE_URL . '/admin/users' . $roleParam . 'page={page}';
+            
+            // Include pagination component
+            include ROOT_PATH . '/app/views/components/pagination.php';
+            ?>
+        </div>
+    <?php endif; ?>
 </div>
 
 <script>

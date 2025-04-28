@@ -17,8 +17,11 @@
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-jobform.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-profile.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/admin-viewjob.css">
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-hamburger.css">
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/pagination.css">
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/dropdown.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/employer-dashboard.js" defer></script>
+    <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/employer-hamburger.js" defer></script>
     <?php if(isset($pageScripts)): ?>
         <?php foreach($pageScripts as $script): ?>
         <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/<?= $script ?>" defer></script>
@@ -27,6 +30,11 @@
 </head>
 
 <body class="admin-dashboard">
+    <button id="mobileSidebarToggle" class="mobile-sidebar-toggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div id="menuOverlay" class="menu-overlay"></div>
     <div class="dashboard-container">
         <!-- Include admin sidebar -->
         <?php include ROOT_PATH . '/app/views/components/admin-sidebar.php'; ?>
@@ -67,7 +75,6 @@
         </div>
     </div>
     
-    <!-- Include footer with JavaScript -->
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Sidebar toggle functionality

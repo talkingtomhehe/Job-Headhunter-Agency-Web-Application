@@ -246,6 +246,7 @@
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
+    margin-left: 6rem;
 }
 
 .company-logo-placeholder {
@@ -313,7 +314,7 @@
     }
     
     .company-logo-container {
-        margin-right: 0;
+        margin-right: 12rem;
         margin-bottom: 1.5rem;
     }
     

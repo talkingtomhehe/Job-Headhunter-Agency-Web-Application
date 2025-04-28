@@ -196,27 +196,37 @@ class AdminController extends Controller {
             return;
         }
         
-        // Default: show job listing
         $filter = $_GET['filter'] ?? 'all';
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $itemsPerPage = 10;
+        $offset = ($page - 1) * $itemsPerPage;
 
+        // Set page title based on filter
         if ($filter === 'pending') {
-            $jobs = $this->jobModel->getJobsByAdminStatus('pending');
             $pageTitle = 'Jobs Pending Review';
+            $jobs = $this->jobModel->getJobsByAdminStatusPaginated('pending', $itemsPerPage, $offset);
+            $totalJobs = $this->jobModel->countJobsByAdminStatus('pending');
         } else if ($filter === 'approved') {
-            $jobs = $this->jobModel->getJobsByAdminStatus('approved');
             $pageTitle = 'Approved Jobs';
+            $jobs = $this->jobModel->getJobsByAdminStatusPaginated('approved', $itemsPerPage, $offset);
+            $totalJobs = $this->jobModel->countJobsByAdminStatus('approved');
         } else if ($filter === 'rejected') {
-            $jobs = $this->jobModel->getJobsByAdminStatus('rejected');
             $pageTitle = 'Rejected Jobs';
+            $jobs = $this->jobModel->getJobsByAdminStatusPaginated('rejected', $itemsPerPage, $offset);
+            $totalJobs = $this->jobModel->countJobsByAdminStatus('rejected');
         } else {
-            $jobs = $this->jobModel->getAllJobs();
             $pageTitle = 'All Jobs';
+            $jobs = $this->jobModel->getAllJobsPaginated($itemsPerPage, $offset);
+            $totalJobs = $this->jobModel->getTotalJobCount();
         }
         
         $data = [
             'pageTitle' => $pageTitle,
             'jobs' => $jobs,
-            'activeFilter' => $filter
+            'activeFilter' => $filter,
+            'currentPage' => $page,
+            'totalItems' => $totalJobs,
+            'itemsPerPage' => $itemsPerPage
         ];
         
         $this->view('admin/jobs', $data, 'admin');
@@ -610,21 +620,32 @@ class AdminController extends Controller {
             return;
         }
         
-        // Default: show user listing
+        // Get pagination parameters
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $itemsPerPage = 10;
+        $offset = ($page - 1) * $itemsPerPage;
+        
+        // Get role filter if any
         $role = $_GET['role'] ?? 'all';
         
+        // Get users based on role with pagination
         if ($role !== 'all') {
-            $users = $this->userModel->getUsersByRole($role);
-            $pageTitle = ucfirst($role) . ' Users';
+            $pageTitle = ucfirst($role === 'job_seeker' ? 'Job Seekers' : ($role === 'company_admin' ? 'Employers' : $role . 's'));
+            $users = $this->userModel->getUsersByRolePaginated($role, $itemsPerPage, $offset);
+            $totalUsers = $this->userModel->countUsersByRole($role);
         } else {
-            $users = $this->userModel->getAllUsers();
             $pageTitle = 'All Users';
+            $users = $this->userModel->getAllUsersPaginated($itemsPerPage, $offset);
+            $totalUsers = $this->userModel->getTotalUserCount();
         }
         
         $data = [
             'pageTitle' => $pageTitle,
             'users' => $users,
-            'activeRole' => $role
+            'activeRole' => $role,
+            'currentPage' => $page,
+            'totalItems' => $totalUsers,
+            'itemsPerPage' => $itemsPerPage
         ];
         
         $this->view('admin/users', $data, 'admin');
@@ -665,28 +686,39 @@ class AdminController extends Controller {
             }
         }
         
-        // Get filter parameter
+        // Get pagination parameters
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $itemsPerPage = 10;
+        $offset = ($page - 1) * $itemsPerPage;
+        
+        // Get filter
         $filter = $_GET['filter'] ?? 'all';
-    
-        // Get applications based on admin_status filter
+        
+        // Get applications based on filter with pagination
         if ($filter === 'pending') {
-            $applications = $this->applicationModel->getApplicationsByAdminStatus('pending');
-            $pageTitle = 'Applications Pending Review';
+            $pageTitle = 'Pending Applications';
+            $applications = $this->applicationModel->getApplicationsByAdminStatusPaginated('pending', $itemsPerPage, $offset);
+            $totalApplications = $this->applicationModel->countApplicationsByAdminStatus('pending');
         } else if ($filter === 'approved') {
-            $applications = $this->applicationModel->getApplicationsByAdminStatus('approved');
             $pageTitle = 'Approved Applications';
+            $applications = $this->applicationModel->getApplicationsByAdminStatusPaginated('approved', $itemsPerPage, $offset);
+            $totalApplications = $this->applicationModel->countApplicationsByAdminStatus('approved');
         } else if ($filter === 'rejected') {
-            $applications = $this->applicationModel->getApplicationsByAdminStatus('rejected');
             $pageTitle = 'Rejected Applications';
+            $applications = $this->applicationModel->getApplicationsByAdminStatusPaginated('rejected', $itemsPerPage, $offset);
+            $totalApplications = $this->applicationModel->countApplicationsByAdminStatus('rejected');
         } else {
-            $applications = $this->applicationModel->getAllApplications();
             $pageTitle = 'All Applications';
+            $applications = $this->applicationModel->getAllApplicationsPaginated($itemsPerPage, $offset);
+            $totalApplications = $this->applicationModel->getTotalApplicationCount();
         }
         
         $data = [
             'pageTitle' => $pageTitle,
             'applications' => $applications,
-            'activeFilter' => $filter
+            'currentPage' => $page,
+            'totalItems' => $totalApplications,
+            'itemsPerPage' => $itemsPerPage
         ];
         
         $this->view('admin/applications', $data, 'admin');

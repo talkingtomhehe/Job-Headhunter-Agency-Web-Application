@@ -93,6 +93,23 @@
             </div>
         <?php endif; ?>
     </div>
+    <?php if (!empty($applications)): ?>
+        <div class="pagination-container">
+            <?php
+            // Set required variables for pagination component
+            $totalItems = $totalItems ?? count($applications);
+            $itemsPerPage = $itemsPerPage ?? 10;
+            $currentPage = $currentPage ?? 1;
+            
+            // Build URL with any existing filters maintained
+            $filterParam = isset($_GET['filter']) && $_GET['filter'] !== 'all' ? "?filter={$_GET['filter']}&" : "?";
+            $urlPattern = SITE_URL . '/admin/applications' . $filterParam . 'page={page}';
+            
+            // Include pagination component
+            include ROOT_PATH . '/app/views/components/pagination.php';
+            ?>
+        </div>
+    <?php endif; ?>
 </div>
 
 <script>

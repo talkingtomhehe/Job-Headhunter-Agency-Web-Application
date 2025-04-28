@@ -254,4 +254,34 @@ class User extends Model {
         $this->db->bind(3, $userId);
         return $this->db->execute();
     }
+
+    public function getUsersByRolePaginated($role, $limit, $offset) {
+        $query = "SELECT * FROM users WHERE role = ? 
+                  ORDER BY created_at DESC LIMIT ? OFFSET ?";
+        
+        $this->db->query($query);
+        $this->db->bind(1, $role);
+        $this->db->bind(2, $limit);
+        $this->db->bind(3, $offset);
+        
+        return $this->db->resultSet();
+    }
+    
+    public function getAllUsersPaginated($limit, $offset) {
+        $query = "SELECT * FROM users ORDER BY created_at DESC LIMIT ? OFFSET ?";
+        $this->db->query($query);
+        $this->db->bind(1, $limit);
+        $this->db->bind(2, $offset);
+        
+        return $this->db->resultSet();
+    }
+    
+    public function countUsersByRole($role) {
+        $query = "SELECT COUNT(*) as count FROM users WHERE role = ?";
+        $this->db->query($query);
+        $this->db->bind(1, $role);
+        
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
 }

@@ -660,4 +660,62 @@ class JobPost extends Model {
         
         return $this->db->resultSet();
     }
+
+    public function getPaginatedJobsByEmployer($employerId, $limit, $offset) {
+        $query = "SELECT j.*, c.company_name, 
+                  (SELECT COUNT(*) FROM job_applications a WHERE a.job_id = j.job_id) as application_count 
+                  FROM job_posts j
+                  JOIN companies c ON j.company_id = c.company_id
+                  WHERE j.employer_id = ?
+                  ORDER BY j.created_at DESC
+                  LIMIT ? OFFSET ?";
+        
+        $this->db->query($query);
+        $this->db->bind(1, $employerId);
+        $this->db->bind(2, $limit);
+        $this->db->bind(3, $offset);
+        
+        return $this->db->resultSet();
+    }
+
+    public function getJobsByAdminStatusPaginated($adminStatus, $limit, $offset) {
+        $query = "SELECT j.*, c.company_name, c.logo_path, 
+                  (SELECT COUNT(*) FROM job_applications a WHERE a.job_id = j.job_id) as application_count
+                  FROM job_posts j
+                  JOIN companies c ON j.company_id = c.company_id
+                  WHERE j.admin_status = ?
+                  ORDER BY j.created_at DESC
+                  LIMIT ? OFFSET ?";
+                  
+        $this->db->query($query);
+        $this->db->bind(1, $adminStatus);
+        $this->db->bind(2, $limit);
+        $this->db->bind(3, $offset);
+        
+        return $this->db->resultSet();
+    }
+    
+    public function getAllJobsPaginated($limit, $offset) {
+        $query = "SELECT j.*, c.company_name, c.logo_path, 
+                  (SELECT COUNT(*) FROM job_applications a WHERE a.job_id = j.job_id) as application_count
+                  FROM job_posts j
+                  JOIN companies c ON j.company_id = c.company_id
+                  ORDER BY j.created_at DESC
+                  LIMIT ? OFFSET ?";
+                  
+        $this->db->query($query);
+        $this->db->bind(1, $limit);
+        $this->db->bind(2, $offset);
+        
+        return $this->db->resultSet();
+    }
+    
+    public function countJobsByAdminStatus($adminStatus) {
+        $query = "SELECT COUNT(*) as count FROM job_posts WHERE admin_status = ?";
+        $this->db->query($query);
+        $this->db->bind(1, $adminStatus);
+        
+        $result = $this->db->single();
+        return $result['count'] ?? 0;
+    }
 }
