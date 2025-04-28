@@ -755,30 +755,266 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
-    .job-meta {
-        flex-direction: column;
-        gap: 0.75rem;
+@media (max-width: 1200px) {
+    /* Adjust spacing for better readability */
+    .job-info-grid {
+      gap: 1rem;
     }
     
-    .applications-table {
-        display: block;
-        overflow-x: auto;
+    .meta-item {
+      font-size: 0.9rem;
     }
     
+    .meta-item i {
+      font-size: 0.9rem;
+    }
+    
+    /* Make card actions more compact */
     .card-actions {
-        margin-top: 1rem;
+      gap: 10px;
+    }
+    
+    .btn-action {
+      padding: 0.7rem 1.3rem;
+      font-size: 0.9rem;
+    }
+  }
+  
+  /* Medium screens (≤992px) */
+  @media (max-width: 992px) {
+    /* Stack job info grid into a single column */
+    .job-info-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    
+    /* Improve spacing between meta items */
+    .job-meta {
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    
+    /* Make buttons more compact */
+    .card-actions {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .btn-action {
+      padding: 0.6rem 1.2rem;
+      font-size: 0.85rem;
+    }
+    
+    /* Make the tables more compact */
+    .applications-table th,
+    .applications-table td {
+      padding: 0.8rem 0.6rem;
+    }
+    
+    /* Consolidate card headers */
+    .card-header {
+      flex-direction: column;
+      gap: 15px;
+      align-items: flex-start;
     }
     
     .job-title-header {
-        flex-direction: column;
-        align-items: flex-start;
+      width: 100%;
+      justify-content: space-between;
     }
-}
-
-@media (max-width: 768px) {
-    .job-info-grid {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
+    
+    /* Adjust notice banner */
+    .notice-banner {
+      padding: 12px 15px;
+      text-align: center;
     }
-}
+    
+    .notice-banner i {
+      margin-bottom: 5px;
+    }
+  }
+  
+  /* Small screens (≤768px) */
+  @media (max-width: 768px) {
+    /* Adjust job title header */
+    .job-title-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .job-title-header h2 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+    
+    /* Optimize meta items for better readability */
+    .meta-item {
+      width: 100%;
+    }
+    
+    /* Responsive table for applications */
+    .responsive-table {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 -15px;
+      padding: 0 15px;
+    }
+    
+    .data-table {
+      min-width: 550px;
+    }
+    
+    /* Hide less important columns on small screens */
+    .applications-table th:nth-child(3),
+    .applications-table td:nth-child(3) {
+      display: none;
+    }
+    
+    /* Make actions column narrower */
+    .actions-cell {
+      width: 50px;
+    }
+    
+    /* Adjust card padding */
+    .dashboard-card {
+      padding: 0;
+    }
+    
+    .card-header {
+      padding: 15px;
+    }
+    
+    .card-body {
+      padding: 15px;
+    }
+    
+    /* Optimize header back button */
+    .page-header {
+      margin-bottom: 1rem;
+    }
+    
+    .back-link a {
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
+    
+    /* Optimize dropdown menu alignment */
+    .dropdown-content {
+      right: 0;
+      left: auto;
+      width: 200px;
+    }
+    
+    /* Ensure status badges remain visible */
+    .status-badge {
+      white-space: nowrap;
+    }
+  }
+  
+  /* Very small screens (≤576px) */
+  @media (max-width: 576px) {
+    /* Further reduce padding for very small screens */
+    .card-header {
+      padding: 12px;
+    }
+    
+    .card-body {
+      padding: 12px;
+    }
+    
+    /* Stack action buttons */
+    .card-actions {
+      flex-direction: column;
+      width: 100%;
+    }
+    
+    .btn-action {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    /* Make applicant info more compact */
+    .applicant-cell {
+      gap: 8px;
+    }
+    
+    .applicant-avatar {
+      width: 36px;
+      height: 36px;
+      font-size: 0.9rem;
+    }
+    
+    /* Make dropdown menu full width on mobile */
+    .dropdown {
+      width: 100%;
+    }
+    
+    .dropdown-content {
+      width: 100%;
+      left: 0;
+      right: 0;
+    }
+    
+    /* Job sections simplified headings */
+    .job-section h3 {
+      font-size: 1rem;
+    }
+    
+    .job-section h3:after {
+      width: 30px;
+    }
+    
+    /* Document button more touch-friendly */
+    .btn-document {
+      width: 100%;
+      justify-content: center;
+      padding: 12px;
+    }
+    
+    /* Further simplify tables */
+    .applications-table th:nth-child(2),
+    .applications-table td:nth-child(2) {
+      display: none;
+    }
+    
+    /* Ensure notice banner text is readable */
+    .notice-banner {
+      flex-direction: column;
+      text-align: center;
+      padding: 12px;
+    }
+    
+    .notice-banner i {
+      margin: 0 0 8px 0;
+      font-size: 1.2rem;
+    }
+    
+    /* Make more content scrollable */
+    .job-description, 
+    .job-requirements, 
+    .job-benefits {
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+  }
+  
+  /* Specific optimizations for applicant info on very small screens */
+  @media (max-width: 400px) {
+    .applicant-info strong {
+      font-size: 0.9rem;
+      max-width: 120px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    
+    /* Make application count more visible */
+    .application-count {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #0631BC;
+    }
+  }

@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-viewappli.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-profile.css">
     <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-jobcard.css">
+    <link rel="stylesheet" href="<?= SITE_URL . PUBLIC_PATH ?>/assets/css/employer-hamburger.css">
+    <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/employer-hamburger.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/dropdown.js" defer></script>
     <script src="<?= SITE_URL . PUBLIC_PATH ?>/assets/js/employer-dashboard.js" defer></script>
     <?php if(isset($pageScripts)): ?>
@@ -26,6 +28,11 @@
 </head>
 
 <body class="employer-dashboard">
+    <button id="mobileSidebarToggle" class="mobile-sidebar-toggle">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div id="menuOverlay" class="menu-overlay"></div>
     <div class="dashboard-container">
         <!-- Include sidebar -->
         <?php include ROOT_PATH . '/app/views/components/employer-sidebar.php'; ?>

@@ -1,7 +1,6 @@
 <div class="dashboard-container">
     <!-- Dashboard Title Section -->
     <div class="dashboard-title-section fade-in" style="animation-delay: 0.05s;">
-        <h1>Employer Dashboard</h1>
         <p>Welcome back to your recruitment management center</p>
     </div>
     
