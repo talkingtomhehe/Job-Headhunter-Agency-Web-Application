@@ -516,96 +516,40 @@ class EmployerController extends Controller {
             }
         }
         
-        if ($action === 'view' && !empty($id)) {
-            return $this->viewApplication($id);
+        if ($action === 'view' && $id) {
+            $this->viewApplication($id);
+            return;
         }
         
-        if ($action === 'notes' && !empty($id)) {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $notes = $_POST['notes'] ?? '';
-                
-                // Verify ownership
-                $application = $this->applicationModel->getApplicationById($id);
-                $job = $this->jobModel->getJobById($application['job_id']);
-                
-                if ($job['employer_id'] != $_SESSION['user_id']) {
-                    $_SESSION['error'] = 'Unauthorized access';
-                    $this->redirect('employer/applications');
-                    return;
-                }
-                
-                if ($this->applicationModel->updateNotes($id, $notes)) {
-                    $_SESSION['success'] = 'Notes updated successfully';
-                } else {
-                    $_SESSION['error'] = 'Failed to update notes';
-                }
-                
-                $this->redirect('employer/applications/view/' . $id);
-                return;
-            }
-        }
-        
-        if ($action === 'interview' && !empty($id)) {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $date = $_POST['interview_date'] ?? '';
-                $location = $_POST['interview_location'] ?? '';
-                
-                // Verify ownership
-                $application = $this->applicationModel->getApplicationById($id);
-                $job = $this->jobModel->getJobById($application['job_id']);
-                
-                if ($job['employer_id'] != $_SESSION['user_id']) {
-                    $_SESSION['error'] = 'Unauthorized access';
-                    $this->redirect('employer/applications');
-                    return;
-                }
-                
-                if ($this->applicationModel->scheduleInterview($id, $date, $location)) {
-                    $_SESSION['success'] = 'Interview scheduled successfully';
-                } else {
-                    $_SESSION['error'] = 'Failed to schedule interview';
-                }
-                
-                $this->redirect('employer/applications/view/' . $id);
-                return;
-            }
-        }
-        
-        // Get all jobs for filter dropdown
-        $jobs = $this->jobModel->getJobsByEmployer($employerId);
-        
-        // Pagination parameters
+        // Get pagination parameters
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $itemsPerPage = 10;
         $offset = ($page - 1) * $itemsPerPage;
         
-        // Get filters if any
-        $filters = [];
-        if (isset($_GET['status']) && $_GET['status'] !== 'all') {
-            $filters['status'] = $_GET['status'];
-        }
+        // Get filter parameters
+        $filters = [
+            'status' => $_GET['status'] ?? null,
+            'job_id' => $_GET['job_id'] ?? null,
+            'search' => $_GET['search'] ?? null,
+            'admin_status' => 'approved'
+        ];
         
-        if (isset($_GET['job_id']) && !empty($_GET['job_id'])) {
-            $filters['job_id'] = $_GET['job_id'];
-        }
-        
-        if (isset($_GET['search']) && !empty($_GET['search'])) {
-            $filters['search'] = $_GET['search'];
-        }
-        
-        // Get total count for pagination
+        // Get application count
         $totalApplications = $this->applicationModel->countApplicationsByEmployerWithFilters($employerId, $filters);
         
-        // Get paginated applications
+        // Get applications with pagination
         $applications = $this->applicationModel->getApplicationsByEmployerPaginated($employerId, $filters, $itemsPerPage, $offset);
+        
+        // Get employer's jobs for filter dropdown
+        $jobs = $this->jobModel->getJobsByEmployer($employerId);
         
         $data = [
             'pageTitle' => 'Job Applications',
             'applications' => $applications,
             'jobs' => $jobs,
-            'currentPage' => $page,
             'totalItems' => $totalApplications,
-            'itemsPerPage' => $itemsPerPage
+            'itemsPerPage' => $itemsPerPage,
+            'currentPage' => $page
         ];
         
         $this->view('employer/applications', $data, 'employer');

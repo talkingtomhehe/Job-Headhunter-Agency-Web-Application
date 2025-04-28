@@ -20,7 +20,7 @@ class HomeController extends Controller {
     public function index() {
         // Get recent approved jobs and top companies
         $recentJobs = $this->jobModel->getApprovedJobs('', '', '', '', '', '', 'newest', 3, 0);
-        $topCompanies = $this->companyModel->getTopCompanies(4);
+        $topCompanies = $this->companyModel->getTopCompanies(5);
         
         // Get categories and work models for the search form
         $categories = $this->jobModel->getCategories();

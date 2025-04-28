@@ -724,6 +724,7 @@ class AdminController extends Controller {
         $this->view('admin/applications', $data, 'admin');
     }
     
+    
     private function viewApplication($id) {
         $application = $this->applicationModel->getApplicationById($id);
         
@@ -733,13 +734,25 @@ class AdminController extends Controller {
             return;
         }
         
-        // Get related job
-        $job = $this->jobModel->getJobById($application['job_id']);
+        // Get job and company details
+        $job = $this->jobModel->getJobWithDetails($application['job_id']);
+        
+        if (empty($job['logo_path']) && !empty($job['company_id'])) {
+            $company = $this->companyModel->getCompanyById($job['company_id']);
+            $job['logo_path'] = $company['logo_path'] ?? null;
+        }
+        
+        // Get user details if this is a registered applicant
+        $user = null;
+        if (!empty($application['seeker_id'])) {
+            $user = $this->userModel->getUserById($application['seeker_id']);
+        }
         
         $data = [
             'pageTitle' => 'View Application',
             'application' => $application,
-            'job' => $job
+            'job' => $job,
+            'user' => $user
         ];
         
         $this->view('admin/view-application', $data, 'admin');

@@ -454,127 +454,96 @@ class Application extends Model {
         return $this->db->lastInsertId();
     }
 
-    public function countApplicationsByEmployerWithFilters($employerId, $filters = []) {
-        $query = "SELECT COUNT(*) as count FROM job_applications a 
-                  JOIN job_posts j ON a.job_id = j.job_id
-                  LEFT JOIN users u ON a.seeker_id = u.user_id
-                  WHERE j.employer_id = ?";
+    public function getApplicationsByEmployerPaginated($employerId, $filters = [], $limit, $offset) {
+        $whereClause = "WHERE j.employer_id = ?";
+        $params = [$employerId];
         
-        // Add other filters if provided
+        $whereClause .= " AND a.admin_status = 'approved'";
+        
+        // Apply other filters
         if (!empty($filters['status'])) {
-            $query .= " AND a.status = ?";
+            $whereClause .= " AND a.status = ?";
+            $params[] = $filters['status'];
         }
         
         if (!empty($filters['job_id'])) {
-            $query .= " AND a.job_id = ?";
+            $whereClause .= " AND a.job_id = ?";
+            $params[] = $filters['job_id'];
         }
         
-        // Add search term if provided
         if (!empty($filters['search'])) {
-            $query .= " AND (
-                        u.full_name LIKE ? OR 
-                        a.applicant_full_name LIKE ? OR 
-                        j.title LIKE ? OR 
-                        a.applicant_email LIKE ?
-                    )";
+            $search = "%" . $filters['search'] . "%";
+            $whereClause .= " AND (u.full_name LIKE ? OR j.title LIKE ? OR a.applicant_full_name LIKE ?)";
+            $params[] = $search;
+            $params[] = $search;
+            $params[] = $search;
         }
+        
+        $query = "SELECT a.*, j.title as job_title, j.company_id, j.location, j.job_type,
+                u.full_name as user_full_name, u.email as user_email, u.phone as user_phone, u.avatar_path,
+                c.company_name, c.logo_path,
+                /* Use the correct fields for guest applicants */
+                COALESCE(a.applicant_full_name, u.full_name) as full_name,
+                COALESCE(a.applicant_email, u.email) as email,
+                COALESCE(a.applicant_phone, u.phone) as phone
+                FROM job_applications a
+                JOIN job_posts j ON a.job_id = j.job_id
+                LEFT JOIN users u ON a.seeker_id = u.user_id
+                LEFT JOIN companies c ON j.company_id = c.company_id
+                $whereClause
+                ORDER BY a.created_at DESC
+                LIMIT ? OFFSET ?";
         
         $this->db->query($query);
-        $paramIndex = 1;
-        $this->db->bind($paramIndex++, $employerId);
         
+        foreach ($params as $key => $value) {
+            $this->db->bind($key + 1, $value);
+        }
+        
+        $this->db->bind(count($params) + 1, $limit);
+        $this->db->bind(count($params) + 2, $offset);
+        
+        return $this->db->resultSet();
+    }
+
+    public function countApplicationsByEmployerWithFilters($employerId, $filters = []) {
+        $whereClause = "WHERE j.employer_id = ?";
+        $params = [$employerId];
+        
+        $whereClause .= " AND a.admin_status = 'approved'";
+        
+        // Apply other filters
         if (!empty($filters['status'])) {
-            $this->db->bind($paramIndex++, $filters['status']);
+            $whereClause .= " AND a.status = ?";
+            $params[] = $filters['status'];
         }
         
         if (!empty($filters['job_id'])) {
-            $this->db->bind($paramIndex++, $filters['job_id']);
+            $whereClause .= " AND a.job_id = ?";
+            $params[] = $filters['job_id'];
         }
         
         if (!empty($filters['search'])) {
-            $searchTerm = '%' . $filters['search'] . '%';
-            $this->db->bind($paramIndex++, $searchTerm);
-            $this->db->bind($paramIndex++, $searchTerm);
-            $this->db->bind($paramIndex++, $searchTerm);
-            $this->db->bind($paramIndex++, $searchTerm);
+            $search = "%" . $filters['search'] . "%";
+            $whereClause .= " AND (u.full_name LIKE ? OR j.title LIKE ?)";
+            $params[] = $search;
+            $params[] = $search;
+        }
+        
+        $query = "SELECT COUNT(*) as count
+                FROM job_applications a
+                JOIN job_posts j ON a.job_id = j.job_id
+                LEFT JOIN users u ON a.seeker_id = u.user_id
+                $whereClause";
+        
+        $this->db->query($query);
+        
+        foreach ($params as $key => $value) {
+            $this->db->bind($key + 1, $value);
         }
         
         $result = $this->db->single();
         return $result['count'] ?? 0;
-    }
-    
-    public function getApplicationsByEmployerPaginated($employerId, $filters = [], $limit, $offset) {
-        $query = "SELECT a.*, j.title as job_title, j.company_id, j.location, j.job_type,
-                  u.full_name as user_full_name, u.email as user_email, 
-                  u.phone as user_phone, u.avatar_path as user_avatar_path,
-                  a.applicant_email, a.applicant_phone, a.applicant_full_name
-                  FROM job_applications a
-                  JOIN job_posts j ON a.job_id = j.job_id
-                  LEFT JOIN users u ON a.seeker_id = u.user_id
-                  WHERE j.employer_id = ?";
-        
-        // Add other filters if provided
-        if (!empty($filters['status'])) {
-            $query .= " AND a.status = ?";
-        }
-        
-        if (!empty($filters['job_id'])) {
-            $query .= " AND a.job_id = ?";
-        }
-        
-        // Add search term if provided
-        if (!empty($filters['search'])) {
-            $query .= " AND (
-                        u.full_name LIKE ? OR 
-                        a.applicant_full_name LIKE ? OR 
-                        j.title LIKE ? OR 
-                        a.applicant_email LIKE ?
-                    )";
-        }
-        
-        $query .= " ORDER BY a.created_at DESC LIMIT ? OFFSET ?";
-        
-        $this->db->query($query);
-        $paramIndex = 1;
-        $this->db->bind($paramIndex++, $employerId);
-        
-        if (!empty($filters['status'])) {
-            $this->db->bind($paramIndex++, $filters['status']);
-        }
-        
-        if (!empty($filters['job_id'])) {
-            $this->db->bind($paramIndex++, $filters['job_id']);
-        }
-        
-        if (!empty($filters['search'])) {
-            $searchTerm = '%' . $filters['search'] . '%';
-            $this->db->bind($paramIndex++, $searchTerm);
-            $this->db->bind($paramIndex++, $searchTerm);
-            $this->db->bind($paramIndex++, $searchTerm);
-            $this->db->bind($paramIndex++, $searchTerm);
-        }
-        
-        $this->db->bind($paramIndex++, $limit);
-        $this->db->bind($paramIndex++, $offset);
-        
-        $applications = $this->db->resultSet();
-        
-        // Process each application to use correct data source
-        foreach ($applications as &$application) {
-            if (empty($application['seeker_id'])) {
-                $application['full_name'] = $application['applicant_full_name'];
-                $application['email'] = $application['applicant_email'];
-                $application['phone'] = $application['applicant_phone'];
-                $application['avatar_path'] = 'assets/images/defaultavatar.jpg';
-            } else {
-                $application['full_name'] = $application['user_full_name'];
-                $application['email'] = $application['user_email'];
-                $application['phone'] = $application['user_phone'];
-                $application['avatar_path'] = $application['user_avatar_path'];
-            }
-        }
-        
-        return $applications;
     }
 
     public function getApplicationsByAdminStatusPaginated($adminStatus, $limit, $offset) {

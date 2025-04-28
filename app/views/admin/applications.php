@@ -47,13 +47,16 @@
                                         <?php
                                         $avatarPath = !empty($application['avatar_path']) ? $application['avatar_path'] : 'assets/images/defaultavatar.jpg';
                                         ?>
-                                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" alt="<?= htmlspecialchars($application['full_name']) ?>" class="applicant-avatar">
+                                        <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $avatarPath ?>" alt="<?= htmlspecialchars($application['applicant_full_name']) ?>" class="applicant-avatar">
                                         <div class="applicant-info">
-                                            <strong><?= htmlspecialchars($application['full_name']) ?></strong>
+                                            <strong><?= htmlspecialchars($application['applicant_full_name']) ?></strong>
                                             <div class="contact-info">
                                                 <p><i class="fa-solid fa-envelope"></i> <?= htmlspecialchars($application['applicant_email'] ?? 'No email') ?></p>
-                                                <?php if (!empty($application['phone'])): ?>
-                                                <p><i class="fa-solid fa-phone"></i> <?= htmlspecialchars($application['phone']) ?></p>
+                                                <?php if (!empty($application['applicant_phone'])): ?>
+                                                <p><i class="fa-solid fa-phone"></i> <?= htmlspecialchars($application['applicant_phone']) ?></p>
+                                                <?php endif; ?>
+                                                <?php if (empty($application['seeker_id'])): ?>
+                                                <span class="applicant-type">Guest</span>
                                                 <?php endif; ?>
                                             </div>
                                         </div>

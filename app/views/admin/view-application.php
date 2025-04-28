@@ -106,7 +106,7 @@
                 <div class="job-company-info">
                     <div class="company-logo-container">
                         <?php
-                        $logoPath = !empty($job['company_logo']) ? $job['company_logo'] : 'uploads/logo/defaultlogo.jpg';
+                        $logoPath = !empty($job['logo_path']) ? $job['logo_path'] : 'uploads/logo/defaultlogo.jpg';
                         ?>
                         <img src="<?= SITE_URL . PUBLIC_PATH . '/' . $logoPath ?>" alt="<?= htmlspecialchars($job['company_name'] ?? 'Company') ?>" class="company-logo">
                     </div>
